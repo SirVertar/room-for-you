@@ -1,0 +1,106 @@
+package com.mateusz.jakuszko.roomforyou.service;
+
+import com.mateusz.jakuszko.roomforyou.domain.Apartment;
+import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.Assert.*;
+
+@Transactional
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ApartmentDbServiceTest {
+
+    @Autowired
+    private ApartmentDbService apartmentDbService;
+
+    private Apartment createApartment() {
+        return Apartment.builder()
+                .xCoordinate(11L)
+                .yCoordinate(12L)
+                .street("WallStreet")
+                .streetNumber(13)
+                .apartmentNumber(14)
+                .build();
+    }
+
+    @Test
+    public void saveAndGetApartmentTest() {
+        //Given
+        Apartment apartment = createApartment();
+        //When
+        apartmentDbService.save(apartment);
+        Long apartmentId = apartment.getId();
+        Optional<Apartment> savedApartment = apartmentDbService.getApartment(apartmentId);
+        Apartment expectedApartment = createApartment();
+        //Then
+        assertTrue(savedApartment.isPresent());
+        assertEquals(expectedApartment.getXCoordinate(), savedApartment.get().getXCoordinate());
+        assertEquals(expectedApartment.getYCoordinate(), savedApartment.get().getYCoordinate());
+        assertEquals(expectedApartment.getStreet(), savedApartment.get().getStreet());
+        assertEquals(expectedApartment.getStreetNumber(), savedApartment.get().getStreetNumber());
+        assertEquals(expectedApartment.getApartmentNumber(), savedApartment.get().getApartmentNumber());
+    }
+
+    @Test
+    public void getApartmentsTest() {
+        //Given
+        Apartment apartment1 = createApartment();
+        Apartment apartment2 = createApartment();
+        //When
+        apartmentDbService.save(apartment1);
+        apartmentDbService.save(apartment2);
+        List<Apartment> apartments = apartmentDbService.getApartments();
+        //Then
+        assertEquals(2, apartments.size());
+        assertTrue(apartments.stream()
+                .allMatch(apartment -> apartment.getId() != null &&
+                        apartment.getXCoordinate().equals(11L) &&
+                        apartment.getYCoordinate().equals(12L) &&
+                        apartment.getStreet().equals("WallStreet") &&
+                        apartment.getStreetNumber().equals(13) &&
+                        apartment.getApartmentNumber().equals(14)
+                ));
+    }
+
+    @Test
+    public void updateTest() {
+        //Given
+        Apartment apartment = createApartment();
+        //When
+        apartmentDbService.save(apartment);
+        Long apartmentId = apartment.getId();
+        Apartment savedApartment = apartmentDbService.getApartment(apartmentId).orElseThrow(NotFoundException::new);
+        savedApartment.setStreet("UpdatedStreet");
+        apartmentDbService.update(savedApartment);
+        Optional<Apartment> updatedApartment = apartmentDbService.getApartment(apartmentId);
+        //Then
+        assertTrue(updatedApartment.isPresent());
+        assertEquals(11L, updatedApartment.get().getXCoordinate().longValue());
+        assertEquals(12L, updatedApartment.get().getYCoordinate().longValue());
+        assertEquals("UpdatedStreet", updatedApartment.get().getStreet());
+        assertEquals(13, updatedApartment.get().getStreetNumber().intValue());
+        assertEquals(14, updatedApartment.get().getApartmentNumber().intValue());
+    }
+
+    @Test
+    public void deleteTest() {
+        //Given
+        Apartment apartment = createApartment();
+        //When
+        apartmentDbService.save(apartment);
+        Long apartmentId = apartment.getId();
+        apartmentDbService.delete(apartmentId);
+        Optional<Apartment> savedApartment = apartmentDbService.getApartment(apartmentId);
+        //Then
+        assertFalse(savedApartment.isPresent());
+    }
+}
