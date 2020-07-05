@@ -1,6 +1,6 @@
 package com.mateusz.jakuszko.roomforyou.service;
 
-import com.mateusz.jakuszko.roomforyou.domain.User;
+import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,15 +18,15 @@ import static org.junit.Assert.*;
 @Transactional
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserDbServiceTest {
+public class CustomerDbServiceTest {
 
     @Autowired
     private UserDbService userDbService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private User createUser() {
-        return User.builder()
+    private Customer createUser() {
+        return Customer.builder()
                 .name("Mateusz")
                 .surname("Jakuszko")
                 .username("matanos")
@@ -39,13 +39,13 @@ public class UserDbServiceTest {
     @Test
     public void saveAndGetUserTest() {
         //Given
-        User user = createUser();
+        Customer customer = createUser();
         //When
-        userDbService.save(user, passwordEncoder);
-        Long userId = user.getId();
-        Optional<User> savedUser = userDbService.getUser(userId);
+        userDbService.save(customer, passwordEncoder);
+        Long userId = customer.getId();
+        Optional<Customer> savedUser = userDbService.getUser(userId);
         //Then
-        assertNotNull(user.getId());
+        assertNotNull(customer.getId());
         assertTrue(savedUser.isPresent());
         assertEquals("Mateusz", savedUser.get().getName());
         assertEquals("Jakuszko", savedUser.get().getSurname());
@@ -58,15 +58,15 @@ public class UserDbServiceTest {
     @Test
     public void getUsersTest() {
         //Given
-        User user1 = createUser();
-        User user2 = createUser();
-        userDbService.save(user1, passwordEncoder);
-        userDbService.save(user2, passwordEncoder);
+        Customer customer1 = createUser();
+        Customer customer2 = createUser();
+        userDbService.save(customer1, passwordEncoder);
+        userDbService.save(customer2, passwordEncoder);
         //When
-        List<User> users = userDbService.getUsers();
+        List<Customer> customers = userDbService.getUsers();
         //Then
-        assertEquals(2, users.size());
-        assertTrue(users.stream()
+        assertEquals(2, customers.size());
+        assertTrue(customers.stream()
         .allMatch(user -> user.getId() != null &&
                 user.getEmail().equals("mateusz.jakuszko@gmail.com") &&
                 user.getName().equals("Mateusz") &&
@@ -79,14 +79,14 @@ public class UserDbServiceTest {
     @Test
     public void updateTest() {
         //Given
-        User user = createUser();
+        Customer customer = createUser();
         //When
-        userDbService.save(user, passwordEncoder);
-        Long userId = user.getId();
-        User userAfterSave = userDbService.getUser(userId).orElseThrow(NotFoundException::new);
-        userAfterSave.setEmail("changedMail");
-        userDbService.update(userAfterSave);
-        Optional<User> userAfterUpdate = userDbService.getUser(userId);
+        userDbService.save(customer, passwordEncoder);
+        Long userId = customer.getId();
+        Customer customerAfterSave = userDbService.getUser(userId).orElseThrow(NotFoundException::new);
+        customerAfterSave.setEmail("changedMail");
+        userDbService.update(customerAfterSave);
+        Optional<Customer> userAfterUpdate = userDbService.getUser(userId);
         //Then
         assertTrue(userAfterUpdate.isPresent());
         assertEquals("Mateusz", userAfterUpdate.get().getName());
@@ -100,14 +100,14 @@ public class UserDbServiceTest {
     @Test
     public void deleteTest() {
         //Given
-        User user = createUser();
+        Customer customer = createUser();
         //When
-        userDbService.save(user, passwordEncoder);
-        Long userId = user.getId();
+        userDbService.save(customer, passwordEncoder);
+        Long userId = customer.getId();
         userDbService.delete(userId);
-        Optional<User> deletedUser = userDbService.getUser(userId);
+        Optional<Customer> deletedUser = userDbService.getUser(userId);
         //Then
-        assertNotNull(user.getId());
+        assertNotNull(customer.getId());
         assertFalse(deletedUser.isPresent());
     }
 }

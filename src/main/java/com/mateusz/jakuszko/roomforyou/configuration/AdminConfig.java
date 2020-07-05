@@ -1,15 +1,15 @@
 package com.mateusz.jakuszko.roomforyou.configuration;
 
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
-@Component
+@Configuration
+@ConfigurationProperties(prefix = "admin")
 @Getter
+@Setter
 public class AdminConfig {
-    @Value("${admin.mail}")
-    private String adminMail;
-
-    @Value("${admin.name}")
-    private String adminName;
+    private String mail;
+    private String name;
 }

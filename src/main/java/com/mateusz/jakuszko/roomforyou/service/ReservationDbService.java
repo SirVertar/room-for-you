@@ -1,6 +1,6 @@
 package com.mateusz.jakuszko.roomforyou.service;
 
-import com.mateusz.jakuszko.roomforyou.domain.Reservation;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 
@@ -40,13 +40,13 @@ public class ReservationDbService {
     //TODO-TEST
     public List<Reservation> getReservationsByUserId(Long userId) {
         return getReservations().stream()
-                .filter(reservation -> reservation.getUser().getId().equals(userId))
+                .filter(reservation -> reservation.getCustomer().getId().equals(userId))
                 .collect(Collectors.toList());
     }
     //TODO-TEST
     public void deleteReservationsByUserId(Long userId) {
         getReservations().stream()
-                .filter(reservation -> reservation.getUser().getId().equals(userId))
+                .filter(reservation -> reservation.getCustomer().getId().equals(userId))
                 .map(Reservation::getId)
                 .forEach(this::delete);
     }

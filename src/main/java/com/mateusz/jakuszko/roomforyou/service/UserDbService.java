@@ -1,6 +1,6 @@
 package com.mateusz.jakuszko.roomforyou.service;
 
-import com.mateusz.jakuszko.roomforyou.domain.User;
+import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,29 +17,29 @@ public class UserDbService {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> getUser(Long id) {
+    public Optional<Customer> getUser(Long id) {
         return userRepository.findById(id);
     }
 
-    public List<User> getUsers() {
+    public List<Customer> getUsers() {
         return userRepository.findAll();
     }
 
-    public User save(User user, PasswordEncoder passwordEncoder) {
-        String password = passwordEncoder.encode(user.getPassword());
-        user.setPassword(password);
-        return userRepository.save(user);
+    public Customer save(Customer customer, PasswordEncoder passwordEncoder) {
+        String password = passwordEncoder.encode(customer.getPassword());
+        customer.setPassword(password);
+        return userRepository.save(customer);
     }
 
-    public User update(User user) {
-        return userRepository.save(user);
+    public Customer update(Customer customer) {
+        return userRepository.save(customer);
     }
 
     public void delete(Long id) {
         userRepository.deleteById(id);
     }
 
-    public Optional<User> getByUsername(String username) {
+    public Optional<Customer> getByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 }

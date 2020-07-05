@@ -1,6 +1,11 @@
 package com.mateusz.jakuszko.roomforyou.facade;
 
-import com.mateusz.jakuszko.roomforyou.domain.*;
+import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
+import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
+import com.mateusz.jakuszko.roomforyou.dto.UserDto;
+import com.mateusz.jakuszko.roomforyou.entity.Apartment;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
+import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import com.mateusz.jakuszko.roomforyou.mapper.ApartmentMapper;
 import com.mateusz.jakuszko.roomforyou.mapper.ReservationMapper;
@@ -30,25 +35,25 @@ public class UserDbFacade {
 
     @Transactional
     public UserDto getUser(Long id) {
-        User user = userDbService.getUser(id).orElseThrow(NotFoundException::new);
-        List<Apartment> apartments = user.getApartments();
-        List<Reservation> reservations = user.getReservations();
+        Customer customer = userDbService.getUser(id).orElseThrow(NotFoundException::new);
+        List<Apartment> apartments = customer.getApartments();
+        List<Reservation> reservations = customer.getReservations();
         List<ApartmentDto> apartmentDtos = apartmentMapper.mapToApartmentDtos(apartments);
         List<ReservationDto> reservationDtos = reservationMapper
                 .mapToReservationDtos(reservations, apartmentDtos);
-        return userMapper.mapToUserDto(user, apartmentDtos, reservationDtos);
+        return userMapper.mapToUserDto(customer, apartmentDtos, reservationDtos);
 
     }
 
     // TODO------------!!!!
     @Transactional
     public List<UserDto> getUsers() {
-        List<User> users = userDbService.getUsers();
+        List<Customer> customers = userDbService.getUsers();
         List<Reservation> reservations = reservationDbService.getReservations();
         List<Apartment> apartments = apartmentDbService.getApartments();
         List<ApartmentDto> apartmentDtos = apartmentMapper.mapToApartmentDtos(apartments);
         List<ReservationDto> reservationDtos = reservationMapper.mapToReservationDtos(reservations, apartmentDtos);
-        return userMapper.mapToUserDtos(users, apartmentDtos, reservationDtos);
+        return userMapper.mapToUserDtos(customers, apartmentDtos, reservationDtos);
     }
 
     @Transactional
@@ -66,15 +71,15 @@ public class UserDbFacade {
         List<ApartmentDto> apartmentDtos = apartmentMapper.mapToApartmentDtos(apartments);
         List<ReservationDto> reservationDtos = reservationMapper.mapToReservationDtos(reservations,
                 apartmentDtos);
-        User user = userMapper.mapToUser(userDto, apartments, reservations);
-        User updatedUser = userDbService.update(user);
-        return userMapper.mapToUserDto(updatedUser, apartmentDtos, reservationDtos);
+        Customer customer = userMapper.mapToUser(userDto, apartments, reservations);
+        Customer updatedCustomer = userDbService.update(customer);
+        return userMapper.mapToUserDto(updatedCustomer, apartmentDtos, reservationDtos);
     }
 
     @Transactional
     public void deleteUser(Long userId) {
-        apartmentDbService.deleteApartmentsByUserId(userId);
         reservationDbService.deleteReservationsByUserId(userId);
+        apartmentDbService.deleteApartmentsByUserId(userId);
         userDbService.delete(userId);
     }
 }

@@ -1,4 +1,4 @@
-package com.mateusz.jakuszko.roomforyou.domain;
+package com.mateusz.jakuszko.roomforyou.entity;
 
 import lombok.*;
 
@@ -16,13 +16,14 @@ public class Apartment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long xCoordinate;
-    private Long yCoordinate;
+    private Long latitude;
+    private Long longitude;
+    private String city;
     private String street;
-    private Integer streetNumber;
+    private String streetNumber;
     private Integer apartmentNumber;
-    @OneToMany
+    @OneToMany(mappedBy = "apartment")
     private List<Reservation> reservations;
     @ManyToOne
-    private User user;
+    private Customer customer;
 }

@@ -1,6 +1,6 @@
 package com.mateusz.jakuszko.roomforyou.controller;
 
-import com.mateusz.jakuszko.roomforyou.domain.UserDto;
+import com.mateusz.jakuszko.roomforyou.dto.UserDto;
 import com.mateusz.jakuszko.roomforyou.facade.UserDbFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class UserController {
 
     @PutMapping
     public UserDto update(@RequestBody UserDto userDto) {
-        return userDbFacade.createUser(userDto);
+        return userDbFacade.updateUser(userDto);
     }
 
     @DeleteMapping("/{id}")

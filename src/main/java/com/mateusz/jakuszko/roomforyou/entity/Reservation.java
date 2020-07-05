@@ -1,4 +1,4 @@
-package com.mateusz.jakuszko.roomforyou.domain;
+package com.mateusz.jakuszko.roomforyou.entity;
 
 import lombok.*;
 
@@ -21,5 +21,5 @@ public class Reservation {
     @ManyToOne
     private Apartment apartment;
     @ManyToOne
-    private User user;
+    private Customer customer;
 }

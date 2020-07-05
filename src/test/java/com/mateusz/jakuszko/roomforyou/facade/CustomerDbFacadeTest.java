@@ -1,6 +1,11 @@
 package com.mateusz.jakuszko.roomforyou.facade;
 
-import com.mateusz.jakuszko.roomforyou.domain.*;
+import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
+import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
+import com.mateusz.jakuszko.roomforyou.dto.UserDto;
+import com.mateusz.jakuszko.roomforyou.entity.Apartment;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
+import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import com.mateusz.jakuszko.roomforyou.mapper.ApartmentMapper;
 import com.mateusz.jakuszko.roomforyou.mapper.ReservationMapper;
@@ -26,7 +31,7 @@ import static org.junit.Assert.*;
 @Transactional
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserDbFacadeTest {
+public class CustomerDbFacadeTest {
 
     @Autowired
     private UserDbFacade userDbFacade;
@@ -47,7 +52,7 @@ public class UserDbFacadeTest {
 
 
     private List<Long> prepareAndSaveDataIntoDbAndReturnDataIds() {
-        User user = User.builder()
+        Customer customer = Customer.builder()
                 .name("Mateusz")
                 .surname("Jakuszko")
                 .username("matanos")
@@ -57,18 +62,19 @@ public class UserDbFacadeTest {
                 .build();
 
         Apartment apartment = Apartment.builder()
+                .city("Terespol")
                 .street("Kraszewskiego")
-                .streetNumber(26)
+                .streetNumber("26")
                 .apartmentNumber(5)
-                .xCoordinate(123L)
-                .yCoordinate(321L)
-                .user(user)
+                .latitude(123L)
+                .longitude(321L)
+                .customer(customer)
                 .build();
         Reservation reservation = Reservation.builder()
                 .startDate(LocalDate.of(2020, 1, 12))
                 .endDate(LocalDate.of(2020, 3, 14))
                 .apartment(apartment)
-                .user(user)
+                .customer(customer)
                 .build();
 
         List<Apartment> apartments = new ArrayList<>();
@@ -77,15 +83,15 @@ public class UserDbFacadeTest {
         reservations.add(reservation);
         apartment.setReservations(reservations);
 
-        user.setApartments(apartments);
-        user.setReservations(reservations);
+        customer.setApartments(apartments);
+        customer.setReservations(reservations);
 
         apartmentDbService.save(apartment);
         reservationDbService.save(reservation);
 
-        userDbService.save(user, passwordEncoder);
+        userDbService.save(customer, passwordEncoder);
         List<Long> ids = new ArrayList<>();
-        ids.add(user.getId());
+        ids.add(customer.getId());
         ids.add(apartment.getId());
         ids.add(reservation.getId());
 
@@ -109,11 +115,12 @@ public class UserDbFacadeTest {
                 .allMatch(reservationDto -> reservationDto.getStartDate().equals(LocalDate.of(2020, 1, 12)) &&
                         reservationDto.getEndDate().equals(LocalDate.of(2020, 3, 14))));
         assertTrue(userDto.getApartments().stream()
-                .allMatch(apartmentDto -> apartmentDto.getXCoordinate().equals(123L) &&
-                        apartmentDto.getYCoordinate().equals(321L) &&
+                .allMatch(apartmentDto -> apartmentDto.getLatitude().equals(123L) &&
+                        apartmentDto.getLongitude().equals(321L) &&
                         apartmentDto.getApartmentNumber().equals(5) &&
+                        apartmentDto.getCity().equals("Terespol") &&
                         apartmentDto.getStreet().equals("Kraszewskiego") &&
-                        apartmentDto.getStreetNumber().equals(26) &&
+                        apartmentDto.getStreetNumber().equals("26") &&
                         apartmentDto.getUserId().equals(userId)));
     }
 
@@ -135,18 +142,19 @@ public class UserDbFacadeTest {
                 .allMatch(reservationDto -> reservationDto.getStartDate().equals(LocalDate.of(2020, 1, 12)) &&
                         reservationDto.getEndDate().equals(LocalDate.of(2020, 3, 14))));
         assertTrue(users.get(0).getApartments().stream()
-                .allMatch(apartmentDto -> apartmentDto.getXCoordinate().equals(123L) &&
-                        apartmentDto.getYCoordinate().equals(321L) &&
+                .allMatch(apartmentDto -> apartmentDto.getLatitude().equals(123L) &&
+                        apartmentDto.getLongitude().equals(321L) &&
                         apartmentDto.getApartmentNumber().equals(5) &&
+                        apartmentDto.getCity().equals("Terespol") &&
                         apartmentDto.getStreet().equals("Kraszewskiego") &&
-                        apartmentDto.getStreetNumber().equals(26) &&
+                        apartmentDto.getStreetNumber().equals("26") &&
                         apartmentDto.getUserId().equals(userId)));
     }
 
     @Test
     public void createUserTest() {
         //Given
-        User user = User.builder()
+        Customer customer = Customer.builder()
                 .name("Mateusz")
                 .surname("Jakuszko")
                 .username("matanos")
@@ -154,7 +162,7 @@ public class UserDbFacadeTest {
                 .email("mateusz.jakuszko@gmail.com")
                 .build();
         //When
-        UserDto userDto = userMapper.mapToUserDto(user, new ArrayList<>(), new ArrayList<>());
+        UserDto userDto = userMapper.mapToUserDto(customer, new ArrayList<>(), new ArrayList<>());
         Long userId = userDbFacade.createUser(userDto).getId();
         UserDto createdUser = userDbFacade.getUser(userId);
         //Then
@@ -175,12 +183,12 @@ public class UserDbFacadeTest {
         Long reservationId = idsList.get(2);
         Apartment apartment = apartmentDbService.getApartment(apartmentId).orElseThrow(NotFoundException::new);
         Reservation reservation = reservationDbService.gerReservation(reservationId).orElseThrow(NotFoundException::new);
-        User user = userDbService.getUser(userId).orElseThrow(NotFoundException::new);
+        Customer customer = userDbService.getUser(userId).orElseThrow(NotFoundException::new);
         ApartmentDto apartmentDto = apartmentMapper.mapToApartmentDto(apartment, Collections.singletonList(reservationId));
         ReservationDto reservationDto = reservationMapper.mapToReservationDto(reservation, apartmentDto);
         //When
-        user.setName("Weronika");
-        UserDto userDto = userMapper.mapToUserDto(user, Collections.singletonList(apartmentDto), Collections.singletonList(reservationDto));
+        customer.setName("Weronika");
+        UserDto userDto = userMapper.mapToUserDto(customer, Collections.singletonList(apartmentDto), Collections.singletonList(reservationDto));
         userDbFacade.updateUser(userDto);
         UserDto updatedUser = userDbFacade.getUser(userId);
         //Then

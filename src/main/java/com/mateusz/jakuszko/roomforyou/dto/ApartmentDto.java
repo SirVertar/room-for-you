@@ -1,4 +1,4 @@
-package com.mateusz.jakuszko.roomforyou.domain;
+package com.mateusz.jakuszko.roomforyou.dto;
 
 import lombok.*;
 
@@ -10,12 +10,12 @@ import java.util.List;
 @Setter
 @Getter
 public class ApartmentDto {
-
     private Long id;
-    private Long xCoordinate;
-    private Long yCoordinate;
+    private Long latitude;
+    private Long longitude;
+    private String city;
     private String street;
-    private Integer streetNumber;
+    private String streetNumber;
     private Integer apartmentNumber;
     private List<Long> reservationsIds;
     private Long userId;

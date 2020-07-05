@@ -1,6 +1,6 @@
 package com.mateusz.jakuszko.roomforyou.service;
 
-import com.mateusz.jakuszko.roomforyou.domain.Apartment;
+import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,10 +24,10 @@ public class ApartmentDbServiceTest {
 
     private Apartment createApartment() {
         return Apartment.builder()
-                .xCoordinate(11L)
-                .yCoordinate(12L)
+                .latitude(11L)
+                .longitude(12L)
                 .street("WallStreet")
-                .streetNumber(13)
+                .streetNumber("13")
                 .apartmentNumber(14)
                 .build();
     }
@@ -43,8 +43,8 @@ public class ApartmentDbServiceTest {
         Apartment expectedApartment = createApartment();
         //Then
         assertTrue(savedApartment.isPresent());
-        assertEquals(expectedApartment.getXCoordinate(), savedApartment.get().getXCoordinate());
-        assertEquals(expectedApartment.getYCoordinate(), savedApartment.get().getYCoordinate());
+        assertEquals(expectedApartment.getLatitude(), savedApartment.get().getLatitude());
+        assertEquals(expectedApartment.getLongitude(), savedApartment.get().getLongitude());
         assertEquals(expectedApartment.getStreet(), savedApartment.get().getStreet());
         assertEquals(expectedApartment.getStreetNumber(), savedApartment.get().getStreetNumber());
         assertEquals(expectedApartment.getApartmentNumber(), savedApartment.get().getApartmentNumber());
@@ -63,10 +63,10 @@ public class ApartmentDbServiceTest {
         assertEquals(2, apartments.size());
         assertTrue(apartments.stream()
                 .allMatch(apartment -> apartment.getId() != null &&
-                        apartment.getXCoordinate().equals(11L) &&
-                        apartment.getYCoordinate().equals(12L) &&
+                        apartment.getLatitude().equals(11L) &&
+                        apartment.getLongitude().equals(12L) &&
                         apartment.getStreet().equals("WallStreet") &&
-                        apartment.getStreetNumber().equals(13) &&
+                        apartment.getStreetNumber().equals("13") &&
                         apartment.getApartmentNumber().equals(14)
                 ));
     }
@@ -84,10 +84,10 @@ public class ApartmentDbServiceTest {
         Optional<Apartment> updatedApartment = apartmentDbService.getApartment(apartmentId);
         //Then
         assertTrue(updatedApartment.isPresent());
-        assertEquals(11L, updatedApartment.get().getXCoordinate().longValue());
-        assertEquals(12L, updatedApartment.get().getYCoordinate().longValue());
+        assertEquals(11L, updatedApartment.get().getLatitude().longValue());
+        assertEquals(12L, updatedApartment.get().getLongitude().longValue());
         assertEquals("UpdatedStreet", updatedApartment.get().getStreet());
-        assertEquals(13, updatedApartment.get().getStreetNumber().intValue());
+        assertEquals("13", updatedApartment.get().getStreetNumber());
         assertEquals(14, updatedApartment.get().getApartmentNumber().intValue());
     }
 

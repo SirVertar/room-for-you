@@ -1,6 +1,10 @@
 package com.mateusz.jakuszko.roomforyou.mapper;
 
-import com.mateusz.jakuszko.roomforyou.domain.*;
+import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
+import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
+import com.mateusz.jakuszko.roomforyou.entity.Apartment;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
+import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -15,17 +19,17 @@ public class ReservationMapper {
                 .startDate(reservation.getStartDate())
                 .endDate(reservation.getEndDate())
                 .apartmentDto(apartmentDto)
-                .userId(reservation.getUser().getId())
+                .userId(reservation.getCustomer().getId())
                 .build();
     }
 
-    public Reservation mapToReservation(ReservationDto reservationDto, Apartment apartment, User user) {
+    public Reservation mapToReservation(ReservationDto reservationDto, Apartment apartment, Customer customer) {
         return Reservation.builder()
                 .id(reservationDto.getId())
                 .startDate(reservationDto.getStartDate())
                 .endDate(reservationDto.getEndDate())
                 .apartment(apartment)
-                .user(user)
+                .customer(customer)
                 .build();
     }
 
@@ -38,7 +42,7 @@ public class ReservationMapper {
                         .apartmentDto(apartmentDtos.stream()
                                 .filter(apartmentDto -> apartmentDto.getId().equals(reservation.getApartment().getId()))
                                 .findAny().orElseThrow(NotFoundException::new))
-                        .userId(reservation.getUser().getId())
+                        .userId(reservation.getCustomer().getId())
                         .build())
                 .collect(Collectors.toList());
     }

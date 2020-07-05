@@ -1,6 +1,6 @@
 package com.mateusz.jakuszko.roomforyou.service;
 
-import com.mateusz.jakuszko.roomforyou.domain.Reservation;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;

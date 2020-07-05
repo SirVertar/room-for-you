@@ -1,6 +1,6 @@
 package com.mateusz.jakuszko.roomforyou.controller;
 
-import com.mateusz.jakuszko.roomforyou.domain.ApartmentDto;
+import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import com.mateusz.jakuszko.roomforyou.facade.ApartmentDbFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

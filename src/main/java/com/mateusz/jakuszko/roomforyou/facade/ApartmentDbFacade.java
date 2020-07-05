@@ -1,11 +1,12 @@
 package com.mateusz.jakuszko.roomforyou.facade;
 
-import com.mateusz.jakuszko.roomforyou.domain.Apartment;
-import com.mateusz.jakuszko.roomforyou.domain.ApartmentDto;
-import com.mateusz.jakuszko.roomforyou.domain.Reservation;
-import com.mateusz.jakuszko.roomforyou.domain.User;
+import com.mateusz.jakuszko.roomforyou.entity.Apartment;
+import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
+import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import com.mateusz.jakuszko.roomforyou.mapper.ApartmentMapper;
+import com.mateusz.jakuszko.roomforyou.opencagegeocoder.client.OpenCageGeocoderClient;
 import com.mateusz.jakuszko.roomforyou.service.ApartmentDbService;
 import com.mateusz.jakuszko.roomforyou.service.ReservationDbService;
 import com.mateusz.jakuszko.roomforyou.service.UserDbService;
@@ -24,6 +25,7 @@ public class ApartmentDbFacade {
     private final ApartmentDbService apartmentDbService;
     private final ApartmentMapper apartmentMapper;
     private final ReservationDbService reservationDbService;
+    private final OpenCageGeocoderClient openCageGeocoderClient;
 
     @Transactional
     public ApartmentDto getApartment(Long apartmentId) {
@@ -44,12 +46,13 @@ public class ApartmentDbFacade {
     @Transactional
     public ApartmentDto createApartment(ApartmentDto apartmentDto) {
         List<Reservation> reservations = reservationDbService.getReservationsByApartmentId(apartmentDto.getId());
-        User user = userDbService.getUser(apartmentDto.getUserId()).orElseThrow(NotFoundException::new);
-        Apartment apartment = apartmentMapper.mapToApartment(apartmentDto, reservations, user);
-        List<Apartment> newUserApartmentList = userDbService.getUser(user.getId()).orElseThrow(NotFoundException::new).getApartments();
+        Customer customer = userDbService.getUser(apartmentDto.getUserId()).orElseThrow(NotFoundException::new);
+        //Map<String, String> map =  openCageGeocoderClient.getUrlWithApartmentDetails(apartmentDto);
+        Apartment apartment = apartmentMapper.mapToApartment(apartmentDto, reservations, customer);
+        List<Apartment> newUserApartmentList = userDbService.getUser(customer.getId()).orElseThrow(NotFoundException::new).getApartments();
         newUserApartmentList.add(apartment);
         apartmentDbService.save(apartment);
-        userDbService.update(user);
+        userDbService.update(customer);
         return apartmentMapper.mapToApartmentDto(apartment, apartmentDto.getReservationsIds());
     }
 
@@ -61,15 +64,15 @@ public class ApartmentDbFacade {
     @Transactional
     public void deleteApartment(Long apartmentId) {
         Apartment apartment = apartmentDbService.getApartment(apartmentId).orElseThrow(NotFoundException::new);
-        User user = apartment.getUser();
+        Customer customer = apartment.getCustomer();
         Long reservationId = apartment.getReservations().stream()
                 .map(Reservation::getId)
                 .findAny().orElseThrow(NotFoundException::new);
         Reservation reservation = reservationDbService.gerReservation(reservationId).orElseThrow(NotFoundException::new);
         apartmentDbService.delete(apartmentId);
-        user.getReservations().remove(reservation);
-        user.getApartments().remove(apartment);
-        userDbService.update(user);
+        customer.getReservations().remove(reservation);
+        customer.getApartments().remove(apartment);
+        userDbService.update(customer);
         reservationDbService.delete(reservationId);
     }
 }

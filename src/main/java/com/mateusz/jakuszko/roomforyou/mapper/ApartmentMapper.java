@@ -1,6 +1,9 @@
 package com.mateusz.jakuszko.roomforyou.mapper;
 
-import com.mateusz.jakuszko.roomforyou.domain.*;
+import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
+import com.mateusz.jakuszko.roomforyou.entity.Apartment;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
+import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,26 +14,28 @@ public class ApartmentMapper {
     public ApartmentDto mapToApartmentDto(Apartment apartment, List<Long> reservationsIds) {
         return ApartmentDto.builder()
                 .id(apartment.getId())
+                .city(apartment.getCity())
                 .street(apartment.getStreet())
                 .streetNumber(apartment.getStreetNumber())
                 .apartmentNumber(apartment.getApartmentNumber())
-                .xCoordinate(apartment.getXCoordinate())
-                .yCoordinate(apartment.getYCoordinate())
+                .latitude(apartment.getLatitude())
+                .longitude(apartment.getLongitude())
                 .reservationsIds(reservationsIds)
-                .userId(apartment.getUser().getId())
+                .userId(apartment.getCustomer().getId())
                 .build();
     }
 
-    public Apartment mapToApartment(ApartmentDto apartmentDto, List<Reservation> reservations, User user) {
+    public Apartment mapToApartment(ApartmentDto apartmentDto, List<Reservation> reservations, Customer customer) {
         return Apartment.builder()
                 .id(apartmentDto.getId())
+                .city(apartmentDto.getCity())
                 .street(apartmentDto.getStreet())
                 .streetNumber(apartmentDto.getStreetNumber())
                 .apartmentNumber(apartmentDto.getApartmentNumber())
-                .xCoordinate(apartmentDto.getXCoordinate())
-                .yCoordinate(apartmentDto.getYCoordinate())
+                .latitude(apartmentDto.getLatitude())
+                .longitude(apartmentDto.getLongitude())
                 .reservations(reservations)
-                .user(user)
+                .customer(customer)
                 .build();
     }
 
@@ -38,12 +43,13 @@ public class ApartmentMapper {
         return apartments.stream()
                 .map(apartment -> ApartmentDto.builder()
                         .id(apartment.getId())
+                        .city(apartment.getCity())
                         .street(apartment.getStreet())
                         .streetNumber(apartment.getStreetNumber())
                         .apartmentNumber(apartment.getApartmentNumber())
-                        .xCoordinate(apartment.getXCoordinate())
-                        .yCoordinate(apartment.getYCoordinate())
-                        .userId(apartment.getUser().getId())
+                        .latitude(apartment.getLatitude())
+                        .longitude(apartment.getLongitude())
+                        .userId(apartment.getCustomer().getId())
                         .reservationsIds(apartment.getReservations().stream()
                                 .map(Reservation::getId)
                                 .collect(Collectors.toList()))

@@ -1,4 +1,4 @@
-package com.mateusz.jakuszko.roomforyou.domain;
+package com.mateusz.jakuszko.roomforyou.dto;
 
 import lombok.*;
 

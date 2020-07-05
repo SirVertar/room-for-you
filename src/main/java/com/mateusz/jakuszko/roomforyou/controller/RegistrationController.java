@@ -1,6 +1,6 @@
 package com.mateusz.jakuszko.roomforyou.controller;
 
-import com.mateusz.jakuszko.roomforyou.domain.UserDto;
+import com.mateusz.jakuszko.roomforyou.dto.UserDto;
 import com.mateusz.jakuszko.roomforyou.facade.UserDbFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

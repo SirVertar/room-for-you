@@ -1,6 +1,7 @@
 package com.mateusz.jakuszko.roomforyou.controller;
 
-import com.mateusz.jakuszko.roomforyou.domain.ReservationDto;
+
+import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.facade.ReservationDbFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("v1/reservations")
-public class ReservationFacade {
+public class ReservationController {
 
     private final ReservationDbFacade reservationDbFacade;
 
@@ -33,8 +34,8 @@ public class ReservationFacade {
     }
 
     @PutMapping
-    public ReservationDto update(@RequestBody ReservationDto reservationDto) {
-        return reservationDbFacade.createReservation(reservationDto);
+    public ReservationDto update(@RequestBody ReservationDto reservationDto){
+        return reservationDbFacade.updateReservation(reservationDto);
     }
 
     @DeleteMapping("/{id}")

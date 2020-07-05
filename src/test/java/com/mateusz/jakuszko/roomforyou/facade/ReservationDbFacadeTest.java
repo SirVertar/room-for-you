@@ -1,9 +1,9 @@
 package com.mateusz.jakuszko.roomforyou.facade;
 
-import com.mateusz.jakuszko.roomforyou.domain.Apartment;
-import com.mateusz.jakuszko.roomforyou.domain.Reservation;
-import com.mateusz.jakuszko.roomforyou.domain.ReservationDto;
-import com.mateusz.jakuszko.roomforyou.domain.User;
+import com.mateusz.jakuszko.roomforyou.entity.Apartment;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
+import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
+import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import com.mateusz.jakuszko.roomforyou.mapper.ApartmentMapper;
 import com.mateusz.jakuszko.roomforyou.mapper.ReservationMapper;
@@ -54,7 +54,7 @@ public class ReservationDbFacadeTest {
     private ReservationDbFacade reservationDbFacade;
 
     private List<Long> prepareAndSaveDataIntoDbAndReturnDataIds() {
-        User user = User.builder()
+        Customer customer = Customer.builder()
                 .name("Mateusz")
                 .surname("Jakuszko")
                 .username("matanos")
@@ -64,18 +64,19 @@ public class ReservationDbFacadeTest {
                 .build();
 
         Apartment apartment = Apartment.builder()
+                .city("Terespol")
                 .street("Kraszewskiego")
-                .streetNumber(26)
+                .streetNumber("26")
                 .apartmentNumber(5)
-                .xCoordinate(123L)
-                .yCoordinate(321L)
-                .user(user)
+                .latitude(123L)
+                .longitude(321L)
+                .customer(customer)
                 .build();
         Reservation reservation = Reservation.builder()
                 .startDate(LocalDate.of(2020, 1, 12))
                 .endDate(LocalDate.of(2020, 3, 14))
                 .apartment(apartment)
-                .user(user)
+                .customer(customer)
                 .build();
 
         List<Apartment> apartments = new ArrayList<>();
@@ -84,15 +85,15 @@ public class ReservationDbFacadeTest {
         reservations.add(reservation);
         apartment.setReservations(reservations);
 
-        user.setApartments(apartments);
-        user.setReservations(reservations);
+        customer.setApartments(apartments);
+        customer.setReservations(reservations);
 
         apartmentDbService.save(apartment);
         reservationDbService.save(reservation);
-        userDbService.save(user, passwordEncoder);
+        userDbService.save(customer, passwordEncoder);
 
         List<Long> ids = new ArrayList<>();
-        ids.add(user.getId());
+        ids.add(customer.getId());
         ids.add(apartment.getId());
         ids.add(reservation.getId());
         return ids;
@@ -194,7 +195,7 @@ public class ReservationDbFacadeTest {
         reservationDbFacade.deleteReservation(reservationId);
         Optional<Reservation> deletedReservation = reservationDbService.gerReservation(reservationId);
         Optional<Apartment> apartment = apartmentDbService.getApartment(apartmentId);
-        Optional<User> user = userDbService.getUser(userId);
+        Optional<Customer> user = userDbService.getUser(userId);
         //Then
         assertFalse(deletedReservation.isPresent());
         assertTrue(apartment.isPresent());

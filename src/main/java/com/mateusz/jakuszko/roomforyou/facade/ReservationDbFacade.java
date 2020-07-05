@@ -1,6 +1,10 @@
 package com.mateusz.jakuszko.roomforyou.facade;
 
-import com.mateusz.jakuszko.roomforyou.domain.*;
+import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
+import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
+import com.mateusz.jakuszko.roomforyou.entity.Apartment;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
+import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import com.mateusz.jakuszko.roomforyou.mapper.ApartmentMapper;
 import com.mateusz.jakuszko.roomforyou.mapper.ReservationMapper;
@@ -45,25 +49,25 @@ public class ReservationDbFacade {
 
     @Transactional
     public ReservationDto createReservation(ReservationDto reservationDto) {
-        User user = userDbService.getUser(reservationDto.getUserId()).orElseThrow(NotFoundException::new);
+        Customer customer = userDbService.getUser(reservationDto.getUserId()).orElseThrow(NotFoundException::new);
         Apartment apartment = apartmentDbService.getApartment(reservationDto.getApartmentDto().getId())
                 .orElseThrow(NotFoundException::new);
-        Reservation reservation = reservationMapper.mapToReservation(reservationDto, apartment, user);
+        Reservation reservation = reservationMapper.mapToReservation(reservationDto, apartment, customer);
         List<Reservation> reservationsInApartment = apartment.getReservations();
         reservationsInApartment.add(reservation);
         apartment.setReservations(reservationsInApartment);
         reservationDbService.save(reservation);
         apartmentDbService.update(apartment);
-        userDbService.update(user);
+        userDbService.update(customer);
         return reservationDto;
     }
 
     @Transactional
     public ReservationDto updateReservation(ReservationDto reservationDto) {
-        User user = userDbService.getUser(reservationDto.getUserId()).orElseThrow(NotFoundException::new);
+        Customer customer = userDbService.getUser(reservationDto.getUserId()).orElseThrow(NotFoundException::new);
         Apartment apartment = apartmentDbService.getApartment(reservationDto.getApartmentDto().getId())
                 .orElseThrow(NotFoundException::new);
-        Reservation reservation = reservationMapper.mapToReservation(reservationDto, apartment, user);
+        Reservation reservation = reservationMapper.mapToReservation(reservationDto, apartment, customer);
         reservationDbService.update(reservation);
         return reservationDto;
     }
@@ -71,16 +75,16 @@ public class ReservationDbFacade {
     public void deleteReservation(Long id) {
         Reservation reservation = reservationDbService.gerReservation(id).orElseThrow(NotFoundException::new);
         Long apartmentId = reservation.getApartment().getId();
-        Long userId = reservation.getUser().getId();
+        Long userId = reservation.getCustomer().getId();
         reservationDbService.delete(id);
         Apartment apartment = apartmentDbService.getApartment(apartmentId).orElseThrow(NotFoundException::new);
         List<Reservation> reservationsInApartment = apartment.getReservations();
         reservationsInApartment.remove(reservation);
-        User user = userDbService.getUser(userId).orElseThrow(NotFoundException::new);
-        List<Reservation> reservationsInUser = user.getReservations();
+        Customer customer = userDbService.getUser(userId).orElseThrow(NotFoundException::new);
+        List<Reservation> reservationsInUser = customer.getReservations();
         reservationsInUser.remove(reservation);
         apartmentDbService.update(apartment);
-        userDbService.update(user);
+        userDbService.update(customer);
     }
 
     private List<Long> createReservationsIds(List<Reservation> reservations) {

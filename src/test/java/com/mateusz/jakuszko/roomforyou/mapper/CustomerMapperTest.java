@@ -1,6 +1,11 @@
 package com.mateusz.jakuszko.roomforyou.mapper;
 
-import com.mateusz.jakuszko.roomforyou.domain.*;
+import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
+import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
+import com.mateusz.jakuszko.roomforyou.dto.UserDto;
+import com.mateusz.jakuszko.roomforyou.entity.Apartment;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
+import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +20,13 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserMapperTest {
+public class CustomerMapperTest {
 
     @Autowired
     UserMapper userMapper;
 
-    private User createUser() {
-        return User.builder()
+    private Customer createUser() {
+        return Customer.builder()
                 .id(1L)
                 .name("Mateusz")
                 .surname("Jakuszko")
@@ -49,10 +54,10 @@ public class UserMapperTest {
     @Test
     public void mapToUserDtoTest() {
         //Given
-        User user = createUser();
+        Customer customer = createUser();
         UserDto expectedUserDto = createUserDto();
         //When
-        UserDto userDto = userMapper.mapToUserDto(user, Arrays.asList(ApartmentDto.builder().id(11L).build()),
+        UserDto userDto = userMapper.mapToUserDto(customer, Arrays.asList(ApartmentDto.builder().id(11L).build()),
                 Arrays.asList(ReservationDto.builder().id(12L).build()));
         //Then
         assertEquals(expectedUserDto.getId(), userDto.getId());
@@ -71,31 +76,31 @@ public class UserMapperTest {
     public void mapToUserTest() {
         //Given
         UserDto userDto = createUserDto();
-        User expectedUser = createUser();
+        Customer expectedCustomer = createUser();
         //When
-        User user = userMapper.mapToUser(userDto, Arrays.asList(Apartment.builder().id(11L).build()),
+        Customer customer = userMapper.mapToUser(userDto, Arrays.asList(Apartment.builder().id(11L).build()),
                 Arrays.asList(Reservation.builder().id(12L).build()));
         //Then
-        assertEquals(expectedUser.getId(), user.getId());
-        assertEquals(expectedUser.getName(), user.getName());
-        assertEquals(expectedUser.getSurname(), user.getSurname());
-        assertEquals(expectedUser.getUsername(), user.getUsername());
-        assertEquals(expectedUser.getPassword(), user.getPassword());
-        assertEquals(expectedUser.getEmail(), user.getEmail());
-        assertEquals(expectedUser.getApartments().size(), user.getApartments().size());
-        assertEquals(expectedUser.getApartments().get(0).getId(), user.getApartments().get(0).getId());
-        assertEquals(expectedUser.getReservations().size(), user.getReservations().size());
-        assertEquals(expectedUser.getReservations().get(0).getId(), user.getReservations().get(0).getId());
+        assertEquals(expectedCustomer.getId(), customer.getId());
+        assertEquals(expectedCustomer.getName(), customer.getName());
+        assertEquals(expectedCustomer.getSurname(), customer.getSurname());
+        assertEquals(expectedCustomer.getUsername(), customer.getUsername());
+        assertEquals(expectedCustomer.getPassword(), customer.getPassword());
+        assertEquals(expectedCustomer.getEmail(), customer.getEmail());
+        assertEquals(expectedCustomer.getApartments().size(), customer.getApartments().size());
+        assertEquals(expectedCustomer.getApartments().get(0).getId(), customer.getApartments().get(0).getId());
+        assertEquals(expectedCustomer.getReservations().size(), customer.getReservations().size());
+        assertEquals(expectedCustomer.getReservations().get(0).getId(), customer.getReservations().get(0).getId());
     }
 
     @Test
     public void mapToUserDtosTest() {
         //Given
-        User user = createUser();
-        List<User> users = new ArrayList<>();
-        users.add(user);
+        Customer customer = createUser();
+        List<Customer> customers = new ArrayList<>();
+        customers.add(customer);
         //When
-        List<UserDto> userDtos = userMapper.mapToUserDtos(users, Arrays.asList(ApartmentDto.builder().id(11L).userId(1L).build()),
+        List<UserDto> userDtos = userMapper.mapToUserDtos(customers, Arrays.asList(ApartmentDto.builder().id(11L).userId(1L).build()),
                 Arrays.asList(ReservationDto.builder().id(12L).userId(1L).build()));
         //Then
         assertEquals(1, userDtos.size());

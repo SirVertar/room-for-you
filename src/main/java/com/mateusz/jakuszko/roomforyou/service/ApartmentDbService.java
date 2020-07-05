@@ -1,6 +1,6 @@
 package com.mateusz.jakuszko.roomforyou.service;
 
-import com.mateusz.jakuszko.roomforyou.domain.Apartment;
+import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.repository.ApartmentRepository;
 import org.springframework.stereotype.Service;
 
@@ -39,13 +39,13 @@ public class ApartmentDbService {
 
     public List<Apartment> findByUserId(Long userId) {
         return getApartments().stream()
-                .filter(apartment -> apartment.getUser().getId().equals(userId))
+                .filter(apartment -> apartment.getCustomer().getId().equals(userId))
                 .collect(Collectors.toList());
     }
 
     public void deleteApartmentsByUserId(Long userId) {
         getApartments().stream()
-                .filter(apartment -> apartment.getUser().getId().equals(userId))
+                .filter(apartment -> apartment.getCustomer().getId().equals(userId))
                 .map(Apartment::getId)
                 .forEach(this::delete);
     }

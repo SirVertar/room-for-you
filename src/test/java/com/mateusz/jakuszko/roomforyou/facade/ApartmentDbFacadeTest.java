@@ -1,6 +1,11 @@
 package com.mateusz.jakuszko.roomforyou.facade;
 
-import com.mateusz.jakuszko.roomforyou.domain.*;
+import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
+import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
+import com.mateusz.jakuszko.roomforyou.dto.UserDto;
+import com.mateusz.jakuszko.roomforyou.entity.Apartment;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
+import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import com.mateusz.jakuszko.roomforyou.mapper.ApartmentMapper;
 import com.mateusz.jakuszko.roomforyou.mapper.ReservationMapper;
@@ -48,7 +53,7 @@ public class ApartmentDbFacadeTest {
     private ReservationMapper reservationMapper;
 
     private List<Long> prepareAndSaveDataIntoDbAndReturnDataIds() {
-        User user = User.builder()
+        Customer customer = Customer.builder()
                 .name("Mateusz")
                 .surname("Jakuszko")
                 .username("matanos")
@@ -57,18 +62,19 @@ public class ApartmentDbFacadeTest {
                 .email("mateusz.jakuszko@gmail.com")
                 .build();
         Apartment apartment = Apartment.builder()
+                .city("Terespol")
                 .street("Kraszewskiego")
-                .streetNumber(26)
+                .streetNumber("26")
                 .apartmentNumber(5)
-                .xCoordinate(123L)
-                .yCoordinate(321L)
-                .user(user)
+                .latitude(123L)
+                .longitude(321L)
+                .customer(customer)
                 .build();
         Reservation reservation = Reservation.builder()
                 .startDate(LocalDate.of(2020, 1, 12))
                 .endDate(LocalDate.of(2020, 3, 14))
                 .apartment(apartment)
-                .user(user)
+                .customer(customer)
                 .build();
 
         List<Apartment> apartments = new ArrayList<>();
@@ -77,15 +83,15 @@ public class ApartmentDbFacadeTest {
         reservations.add(reservation);
         apartment.setReservations(reservations);
 
-        user.setApartments(apartments);
-        user.setReservations(reservations);
+        customer.setApartments(apartments);
+        customer.setReservations(reservations);
 
         apartmentDbService.save(apartment);
         reservationDbService.save(reservation);
-        userDbService.save(user, passwordEncoder);
+        userDbService.save(customer, passwordEncoder);
 
         List<Long> ids = new ArrayList<>();
-        ids.add(user.getId());
+        ids.add(customer.getId());
         ids.add(apartment.getId());
         ids.add(reservation.getId());
         return ids;
@@ -107,11 +113,12 @@ public class ApartmentDbFacadeTest {
                 .email("mateusz.jakuszko@gmail.com")
                 .build();
         ApartmentDto apartmentDto = ApartmentDto.builder()
+                .city("Terespol")
                 .street("New Street")
-                .streetNumber(26)
+                .streetNumber("26")
                 .apartmentNumber(5)
-                .xCoordinate(123L)
-                .yCoordinate(321L)
+                .latitude(123L)
+                .longitude(321L)
                 .userId(userId)
                 .reservationsIds(reservationsIds)
                 .build();
@@ -131,10 +138,11 @@ public class ApartmentDbFacadeTest {
                 .findFirst();
         //Then
         assertTrue(apartment.isPresent());
-        assertEquals(123L, apartment.get().getXCoordinate().longValue());
-        assertEquals(321L, apartment.get().getYCoordinate().longValue());
+        assertEquals(123L, apartment.get().getLatitude().longValue());
+        assertEquals(321L, apartment.get().getLongitude().longValue());
+        assertEquals("Terespol", apartment.get().getCity());
         assertEquals("New Street", apartment.get().getStreet());
-        assertEquals(26, apartment.get().getStreetNumber().intValue());
+        assertEquals("26", apartment.get().getStreetNumber());
         assertEquals(5, apartment.get().getApartmentNumber().intValue());
 
 
@@ -151,10 +159,11 @@ public class ApartmentDbFacadeTest {
         ApartmentDto apartment = apartmentDbFacade.getApartment(apartmentId);
         //Then
         assertEquals(apartmentId, apartment.getId());
-        assertEquals(123L, apartment.getXCoordinate().longValue());
-        assertEquals(321L, apartment.getYCoordinate().longValue());
+        assertEquals(123L, apartment.getLatitude().longValue());
+        assertEquals(321L, apartment.getLongitude().longValue());
+        assertEquals("Terespol", apartment.getCity());
         assertEquals("Kraszewskiego", apartment.getStreet());
-        assertEquals(26, apartment.getStreetNumber().intValue());
+        assertEquals("26", apartment.getStreetNumber());
         assertEquals(5, apartment.getApartmentNumber().intValue());
         assertEquals(userId, apartment.getUserId());
         assertTrue(apartment.getReservationsIds().stream()
@@ -173,10 +182,11 @@ public class ApartmentDbFacadeTest {
         //Then
         assertEquals(1, apartments.size());
         assertEquals(apartmentId, apartments.get(0).getId());
-        assertEquals(123L, apartments.get(0).getXCoordinate().longValue());
-        assertEquals(321L, apartments.get(0).getYCoordinate().longValue());
+        assertEquals(123L, apartments.get(0).getLatitude().longValue());
+        assertEquals(321L, apartments.get(0).getLongitude().longValue());
+        assertEquals("Terespol", apartments.get(0).getCity());
         assertEquals("Kraszewskiego", apartments.get(0).getStreet());
-        assertEquals(26, apartments.get(0).getStreetNumber().intValue());
+        assertEquals("26", apartments.get(0).getStreetNumber());
         assertEquals(5, apartments.get(0).getApartmentNumber().intValue());
         assertEquals(userId, apartments.get(0).getUserId());
         assertTrue(apartments.get(0).getReservationsIds().stream()
@@ -199,18 +209,19 @@ public class ApartmentDbFacadeTest {
         ApartmentDto newApartment = apartmentDbFacade.getApartments().stream()
                 .filter(e -> !e.getId().equals(apartmentId))
                 .findAny().orElseThrow(NotFoundException::new);
-        User user = userDbService.getUser(userId).orElseThrow(NotFoundException::new);
+        Customer customer = userDbService.getUser(userId).orElseThrow(NotFoundException::new);
         //Then
-        assertEquals(123L, newApartment.getXCoordinate().longValue());
-        assertEquals(321L, newApartment.getYCoordinate().longValue());
+        assertEquals(123L, newApartment.getLatitude().longValue());
+        assertEquals(321L, newApartment.getLongitude().longValue());
+        assertEquals("Terespol", newApartment.getCity());
         assertEquals("NewStreet", newApartment.getStreet());
-        assertEquals(26, newApartment.getStreetNumber().intValue());
+        assertEquals("26", newApartment.getStreetNumber());
         assertEquals(5, newApartment.getApartmentNumber().intValue());
         assertEquals(userId, newApartment.getUserId());
         assertEquals(0, newApartment.getReservationsIds().size());
         assertTrue(newApartment.getReservationsIds().stream()
                 .allMatch(e -> e.equals(reservationId)));
-        assertTrue(user.getApartments().stream()
+        assertTrue(customer.getApartments().stream()
         .anyMatch(e -> e.getStreet().equals("NewStreet")));
     }
 
@@ -226,14 +237,15 @@ public class ApartmentDbFacadeTest {
         apartment.setStreet("UpdatedStreet");
         apartmentDbFacade.updateApartment(apartment);
         ApartmentDto updatedApartment = apartmentDbFacade.getApartment(apartmentId);
-        User user = userDbService.getUser(userId).orElseThrow(NotFoundException::new);
+        Customer customer = userDbService.getUser(userId).orElseThrow(NotFoundException::new);
         //Then
-        assertEquals(123L, updatedApartment.getXCoordinate().longValue());
-        assertEquals(321L, updatedApartment.getYCoordinate().longValue());
+        assertEquals(123L, updatedApartment.getLatitude().longValue());
+        assertEquals(321L, updatedApartment.getLongitude().longValue());
+        assertEquals("Terespol", updatedApartment.getCity());
         assertEquals("UpdatedStreet", updatedApartment.getStreet());
-        assertEquals(26, updatedApartment.getStreetNumber().intValue());
+        assertEquals("26", updatedApartment.getStreetNumber());
         assertEquals(5, updatedApartment.getApartmentNumber().intValue());
-        assertEquals("UpdatedStreet", user.getApartments().get(0).getStreet());
+        assertEquals("UpdatedStreet", customer.getApartments().get(0).getStreet());
     }
 
     @Test()
@@ -246,7 +258,7 @@ public class ApartmentDbFacadeTest {
         //When
         apartmentDbFacade.deleteApartment(apartmentId);
         Optional<Apartment> deletedApartment = apartmentDbService.getApartment(apartmentId);
-        Optional<User> user = userDbService.getUser(userId);
+        Optional<Customer> user = userDbService.getUser(userId);
         Optional<Reservation> reservation = reservationDbService.gerReservation(reservationId);
         //Then
         assertFalse(deletedApartment.isPresent());

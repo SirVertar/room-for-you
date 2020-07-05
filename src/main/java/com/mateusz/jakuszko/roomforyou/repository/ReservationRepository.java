@@ -1,6 +1,6 @@
 package com.mateusz.jakuszko.roomforyou.repository;
 
-import com.mateusz.jakuszko.roomforyou.domain.Reservation;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 

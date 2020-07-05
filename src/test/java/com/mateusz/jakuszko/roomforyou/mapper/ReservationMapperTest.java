@@ -1,6 +1,10 @@
 package com.mateusz.jakuszko.roomforyou.mapper;
 
-import com.mateusz.jakuszko.roomforyou.domain.*;
+import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
+import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
+import com.mateusz.jakuszko.roomforyou.entity.Apartment;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
+import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +27,7 @@ public class ReservationMapperTest {
     private Reservation createReservation() {
         return Reservation.builder()
                 .id(1L)
-                .user(User.builder().id(2L).build())
+                .customer(Customer.builder().id(2L).build())
                 .startDate(LocalDate.of(2020, 10, 20))
                 .endDate(LocalDate.of(2020, 11, 20))
                 .apartment(Apartment.builder().id(3L).build())
@@ -64,10 +68,10 @@ public class ReservationMapperTest {
         Reservation expectedReservation = createReservation();
         //When
         Reservation reservation = reservationMapper
-                .mapToReservation(reservationDto, Apartment.builder().id(3L).build(), User.builder().id(2L).build());
+                .mapToReservation(reservationDto, Apartment.builder().id(3L).build(), Customer.builder().id(2L).build());
         //Then
         assertEquals(expectedReservation.getId(), reservation.getId());
-        assertEquals(expectedReservation.getUser().getId(), reservation.getUser().getId());
+        assertEquals(expectedReservation.getCustomer().getId(), reservation.getCustomer().getId());
         assertEquals(expectedReservation.getApartment().getId(), reservation.getApartment().getId());
         assertEquals(expectedReservation.getEndDate(), reservation.getEndDate());
         assertEquals(expectedReservation.getStartDate(), reservation.getStartDate());

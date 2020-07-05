@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.mateusz.jakuszko'
-version = 'v.0.0.1'
+version = 'v.0.0.2'
 sourceCompatibility = '1.8'
 
 configurations {
@@ -25,14 +25,24 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
+
+    compileOnly "org.springframework.boot:spring-boot-configuration-processor"
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    implementation('org.postgresql:postgresql')
     runtimeOnly 'com.h2database:h2'
-    //runtimeOnly 'org.postgresql:postgresql'
+
+    compileOnly 'org.projectlombok:lombok'
+
+
+
     annotationProcessor 'org.projectlombok:lombok'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     implementation 'junit:junit:4.12'
@@ -41,8 +51,21 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    testImplementation 'org.springframework.security:spring-security-test'
+
+
+    compile('com.google.code.gson:gson:2.8.2')
+
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
+//    compile('com.neotropic.flow.component:google-maps-flow:1.0:jar')
+
+
+
+    compile('org.springframework.boot:spring-boot-starter-mail:1.5.7.RELEASE')
+
 }
+
+
 
 test {
     useJUnitPlatform()

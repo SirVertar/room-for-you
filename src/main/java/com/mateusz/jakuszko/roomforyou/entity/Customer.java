@@ -1,4 +1,4 @@
-package com.mateusz.jakuszko.roomforyou.domain;
+package com.mateusz.jakuszko.roomforyou.entity;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class User implements UserDetails {
+public class Customer implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,9 +27,9 @@ public class User implements UserDetails {
     private String surname;
     private String email;
     private String role;
-    @OneToMany
+    @OneToMany(mappedBy = "customer")
     private List<Reservation> reservations;
-    @OneToMany
+    @OneToMany(mappedBy = "customer")
     private List<Apartment> apartments;
 
 
