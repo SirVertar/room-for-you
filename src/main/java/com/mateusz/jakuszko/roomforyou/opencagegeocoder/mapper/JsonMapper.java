@@ -1,11 +1,13 @@
 package com.mateusz.jakuszko.roomforyou.opencagegeocoder.mapper;
 
+import com.mateusz.jakuszko.roomforyou.dto.OpenCageGeocoder.GetResponse;
 import lombok.AllArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -17,6 +19,8 @@ import java.util.Scanner;
 @Component
 @AllArgsConstructor
 public class JsonMapper {
+
+    private final RestTemplate restTemplate;
 
     public Map<String, String> mapJsonRespondToGeometryValues(URL url) throws IOException, ParseException {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -37,4 +41,26 @@ public class JsonMapper {
         coordinatesMap.put("longitude",jsonObject.get("lng").toString());
         return coordinatesMap;
     }
+
+    //TODO Resolve problem with wrong response
+    public GetResponse getResponse(String url) {
+        return restTemplate.getForObject(url, GetResponse.class);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

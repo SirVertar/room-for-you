@@ -1,6 +1,6 @@
 package com.mateusz.jakuszko.roomforyou.configuration;
 
-import com.mateusz.jakuszko.roomforyou.service.UserDetailsServiceImpl;
+import com.mateusz.jakuszko.roomforyou.service.CustomerDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final CustomerDetailsServiceImpl userDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

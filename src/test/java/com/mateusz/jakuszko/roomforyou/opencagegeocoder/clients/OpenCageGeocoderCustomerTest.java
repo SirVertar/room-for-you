@@ -1,6 +1,7 @@
 package com.mateusz.jakuszko.roomforyou.opencagegeocoder.clients;
 
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
+import com.mateusz.jakuszko.roomforyou.dto.OpenCageGeocoder.GetResponse;
 import com.mateusz.jakuszko.roomforyou.opencagegeocoder.client.OpenCageGeocoderClient;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
@@ -24,8 +25,8 @@ public class OpenCageGeocoderCustomerTest {
     private ApartmentDto createApartment(Long id) {
         return ApartmentDto.builder()
                 .id(id)
-                .latitude(11L)
-                .longitude(12L)
+                .latitude(11.0)
+                .longitude(12.0)
                 .city("Terespol")
                 .street("Kraszewskiego")
                 .streetNumber("26A")
@@ -38,9 +39,10 @@ public class OpenCageGeocoderCustomerTest {
         //Given
         ApartmentDto apartmentDto = createApartment(11L);
         //When
-        Map<String, String> coordinatesMap = openCageGeocoderClient.getUrlWithApartmentDetails(apartmentDto);
+        Map<String, String> coordinatesMap = openCageGeocoderClient.getGeometryValues(apartmentDto);
         String latitude = coordinatesMap.get("latitude");
         String longitude = coordinatesMap.get("longitude");
+        GetResponse results = openCageGeocoderClient.getResponse(apartmentDto);
         //Then
         assertEquals("52.0793708", latitude);
         assertEquals("23.6158891", longitude);

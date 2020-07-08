@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.mateusz.jakuszko'
-version = 'v.0.0.2'
+version = 'V.0.0.3'
 sourceCompatibility = '1.8'
 
 configurations {
@@ -21,6 +21,8 @@ repositories {
 
 dependencies {
     compile group: 'org.springframework.security', name: 'spring-security-web', version: '5.3.3.RELEASE'
+    compile('org.springframework.boot:spring-boot-starter-mail:1.5.7.RELEASE')
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -29,44 +31,33 @@ dependencies {
     compileOnly "org.springframework.boot:spring-boot-configuration-processor"
     testImplementation 'org.springframework.security:spring-security-test'
 
-    implementation('org.postgresql:postgresql')
-    runtimeOnly 'com.h2database:h2'
-
-    compileOnly 'org.projectlombok:lombok'
-
-
-
-    annotationProcessor 'org.projectlombok:lombok'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
-    implementation 'junit:junit:4.12'
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+    implementation('org.postgresql:postgresql')
+    runtimeOnly 'com.h2database:h2'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'junit:junit:4.12'
 
     compile('com.google.code.gson:gson:2.8.2')
 
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
-//    compile('com.neotropic.flow.component:google-maps-flow:1.0:jar')
-
-
-
-    compile('org.springframework.boot:spring-boot-starter-mail:1.5.7.RELEASE')
-
 }
-
-
-
 test {
     useJUnitPlatform()
 }
