@@ -3,8 +3,8 @@ package com.mateusz.jakuszko.roomforyou.mapper;
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
-import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class ReservationMapperTest {
                 .userId(2L)
                 .startDate(LocalDate.of(2020, 10, 20))
                 .endDate(LocalDate.of(2020, 11, 20))
-                .apartmentDto(ApartmentDto.builder().id(3L).build())
+                .apartmentId(3L)
                 .build();
     }
 
@@ -55,7 +55,7 @@ public class ReservationMapperTest {
         //Then
         assertEquals(expectedReservationDto.getId(), reservationDto.getId());
         assertEquals(expectedReservationDto.getUserId(), reservationDto.getUserId());
-        assertEquals(expectedReservationDto.getApartmentDto().getId(), reservationDto.getApartmentDto().getId());
+        assertEquals(expectedReservationDto.getApartmentId(), reservationDto.getApartmentId());
         assertEquals(expectedReservationDto.getEndDate(), reservationDto.getEndDate());
         assertEquals(expectedReservationDto.getStartDate(), reservationDto.getStartDate());
 
@@ -91,6 +91,6 @@ public class ReservationMapperTest {
         assertEquals(expectedReservationDtos.get(0).getStartDate(), reservationDtos.get(0).getStartDate());
         assertEquals(expectedReservationDtos.get(0).getEndDate(), reservationDtos.get(0).getEndDate());
         assertEquals(expectedReservationDtos.get(0).getUserId(), reservationDtos.get(0).getUserId());
-        assertEquals(expectedReservationDtos.get(0).getApartmentDto().getId(), reservationDtos.get(0).getApartmentDto().getId());
+        assertEquals(expectedReservationDtos.get(0).getApartmentId(), reservationDtos.get(0).getApartmentId());
     }
 }

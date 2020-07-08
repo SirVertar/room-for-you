@@ -5,9 +5,6 @@ import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
-import com.mateusz.jakuszko.roomforyou.mapper.ApartmentMapper;
-import com.mateusz.jakuszko.roomforyou.mapper.CustomerMapper;
-import com.mateusz.jakuszko.roomforyou.mapper.ReservationMapper;
 import com.mateusz.jakuszko.roomforyou.service.ApartmentDbService;
 import com.mateusz.jakuszko.roomforyou.service.CustomerDbService;
 import com.mateusz.jakuszko.roomforyou.service.ReservationDbService;
@@ -33,10 +30,6 @@ import static org.junit.Assert.*;
 public class ReservationDbFacadeTest {
 
     @Autowired
-    private ApartmentDbFacade apartmentDbFacade;
-    @Autowired
-    private CustomerDbFacade customerDbFacade;
-    @Autowired
     private CustomerDbService customerDbService;
     @Autowired
     private ApartmentDbService apartmentDbService;
@@ -44,12 +37,7 @@ public class ReservationDbFacadeTest {
     private ReservationDbService reservationDbService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private CustomerMapper customerMapper;
-    @Autowired
-    private ApartmentMapper apartmentMapper;
-    @Autowired
-    private ReservationMapper reservationMapper;
+
     @Autowired
     private ReservationDbFacade reservationDbFacade;
 
@@ -113,7 +101,7 @@ public class ReservationDbFacadeTest {
         assertEquals(LocalDate.of(2020, 3, 14), reservationDto.getEndDate());
         assertEquals(LocalDate.of(2020, 1, 12), reservationDto.getStartDate());
         assertEquals(userId, reservationDto.getUserId());
-        assertEquals(apartmentId, reservationDto.getApartmentDto().getId());
+        assertEquals(apartmentId, reservationDto.getApartmentId());
     }
 
     @Test
@@ -131,7 +119,7 @@ public class ReservationDbFacadeTest {
         assertEquals(LocalDate.of(2020, 3, 14), reservationDtos.get(0).getEndDate());
         assertEquals(LocalDate.of(2020, 1, 12), reservationDtos.get(0).getStartDate());
         assertEquals(userId, reservationDtos.get(0).getUserId());
-        assertEquals(apartmentId, reservationDtos.get(0).getApartmentDto().getId());
+        assertEquals(apartmentId, reservationDtos.get(0).getApartmentId());
     }
 
     @Test
@@ -180,7 +168,7 @@ public class ReservationDbFacadeTest {
         assertEquals(LocalDate.of(1990, 5, 10), reservationDto.getEndDate());
         assertEquals(LocalDate.of(2020, 1, 12), reservationDto.getStartDate());
         assertEquals(userId, reservationDto.getUserId());
-        assertEquals(apartmentId, reservationDto.getApartmentDto().getId());
+        assertEquals(apartmentId, reservationDto.getApartmentId());
     }
 
     @Test

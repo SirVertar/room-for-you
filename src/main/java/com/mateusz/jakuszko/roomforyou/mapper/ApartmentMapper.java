@@ -2,8 +2,8 @@ package com.mateusz.jakuszko.roomforyou.mapper;
 
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
-import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

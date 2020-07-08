@@ -21,17 +21,17 @@ public class OpenCageGeocoderClient {
     private final JsonMapper jsonMapper;
     private RestTemplate restTemplate;
 
-    public Map<String, String> getGeometryValues(ApartmentDto apartment) throws IOException, ParseException {
+    public Map<String, String> getGeometryValues(ApartmentDto apartmentDto) throws IOException, ParseException {
         StringBuilder url = new StringBuilder();
         url.append(openCageGeocoderConfig.getUrl()).append(openCageGeocoderConfig.getVersion()).append("/json?q=");
-        if (apartment.getStreetNumber() != null) {
-            url.append(apartment.getStreetNumber()).append(openCageGeocoderConfig.getBreakpoint());
+        if (apartmentDto.getStreetNumber() != null) {
+            url.append(apartmentDto.getStreetNumber()).append(openCageGeocoderConfig.getBreakpoint());
         }
-        if (apartment.getStreetNumber() != null) {
-            url.append(apartment.getStreet()).append(openCageGeocoderConfig.getBreakpoint());
+        if (apartmentDto.getStreetNumber() != null) {
+            url.append(apartmentDto.getStreet()).append(openCageGeocoderConfig.getBreakpoint());
         }
-        if (apartment.getCity() != null) {
-            url.append(apartment.getCity()).append(openCageGeocoderConfig.getBreakpoint());
+        if (apartmentDto.getCity() != null) {
+            url.append(apartmentDto.getCity()).append(openCageGeocoderConfig.getBreakpoint());
         }
         url.append("Polska");
         url.append("&key=").append(openCageGeocoderConfig.getKey());
@@ -41,17 +41,17 @@ public class OpenCageGeocoderClient {
     }
 
     //TODO Resolve problem with wrong response
-    public GetResponse getResponse(ApartmentDto apartment) {
+    public GetResponse getResponse(ApartmentDto apartmentDto) {
         StringBuilder url = new StringBuilder();
         url.append(openCageGeocoderConfig.getUrl()).append(openCageGeocoderConfig.getVersion()).append("/json?q=");
-        if (apartment.getStreetNumber() != null) {
-            url.append(apartment.getStreetNumber()).append(openCageGeocoderConfig.getBreakpoint());
+        if (apartmentDto.getStreetNumber() != null) {
+            url.append(apartmentDto.getStreetNumber()).append(openCageGeocoderConfig.getBreakpoint());
         }
-        if (apartment.getStreetNumber() != null) {
-            url.append(apartment.getStreet()).append(openCageGeocoderConfig.getBreakpoint());
+        if (apartmentDto.getStreetNumber() != null) {
+            url.append(apartmentDto.getStreet()).append(openCageGeocoderConfig.getBreakpoint());
         }
-        if (apartment.getCity() != null) {
-            url.append(apartment.getCity()).append(openCageGeocoderConfig.getBreakpoint());
+        if (apartmentDto.getCity() != null) {
+            url.append(apartmentDto.getCity()).append(openCageGeocoderConfig.getBreakpoint());
         }
         url.append("Polska");
         url.append("&key=").append(openCageGeocoderConfig.getKey());

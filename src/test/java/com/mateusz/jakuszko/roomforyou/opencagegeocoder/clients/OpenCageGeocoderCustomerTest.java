@@ -1,7 +1,6 @@
 package com.mateusz.jakuszko.roomforyou.opencagegeocoder.clients;
 
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
-import com.mateusz.jakuszko.roomforyou.dto.OpenCageGeocoder.GetResponse;
 import com.mateusz.jakuszko.roomforyou.opencagegeocoder.client.OpenCageGeocoderClient;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
@@ -22,7 +21,7 @@ public class OpenCageGeocoderCustomerTest {
     @Autowired
     private OpenCageGeocoderClient openCageGeocoderClient;
 
-    private ApartmentDto createApartment(Long id) {
+    private ApartmentDto createApartment(java.lang.Long id) {
         return ApartmentDto.builder()
                 .id(id)
                 .latitude(11.0)
@@ -37,12 +36,11 @@ public class OpenCageGeocoderCustomerTest {
     @Test
     public void getPositionsTest() throws IOException, ParseException {
         //Given
-        ApartmentDto apartmentDto = createApartment(11L);
+        ApartmentDto ApartmentDto = createApartment(11L);
         //When
-        Map<String, String> coordinatesMap = openCageGeocoderClient.getGeometryValues(apartmentDto);
+        Map<String, String> coordinatesMap = openCageGeocoderClient.getGeometryValues(ApartmentDto);
         String latitude = coordinatesMap.get("latitude");
         String longitude = coordinatesMap.get("longitude");
-        GetResponse results = openCageGeocoderClient.getResponse(apartmentDto);
         //Then
         assertEquals("52.0793708", latitude);
         assertEquals("23.6158891", longitude);

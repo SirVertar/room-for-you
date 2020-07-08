@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @Getter
 public class CustomerDto {
-    private Long id;
+    private java.lang.Long id;
     private String username;
     private String password;
     private String name;
@@ -18,5 +18,5 @@ public class CustomerDto {
     private String email;
     private String role;
     private List<ReservationDto> reservations;
-    private List<ApartmentDto> apartments;
+    private List<ApartmentDto> apartmentDtos;
 }

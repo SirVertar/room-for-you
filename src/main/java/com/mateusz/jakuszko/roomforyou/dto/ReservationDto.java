@@ -11,11 +11,11 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class ReservationDto {
-    private Long id;
+    private java.lang.Long id;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate startDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate endDate;
-    private ApartmentDto apartmentDto;
+    private Long apartmentId;
     private Long userId;
 }

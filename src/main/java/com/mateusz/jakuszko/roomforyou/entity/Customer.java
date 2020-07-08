@@ -18,7 +18,6 @@ import java.util.List;
 @Setter
 @Entity
 public class Customer implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

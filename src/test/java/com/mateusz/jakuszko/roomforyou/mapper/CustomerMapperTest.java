@@ -1,11 +1,11 @@
 package com.mateusz.jakuszko.roomforyou.mapper;
 
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
-import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.dto.CustomerDto;
+import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
-import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ public class CustomerMapperTest {
                 .username("matanos")
                 .password("abc123")
                 .email("mateusz.jakuszko@gmail.com")
-                .apartments(Arrays.asList(ApartmentDto.builder().id(11L).userId(1L).build()))
+                .apartmentDtos(Arrays.asList(ApartmentDto.builder().id(11L).userId(1L).build()))
                 .reservations(Arrays.asList(ReservationDto.builder().id(12L).userId(1L).build()))
                 .build();
     }
@@ -66,8 +66,8 @@ public class CustomerMapperTest {
         assertEquals(expectedCustomerDto.getUsername(), customerDto.getUsername());
         assertEquals(expectedCustomerDto.getPassword(), customerDto.getPassword());
         assertEquals(expectedCustomerDto.getEmail(), customerDto.getEmail());
-        assertEquals(expectedCustomerDto.getApartments().size(), customerDto.getApartments().size());
-        assertEquals(expectedCustomerDto.getApartments().get(0).getId(), customerDto.getApartments().get(0).getId());
+        assertEquals(expectedCustomerDto.getApartmentDtos().size(), customerDto.getApartmentDtos().size());
+        assertEquals(expectedCustomerDto.getApartmentDtos().get(0).getId(), customerDto.getApartmentDtos().get(0).getId());
         assertEquals(expectedCustomerDto.getReservations().size(), customerDto.getReservations().size());
         assertEquals(expectedCustomerDto.getReservations().get(0).getId(), customerDto.getReservations().get(0).getId());
     }
@@ -111,6 +111,6 @@ public class CustomerMapperTest {
         assertEquals("abc123", customerDtos.get(0).getPassword());
         assertEquals("mateusz.jakuszko@gmail.com", customerDtos.get(0).getEmail());
         assertEquals(12L, customerDtos.get(0).getReservations().get(0).getId().longValue());
-        assertEquals(11L, customerDtos.get(0).getApartments().get(0).getId().longValue());
+        assertEquals(11L, customerDtos.get(0).getApartmentDtos().get(0).getId().longValue());
     }
 }

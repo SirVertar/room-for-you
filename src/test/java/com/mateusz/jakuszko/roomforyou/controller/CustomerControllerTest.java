@@ -61,7 +61,7 @@ public class CustomerControllerTest {
         when(customerDbFacade.getCustomer(1L)).thenReturn(customerDto);
 
         //When & Then
-        mockMvc.perform(get("/v1/users/1").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/v1/customers/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Mateusz")))
@@ -82,7 +82,7 @@ public class CustomerControllerTest {
         when(customerDbFacade.getCustomers()).thenReturn(customerDto);
 
         //When & Then
-        mockMvc.perform(get("/v1/users").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/v1/customers").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id", is(1)))
@@ -109,7 +109,7 @@ public class CustomerControllerTest {
         String jsContent = gson.toJson(customerDto);
 
         //When & Then
-        mockMvc.perform(post("/v1/users")
+        mockMvc.perform(post("/v1/customers")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsContent))
@@ -126,7 +126,7 @@ public class CustomerControllerTest {
         String jsContent = gson.toJson(customerDto);
 
         //When & Then
-        mockMvc.perform(put("/v1/users")
+        mockMvc.perform(put("/v1/customers")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .accept("application/json")
@@ -143,7 +143,7 @@ public class CustomerControllerTest {
     @Test
     public void deleteTest() throws Exception {
         //When & Then
-        mockMvc.perform(delete("/v1/users/1")
+        mockMvc.perform(delete("/v1/customers/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8"))
                 .andExpect(status().isOk());

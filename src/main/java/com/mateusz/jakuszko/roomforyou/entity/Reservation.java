@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @Setter
 @Entity
 public class Reservation {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

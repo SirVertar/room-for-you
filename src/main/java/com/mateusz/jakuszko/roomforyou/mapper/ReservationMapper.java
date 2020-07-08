@@ -3,8 +3,8 @@ package com.mateusz.jakuszko.roomforyou.mapper;
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
-import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ public class ReservationMapper {
                 .id(reservation.getId())
                 .startDate(reservation.getStartDate())
                 .endDate(reservation.getEndDate())
-                .apartmentDto(apartmentDto)
+                .apartmentId(apartmentDto.getId())
                 .userId(reservation.getCustomer().getId())
                 .build();
     }
@@ -44,8 +44,9 @@ public class ReservationMapper {
                         .id(reservation.getId())
                         .startDate(reservation.getStartDate())
                         .endDate(reservation.getEndDate())
-                        .apartmentDto(apartmentDtos.stream()
-                                .filter(apartmentDto -> apartmentDto.getId().equals(reservation.getApartment().getId()))
+                        .apartmentId(apartmentDtos.stream()
+                                .filter(apartment -> apartment.getId().equals(reservation.getApartment().getId()))
+                                .map(ApartmentDto::getId)
                                 .findAny().orElseThrow(NotFoundException::new))
                         .userId(reservation.getCustomer().getId())
                         .build())

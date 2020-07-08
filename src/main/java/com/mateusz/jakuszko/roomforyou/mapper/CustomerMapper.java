@@ -1,11 +1,11 @@
 package com.mateusz.jakuszko.roomforyou.mapper;
 
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
-import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.dto.CustomerDto;
+import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
-import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +26,7 @@ public class CustomerMapper {
                 .username(customer.getUsername())
                 .email(customer.getEmail())
                 .role(customer.getRole())
-                .apartments(apartmentDtos)
+                .apartmentDtos(apartmentDtos)
                 .reservations(reservationDtos)
                 .build();
     }
@@ -57,7 +57,7 @@ public class CustomerMapper {
                         .username(user.getUsername())
                         .email(user.getEmail())
                         .role(user.getRole())
-                        .apartments(apartmentDtos.stream()
+                        .apartmentDtos(apartmentDtos.stream()
                                 .filter(apartmentDto -> apartmentDto.getUserId().equals(user.getId()))
                                 .collect(Collectors.toList()))
                         .reservations(reservationDtos.stream()

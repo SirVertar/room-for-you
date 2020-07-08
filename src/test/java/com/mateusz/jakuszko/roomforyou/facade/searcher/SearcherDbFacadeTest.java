@@ -1,7 +1,6 @@
 package com.mateusz.jakuszko.roomforyou.facade.searcher;
 
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
-import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.facade.ApartmentDbFacade;
 import com.mateusz.jakuszko.roomforyou.facade.CustomerDbFacade;
@@ -58,7 +57,7 @@ public class SearcherDbFacadeTest {
                 .role("Admin")
                 .email("mateusz.jakuszko@gmail.com")
                 .build();
-        Apartment apartment1 = Apartment.builder()
+        com.mateusz.jakuszko.roomforyou.entity.Apartment apartment1 = com.mateusz.jakuszko.roomforyou.entity.Apartment.builder()
                 .city("Terespol")
                 .street("Kraszewskiego")
                 .streetNumber("26")
@@ -67,7 +66,7 @@ public class SearcherDbFacadeTest {
                 .longitude(321.0)
                 .customer(customer)
                 .build();
-        Apartment apartment2 = Apartment.builder()
+        com.mateusz.jakuszko.roomforyou.entity.Apartment apartment2 = com.mateusz.jakuszko.roomforyou.entity.Apartment.builder()
                 .city("Terespol")
                 .street("Kraszewskiego")
                 .streetNumber("27")
@@ -76,7 +75,7 @@ public class SearcherDbFacadeTest {
                 .longitude(321.0)
                 .customer(customer)
                 .build();
-        Apartment apartment3 = Apartment.builder()
+        com.mateusz.jakuszko.roomforyou.entity.Apartment apartment3 = com.mateusz.jakuszko.roomforyou.entity.Apartment.builder()
                 .city("Terespol")
                 .street("Piłsudskiego")
                 .streetNumber("27")
@@ -87,7 +86,7 @@ public class SearcherDbFacadeTest {
                 .build();
 
 
-        List<Apartment> apartments = new ArrayList<>();
+        List<com.mateusz.jakuszko.roomforyou.entity.Apartment> apartments = new ArrayList<>();
         apartments.add(apartment1);
         apartments.add(apartment2);
         apartments.add(apartment3);
@@ -100,10 +99,10 @@ public class SearcherDbFacadeTest {
         apartmentDbService.save(apartment3);
 
 
-        List<ApartmentDto> apartmentDtos = searcherDbFacade.searchApartments("Terespol", "Kraszewskiego");
+        List<ApartmentDto> ApartmentDtos = searcherDbFacade.searchApartments("Terespol", "Kraszewskiego");
 
-        assertEquals(2, apartmentDtos.size());
-        assertEquals(2, apartmentDtos.size());
-        assertEquals(2, apartmentDtos.size());
+        assertEquals(2, ApartmentDtos.size());
+        assertEquals(2, ApartmentDtos.size());
+        assertEquals(2, ApartmentDtos.size());
     }
 }

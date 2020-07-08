@@ -18,7 +18,7 @@ public class EmailScheduler {
 
     private EmailService emailService;
 
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "0 0 12 * * *")
     public void sendOnceADayMailAboutReservations() throws MessagingException {
         log.info("Preparation to send mail");
         try {

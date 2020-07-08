@@ -19,6 +19,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -62,8 +63,9 @@ public class ApartmentDbFacade {
         apartmentDto.setLongitude(longitude);
         Apartment apartment = apartmentMapper.mapToApartment(apartmentDto, reservations, customer);
         List<Apartment> newUserApartmentList = customerDbService.getUser(customer.getId()).orElseThrow(NotFoundException::new).getApartments();
-        newUserApartmentList.add(apartment);
         apartmentDbService.save(apartment);
+        newUserApartmentList.add(apartment);
+        customer.setApartments(newUserApartmentList);
         customerDbService.update(customer);
         return apartmentMapper.mapToApartmentDto(apartment);
     }
@@ -78,14 +80,20 @@ public class ApartmentDbFacade {
         log.info("Delete apartment by id - " + apartmentId);
         Apartment apartment = apartmentDbService.getApartment(apartmentId).orElseThrow(NotFoundException::new);
         Customer customer = apartment.getCustomer();
-        Long reservationId = apartment.getReservations().stream()
+        Optional<Long> reservationId = apartment.getReservations().stream()
                 .map(Reservation::getId)
-                .findAny().orElseThrow(NotFoundException::new);
-        Reservation reservation = reservationDbService.gerReservation(reservationId).orElseThrow(NotFoundException::new);
-        apartmentDbService.delete(apartmentId);
-        customer.getReservations().remove(reservation);
-        customer.getApartments().remove(apartment);
-        customerDbService.update(customer);
-        reservationDbService.delete(reservationId);
+                .findAny();
+        if (reservationId.isPresent()) {
+            Reservation reservation = reservationDbService.gerReservation(reservationId.get()).orElseThrow(NotFoundException::new);
+            apartmentDbService.delete(apartmentId);
+            customer.getReservations().remove(reservation);
+            customer.getApartments().remove(apartment);
+            customerDbService.update(customer);
+            reservationDbService.delete(reservationId.get());
+        } else {
+            apartmentDbService.delete(apartmentId);
+            customer.getApartments().remove(apartment);
+            customerDbService.update(customer);
+        }
     }
 }

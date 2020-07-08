@@ -1,18 +1,18 @@
 package com.mateusz.jakuszko.roomforyou.facade;
 
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
-import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.dto.CustomerDto;
+import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
-import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import com.mateusz.jakuszko.roomforyou.mapper.ApartmentMapper;
-import com.mateusz.jakuszko.roomforyou.mapper.ReservationMapper;
 import com.mateusz.jakuszko.roomforyou.mapper.CustomerMapper;
+import com.mateusz.jakuszko.roomforyou.mapper.ReservationMapper;
 import com.mateusz.jakuszko.roomforyou.service.ApartmentDbService;
-import com.mateusz.jakuszko.roomforyou.service.ReservationDbService;
 import com.mateusz.jakuszko.roomforyou.service.CustomerDbService;
+import com.mateusz.jakuszko.roomforyou.service.ReservationDbService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +37,7 @@ public class CustomerDbFacade {
 
     @Transactional
     public CustomerDto getCustomer(Long id) {
-        log.info("Get user by id - " + id);
+        log.info("Get Customer by id - " + id);
         Customer customer = customerDbService.getUser(id).orElseThrow(NotFoundException::new);
         List<Apartment> apartments = customer.getApartments();
         List<Reservation> reservations = customer.getReservations();
@@ -51,7 +51,7 @@ public class CustomerDbFacade {
     // TODO------------!!!!
     @Transactional
     public List<CustomerDto> getCustomers() {
-        log.info("Get users");
+        log.info("Get Customers");
         List<Customer> customers = customerDbService.getUsers();
         List<Reservation> reservations = reservationDbService.getReservations();
         List<Apartment> apartments = apartmentDbService.getApartments();
@@ -62,7 +62,7 @@ public class CustomerDbFacade {
 
     @Transactional
     public CustomerDto createCustomer(CustomerDto customerDto) {
-        log.info("Create User_" + "username: " + customerDto.getUsername());
+        log.info("Create Customer" + "username: " + customerDto.getUsername());
         customerDto.setRole("user");
         return customerMapper.mapToCustomerDto
                 (customerDbService.save(customerMapper.mapToCustomer(customerDto, new ArrayList<>(), new ArrayList<>()), passwordEncoder),
@@ -71,7 +71,7 @@ public class CustomerDbFacade {
 
     @Transactional
     public CustomerDto updateCustomer(CustomerDto customerDto) {
-        log.info("Update user_" + "username: " + customerDto.getUsername());
+        log.info("Update Customer" + "username: " + customerDto.getUsername());
         List<Apartment> apartments = apartmentDbService.findByUserId(customerDto.getId());
         List<Reservation> reservations = reservationDbService.getReservationsByUserId(customerDto.getId());
         List<ApartmentDto> apartmentDtos = apartmentMapper.mapToApartmentDtos(apartments);
