@@ -2,17 +2,15 @@ package com.mateusz.jakuszko.roomforyou.facade;
 
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
-import com.mateusz.jakuszko.roomforyou.dto.UserDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
-import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import com.mateusz.jakuszko.roomforyou.mapper.ApartmentMapper;
-import com.mateusz.jakuszko.roomforyou.mapper.ReservationMapper;
-import com.mateusz.jakuszko.roomforyou.mapper.UserMapper;
 import com.mateusz.jakuszko.roomforyou.service.ApartmentDbService;
+import com.mateusz.jakuszko.roomforyou.service.CustomerDbService;
 import com.mateusz.jakuszko.roomforyou.service.ReservationDbService;
-import com.mateusz.jakuszko.roomforyou.service.UserDbService;
+import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +27,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 
+//TODO
 @Transactional
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,9 +36,7 @@ public class ApartmentDbFacadeTest {
     @Autowired
     private ApartmentDbFacade apartmentDbFacade;
     @Autowired
-    private UserDbFacade userDbFacade;
-    @Autowired
-    private UserDbService userDbService;
+    private CustomerDbService customerDbService;
     @Autowired
     private ApartmentDbService apartmentDbService;
     @Autowired
@@ -46,13 +44,11 @@ public class ApartmentDbFacadeTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private UserMapper userMapper;
+    private CustomerDbFacade customerDbFacade;
     @Autowired
     private ApartmentMapper apartmentMapper;
-    @Autowired
-    private ReservationMapper reservationMapper;
 
-    private List<Long> prepareAndSaveDataIntoDbAndReturnDataIds() {
+    private List<Long> prepareAndSaveDataIntoDbAndReturnDataIds() throws IOException, ParseException {
         Customer customer = Customer.builder()
                 .name("Mateusz")
                 .surname("Jakuszko")
@@ -64,10 +60,10 @@ public class ApartmentDbFacadeTest {
         Apartment apartment = Apartment.builder()
                 .city("Terespol")
                 .street("Kraszewskiego")
-                .streetNumber("26")
+                .streetNumber("26A")
+                .latitude(11.0)
+                .longitude(12.0)
                 .apartmentNumber(5)
-                .latitude(123L)
-                .longitude(321L)
                 .customer(customer)
                 .build();
         Reservation reservation = Reservation.builder()
@@ -82,13 +78,13 @@ public class ApartmentDbFacadeTest {
         List<Reservation> reservations = new ArrayList<>();
         reservations.add(reservation);
         apartment.setReservations(reservations);
-
+        customerDbService.save(customer, passwordEncoder);
         customer.setApartments(apartments);
         customer.setReservations(reservations);
-
+        apartment.setCustomer(customer);
         apartmentDbService.save(apartment);
         reservationDbService.save(reservation);
-        userDbService.save(customer, passwordEncoder);
+
 
         List<Long> ids = new ArrayList<>();
         ids.add(customer.getId());
@@ -98,28 +94,26 @@ public class ApartmentDbFacadeTest {
     }
 
     @Test
-    public void createApartment() {
+    public void createApartment() throws IOException, ParseException {
         //Given
         List<Long> ids = prepareAndSaveDataIntoDbAndReturnDataIds();
         Long userId = ids.get(0);
         List<Long> reservationsIds = new ArrayList<>();
-        UserDto userDto = UserDto.builder()
-                .id(userId)
+        Customer customer = Customer.builder()
                 .name("Mateusz")
                 .surname("Jakuszko")
-                .username("matanos")
+                .username("Mekon")
                 .password("abc123")
                 .role("Admin")
                 .email("mateusz.jakuszko@gmail.com")
                 .build();
+        customerDbService.save(customer, passwordEncoder);
         ApartmentDto apartmentDto = ApartmentDto.builder()
                 .city("Terespol")
-                .street("New Street")
-                .streetNumber("26")
+                .street("Kraszewskiego")
+                .streetNumber("26A")
                 .apartmentNumber(5)
-                .latitude(123L)
-                .longitude(321L)
-                .userId(userId)
+                .userId(customer.getId())
                 .reservationsIds(reservationsIds)
                 .build();
 
@@ -127,29 +121,26 @@ public class ApartmentDbFacadeTest {
         List<ApartmentDto> apartments = new ArrayList<>();
         apartments.add(apartmentDto);
 
-        userDto.setApartments(apartments);
-        userDto.setReservations(reservations);
-
         //When
         apartmentDbFacade.createApartment(apartmentDto);
-        Optional<Apartment> apartment = userDbService.getByUsername("matanos")
+        Optional<Apartment> apartment = customerDbService.getByUsername("Mekon")
                 .orElseThrow(NotFoundException::new).getApartments().stream()
-                .filter(e -> e.getStreet().equals("New Street"))
+                .filter(e -> e.getStreet().equals("Kraszewskiego"))
                 .findFirst();
         //Then
         assertTrue(apartment.isPresent());
-        assertEquals(123L, apartment.get().getLatitude().longValue());
-        assertEquals(321L, apartment.get().getLongitude().longValue());
+        assertEquals(52.0793708, apartment.get().getLatitude(), 0);
+        assertEquals(23.6158891, apartment.get().getLongitude(), 0);
         assertEquals("Terespol", apartment.get().getCity());
-        assertEquals("New Street", apartment.get().getStreet());
-        assertEquals("26", apartment.get().getStreetNumber());
+        assertEquals("Kraszewskiego", apartment.get().getStreet());
+        assertEquals("26A", apartment.get().getStreetNumber());
         assertEquals(5, apartment.get().getApartmentNumber().intValue());
 
 
     }
 
     @Test
-    public void getApartmentTest() {
+    public void getApartmentTest() throws IOException, ParseException {
         //Given
         List<Long> ids = prepareAndSaveDataIntoDbAndReturnDataIds();
         Long userId = ids.get(0);
@@ -159,19 +150,19 @@ public class ApartmentDbFacadeTest {
         ApartmentDto apartment = apartmentDbFacade.getApartment(apartmentId);
         //Then
         assertEquals(apartmentId, apartment.getId());
-        assertEquals(123L, apartment.getLatitude().longValue());
-        assertEquals(321L, apartment.getLongitude().longValue());
+        assertEquals(11.0, apartment.getLatitude(), 0);
+        assertEquals(12.0, apartment.getLongitude(), 0);
         assertEquals("Terespol", apartment.getCity());
         assertEquals("Kraszewskiego", apartment.getStreet());
-        assertEquals("26", apartment.getStreetNumber());
+        assertEquals("26A", apartment.getStreetNumber());
         assertEquals(5, apartment.getApartmentNumber().intValue());
         assertEquals(userId, apartment.getUserId());
         assertTrue(apartment.getReservationsIds().stream()
-        .allMatch(e -> e.equals(reservationId)));
+                .allMatch(e -> e.equals(reservationId)));
     }
 
     @Test
-    public void getApartmentsTest() {
+    public void getApartmentsTest() throws IOException, ParseException {
         //Given
         List<Long> ids = prepareAndSaveDataIntoDbAndReturnDataIds();
         Long userId = ids.get(0);
@@ -182,11 +173,11 @@ public class ApartmentDbFacadeTest {
         //Then
         assertEquals(1, apartments.size());
         assertEquals(apartmentId, apartments.get(0).getId());
-        assertEquals(123L, apartments.get(0).getLatitude().longValue());
-        assertEquals(321L, apartments.get(0).getLongitude().longValue());
+        assertEquals(11.0, apartments.get(0).getLatitude(), 0);
+        assertEquals(12.0, apartments.get(0).getLongitude(), 0);
         assertEquals("Terespol", apartments.get(0).getCity());
         assertEquals("Kraszewskiego", apartments.get(0).getStreet());
-        assertEquals("26", apartments.get(0).getStreetNumber());
+        assertEquals("26A", apartments.get(0).getStreetNumber());
         assertEquals(5, apartments.get(0).getApartmentNumber().intValue());
         assertEquals(userId, apartments.get(0).getUserId());
         assertTrue(apartments.get(0).getReservationsIds().stream()
@@ -194,7 +185,7 @@ public class ApartmentDbFacadeTest {
     }
 
     @Test
-    public void createApartmentTest() {
+    public void createApartmentTest() throws IOException, ParseException {
         //Given
         List<Long> ids = prepareAndSaveDataIntoDbAndReturnDataIds();
         Long userId = ids.get(0);
@@ -202,31 +193,32 @@ public class ApartmentDbFacadeTest {
         Long reservationId = ids.get(2);
         //When
         ApartmentDto apartment = apartmentDbFacade.getApartment(apartmentId);
-        apartment.setStreet("NewStreet");
         apartment.setId(null);
         apartment.setReservationsIds(null);
         apartmentDbFacade.createApartment(apartment);
-        ApartmentDto newApartment = apartmentDbFacade.getApartments().stream()
+        ApartmentDto newApartmentDto = apartmentDbFacade.getApartments().stream()
                 .filter(e -> !e.getId().equals(apartmentId))
                 .findAny().orElseThrow(NotFoundException::new);
-        Customer customer = userDbService.getUser(userId).orElseThrow(NotFoundException::new);
+        newApartmentDto.setApartmentNumber(11);
+        ApartmentDto newApartmentAfterCreate = apartmentDbFacade.createApartment(newApartmentDto);
+        Customer customer = customerDbService.getUser(userId).orElseThrow(NotFoundException::new);
         //Then
-        assertEquals(123L, newApartment.getLatitude().longValue());
-        assertEquals(321L, newApartment.getLongitude().longValue());
-        assertEquals("Terespol", newApartment.getCity());
-        assertEquals("NewStreet", newApartment.getStreet());
-        assertEquals("26", newApartment.getStreetNumber());
-        assertEquals(5, newApartment.getApartmentNumber().intValue());
-        assertEquals(userId, newApartment.getUserId());
-        assertEquals(0, newApartment.getReservationsIds().size());
-        assertTrue(newApartment.getReservationsIds().stream()
+        assertEquals(52.0793708, newApartmentAfterCreate.getLatitude(), 0);
+        assertEquals(23.6158891, newApartmentAfterCreate.getLongitude(), 0);
+        assertEquals("Terespol", newApartmentAfterCreate.getCity());
+        assertEquals("Kraszewskiego", newApartmentAfterCreate.getStreet());
+        assertEquals("26A", newApartmentAfterCreate.getStreetNumber());
+        assertEquals(11, newApartmentAfterCreate.getApartmentNumber().intValue());
+        assertEquals(userId, newApartmentAfterCreate.getUserId());
+        assertEquals(0, newApartmentAfterCreate.getReservationsIds().size());
+        assertTrue(newApartmentAfterCreate.getReservationsIds().stream()
                 .allMatch(e -> e.equals(reservationId)));
         assertTrue(customer.getApartments().stream()
-        .anyMatch(e -> e.getStreet().equals("NewStreet")));
+                .anyMatch(e -> e.getApartmentNumber().equals(11)));
     }
 
     @Test
-    public void updateApartmentTest() {
+    public void updateApartmentTest() throws IOException, ParseException {
         //Given
         List<Long> ids = prepareAndSaveDataIntoDbAndReturnDataIds();
         Long userId = ids.get(0);
@@ -234,22 +226,21 @@ public class ApartmentDbFacadeTest {
         Long reservationId = ids.get(2);
         //When
         ApartmentDto apartment = apartmentDbFacade.getApartment(apartmentId);
-        apartment.setStreet("UpdatedStreet");
+        apartment.setApartmentNumber(11);
         apartmentDbFacade.updateApartment(apartment);
         ApartmentDto updatedApartment = apartmentDbFacade.getApartment(apartmentId);
-        Customer customer = userDbService.getUser(userId).orElseThrow(NotFoundException::new);
+        Customer customer = customerDbService.getUser(userId).orElseThrow(NotFoundException::new);
         //Then
-        assertEquals(123L, updatedApartment.getLatitude().longValue());
-        assertEquals(321L, updatedApartment.getLongitude().longValue());
+        assertEquals(52.0793708, updatedApartment.getLatitude(), 0);
+        assertEquals(23.6158891, updatedApartment.getLongitude(), 0);
         assertEquals("Terespol", updatedApartment.getCity());
-        assertEquals("UpdatedStreet", updatedApartment.getStreet());
-        assertEquals("26", updatedApartment.getStreetNumber());
-        assertEquals(5, updatedApartment.getApartmentNumber().intValue());
-        assertEquals("UpdatedStreet", customer.getApartments().get(0).getStreet());
+        assertEquals("Kraszewskiego", updatedApartment.getStreet());
+        assertEquals("26A", updatedApartment.getStreetNumber());
+        assertEquals(11, updatedApartment.getApartmentNumber().intValue());
     }
 
     @Test()
-    public void deleteApartmentTest() {
+    public void deleteApartmentTest() throws IOException, ParseException {
         //Given
         List<Long> ids = prepareAndSaveDataIntoDbAndReturnDataIds();
         Long userId = ids.get(0);
@@ -258,7 +249,7 @@ public class ApartmentDbFacadeTest {
         //When
         apartmentDbFacade.deleteApartment(apartmentId);
         Optional<Apartment> deletedApartment = apartmentDbService.getApartment(apartmentId);
-        Optional<Customer> user = userDbService.getUser(userId);
+        Optional<Customer> user = customerDbService.getUser(userId);
         Optional<Reservation> reservation = reservationDbService.gerReservation(reservationId);
         //Then
         assertFalse(deletedApartment.isPresent());

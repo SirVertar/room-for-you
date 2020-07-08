@@ -16,14 +16,14 @@ public class Apartment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long latitude;
-    private Long longitude;
+    private Double latitude;
+    private Double longitude;
     private String city;
     private String street;
     private String streetNumber;
     private Integer apartmentNumber;
-    @OneToMany(mappedBy = "apartment")
+    @OneToMany(mappedBy = "apartment", fetch = FetchType.EAGER)
     private List<Reservation> reservations;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Customer customer;
 }

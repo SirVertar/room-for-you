@@ -11,8 +11,8 @@ import java.util.List;
 @Getter
 public class ApartmentDto {
     private Long id;
-    private Long latitude;
-    private Long longitude;
+    private Double latitude;
+    private Double longitude;
     private String city;
     private String street;
     private String streetNumber;

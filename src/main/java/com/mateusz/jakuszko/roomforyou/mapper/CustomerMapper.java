@@ -2,20 +2,23 @@ package com.mateusz.jakuszko.roomforyou.mapper;
 
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
-import com.mateusz.jakuszko.roomforyou.dto.UserDto;
+import com.mateusz.jakuszko.roomforyou.dto.CustomerDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
-public class UserMapper {
+public class CustomerMapper {
 
-    public UserDto mapToUserDto(Customer customer, List<ApartmentDto> apartmentDtos, List<ReservationDto> reservationDtos) {
-        return UserDto.builder()
+    public CustomerDto mapToCustomerDto(Customer customer, List<ApartmentDto> apartmentDtos, List<ReservationDto> reservationDtos) {
+        log.info("Map User to UserDto");
+        return CustomerDto.builder()
                 .id(customer.getId())
                 .name(customer.getName())
                 .surname(customer.getSurname())
@@ -28,23 +31,25 @@ public class UserMapper {
                 .build();
     }
 
-    public Customer mapToUser(UserDto userDto, List<Apartment> apartments, List<Reservation> reservations) {
+    public Customer mapToCustomer(CustomerDto customerDto, List<Apartment> apartments, List<Reservation> reservations) {
+        log.info("Map UserDto to User");
         return Customer.builder()
-                .id(userDto.getId())
-                .name(userDto.getName())
-                .surname(userDto.getSurname())
-                .password(userDto.getPassword())
-                .username(userDto.getUsername())
-                .email(userDto.getEmail())
-                .role(userDto.getRole())
+                .id(customerDto.getId())
+                .name(customerDto.getName())
+                .surname(customerDto.getSurname())
+                .password(customerDto.getPassword())
+                .username(customerDto.getUsername())
+                .email(customerDto.getEmail())
+                .role(customerDto.getRole())
                 .apartments(apartments)
                 .reservations(reservations)
                 .build();
     }
 
-    public List<UserDto> mapToUserDtos(List<Customer> customers, List<ApartmentDto> apartmentDtos, List<ReservationDto> reservationDtos) {
+    public List<CustomerDto> mapToCustomerDtos(List<Customer> customers, List<ApartmentDto> apartmentDtos, List<ReservationDto> reservationDtos) {
+        log.info("Map Users to UserDtos");
         return customers.stream()
-                .map(user -> UserDto.builder()
+                .map(user -> CustomerDto.builder()
                         .id(user.getId())
                         .name(user.getName())
                         .surname(user.getSurname())

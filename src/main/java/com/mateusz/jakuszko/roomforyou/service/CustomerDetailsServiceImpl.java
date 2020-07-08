@@ -1,7 +1,7 @@
 package com.mateusz.jakuszko.roomforyou.service;
 
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
-import com.mateusz.jakuszko.roomforyou.repository.UserRepository;
+import com.mateusz.jakuszko.roomforyou.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class CustomerDetailsServiceImpl implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username).orElseThrow(NotFoundException::new);
+        return customerRepository.findByUsername(username).orElseThrow(NotFoundException::new);
     }
 }

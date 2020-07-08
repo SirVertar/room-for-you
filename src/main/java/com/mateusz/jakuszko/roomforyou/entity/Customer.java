@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -27,10 +28,12 @@ public class Customer implements UserDetails {
     private String surname;
     private String email;
     private String role;
-    @OneToMany(mappedBy = "customer")
-    private List<Reservation> reservations;
-    @OneToMany(mappedBy = "customer")
-    private List<Apartment> apartments;
+    @Builder.Default
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+    private List<Reservation> reservations = new ArrayList<>();
+    @Builder.Default
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+    private List<Apartment> apartments = new ArrayList<>();
 
 
     @Override

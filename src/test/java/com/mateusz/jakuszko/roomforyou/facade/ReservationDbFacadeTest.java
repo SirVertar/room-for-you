@@ -1,16 +1,16 @@
 package com.mateusz.jakuszko.roomforyou.facade;
 
-import com.mateusz.jakuszko.roomforyou.entity.Apartment;
-import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
+import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import com.mateusz.jakuszko.roomforyou.mapper.ApartmentMapper;
+import com.mateusz.jakuszko.roomforyou.mapper.CustomerMapper;
 import com.mateusz.jakuszko.roomforyou.mapper.ReservationMapper;
-import com.mateusz.jakuszko.roomforyou.mapper.UserMapper;
 import com.mateusz.jakuszko.roomforyou.service.ApartmentDbService;
+import com.mateusz.jakuszko.roomforyou.service.CustomerDbService;
 import com.mateusz.jakuszko.roomforyou.service.ReservationDbService;
-import com.mateusz.jakuszko.roomforyou.service.UserDbService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +35,9 @@ public class ReservationDbFacadeTest {
     @Autowired
     private ApartmentDbFacade apartmentDbFacade;
     @Autowired
-    private UserDbFacade userDbFacade;
+    private CustomerDbFacade customerDbFacade;
     @Autowired
-    private UserDbService userDbService;
+    private CustomerDbService customerDbService;
     @Autowired
     private ApartmentDbService apartmentDbService;
     @Autowired
@@ -45,7 +45,7 @@ public class ReservationDbFacadeTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private UserMapper userMapper;
+    private CustomerMapper customerMapper;
     @Autowired
     private ApartmentMapper apartmentMapper;
     @Autowired
@@ -68,8 +68,8 @@ public class ReservationDbFacadeTest {
                 .street("Kraszewskiego")
                 .streetNumber("26")
                 .apartmentNumber(5)
-                .latitude(123L)
-                .longitude(321L)
+                .latitude(123.0)
+                .longitude(321.0)
                 .customer(customer)
                 .build();
         Reservation reservation = Reservation.builder()
@@ -90,7 +90,7 @@ public class ReservationDbFacadeTest {
 
         apartmentDbService.save(apartment);
         reservationDbService.save(reservation);
-        userDbService.save(customer, passwordEncoder);
+        customerDbService.save(customer, passwordEncoder);
 
         List<Long> ids = new ArrayList<>();
         ids.add(customer.getId());
@@ -195,7 +195,7 @@ public class ReservationDbFacadeTest {
         reservationDbFacade.deleteReservation(reservationId);
         Optional<Reservation> deletedReservation = reservationDbService.gerReservation(reservationId);
         Optional<Apartment> apartment = apartmentDbService.getApartment(apartmentId);
-        Optional<Customer> user = userDbService.getUser(userId);
+        Optional<Customer> user = customerDbService.getUser(userId);
         //Then
         assertFalse(deletedReservation.isPresent());
         assertTrue(apartment.isPresent());

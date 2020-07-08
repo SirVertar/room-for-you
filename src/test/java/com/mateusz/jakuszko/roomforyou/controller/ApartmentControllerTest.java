@@ -45,8 +45,8 @@ public class ApartmentControllerTest {
     private ApartmentDto createApartment(Long id) {
         return ApartmentDto.builder()
                 .id(id)
-                .latitude(11L)
-                .longitude(12L)
+                .latitude(11.0)
+                .longitude(12.0)
                 .city("Terespol")
                 .street("WallStreet")
                 .streetNumber("13")
@@ -67,8 +67,8 @@ public class ApartmentControllerTest {
                 .andExpect(jsonPath("$.street", is("WallStreet")))
                 .andExpect(jsonPath("$.streetNumber", is("13")))
                 .andExpect(jsonPath("$.apartmentNumber", is(14)))
-                .andExpect(jsonPath("$.latitude", is(11)))
-                .andExpect(jsonPath("$.longitude", is(12)));
+                .andExpect(jsonPath("$.latitude", is(11.0)))
+                .andExpect(jsonPath("$.longitude", is(12.0)));
 
     }
 
@@ -90,15 +90,15 @@ public class ApartmentControllerTest {
                 .andExpect(jsonPath("$[0].city", is("Terespol")))
                 .andExpect(jsonPath("$[0].streetNumber", is("13")))
                 .andExpect(jsonPath("$[0].apartmentNumber", is(14)))
-                .andExpect(jsonPath("$[0].latitude", is(11)))
-                .andExpect(jsonPath("$[0].longitude", is(12)))
+                .andExpect(jsonPath("$[0].latitude", is(11.0)))
+                .andExpect(jsonPath("$[0].longitude", is(12.0)))
                 .andExpect(jsonPath("$[1].id", is(2)))
                 .andExpect(jsonPath("$[1].city", is("Terespol")))
                 .andExpect(jsonPath("$[1].street", is("WallStreet")))
                 .andExpect(jsonPath("$[1].streetNumber", is("13")))
                 .andExpect(jsonPath("$[1].apartmentNumber", is(14)))
-                .andExpect(jsonPath("$[1].latitude", is(11)))
-                .andExpect(jsonPath("$[1].longitude", is(12)));
+                .andExpect(jsonPath("$[1].latitude", is(11.0)))
+                .andExpect(jsonPath("$[1].longitude", is(12.0)));
     }
 
     @Test
@@ -139,8 +139,8 @@ public class ApartmentControllerTest {
                 .andExpect(jsonPath("$.street", is("WallStreet")))
                 .andExpect(jsonPath("$.streetNumber", is("13")))
                 .andExpect(jsonPath("$.apartmentNumber", is(14)))
-                .andExpect(jsonPath("$.latitude", is(11)))
-                .andExpect(jsonPath("$.longitude", is(12)));
+                .andExpect(jsonPath("$.latitude", is(11.0)))
+                .andExpect(jsonPath("$.longitude", is(12.0)));
     }
 
     @Test

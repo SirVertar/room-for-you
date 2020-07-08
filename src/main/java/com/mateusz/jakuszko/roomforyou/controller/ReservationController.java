@@ -20,26 +20,31 @@ public class ReservationController {
 
     @GetMapping
     public List<ReservationDto> get() {
+        log.info("Get all reservations");
         return reservationDbFacade.getReservations();
     }
 
     @GetMapping("/{id}")
     public ReservationDto get(@PathVariable Long id) {
+        log.info("Get reservation by id - " + id);
         return reservationDbFacade.getReservation(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ReservationDto create(@RequestBody ReservationDto reservationDto) {
+        log.info("Create reservation");
         return reservationDbFacade.createReservation(reservationDto);
     }
 
     @PutMapping
-    public ReservationDto update(@RequestBody ReservationDto reservationDto){
+    public ReservationDto update(@RequestBody ReservationDto reservationDto) {
+        log.info("Update reservation");
         return reservationDbFacade.updateReservation(reservationDto);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
+        log.info("Delete reservation by id - " + id);
         reservationDbFacade.deleteReservation(id);
     }
 }

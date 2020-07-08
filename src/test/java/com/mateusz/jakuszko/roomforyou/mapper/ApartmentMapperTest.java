@@ -2,8 +2,8 @@ package com.mateusz.jakuszko.roomforyou.mapper;
 
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
-import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +30,8 @@ public class ApartmentMapperTest {
                 .street("Kraszewskiego")
                 .streetNumber("26")
                 .apartmentNumber(5)
-                .latitude(123L)
-                .longitude(321L)
+                .latitude(123.0)
+                .longitude(321.0)
                 .reservations(Collections.singletonList(Reservation.builder().id(11L).build()))
                 .customer(Customer.builder().id(12L).build())
                 .build();
@@ -44,8 +44,8 @@ public class ApartmentMapperTest {
                 .street("Kraszewskiego")
                 .streetNumber("26")
                 .apartmentNumber(5)
-                .latitude(123L)
-                .longitude(321L)
+                .latitude(123.0)
+                .longitude(321.0)
                 .userId(12L)
                 .reservationsIds(Collections.singletonList(11L))
                 .build();
@@ -57,7 +57,7 @@ public class ApartmentMapperTest {
         Apartment apartment = createApartment();
         //When
         ApartmentDto expectedApartmentDto = createApartmentDto();
-        ApartmentDto apartmentDto = apartmentMapper.mapToApartmentDto(apartment, Collections.singletonList(11L));
+        ApartmentDto apartmentDto = apartmentMapper.mapToApartmentDto(apartment);
         //Then
         assertEquals(expectedApartmentDto.getId(), apartmentDto.getId());
         assertEquals(expectedApartmentDto.getUserId(), apartmentDto.getUserId());

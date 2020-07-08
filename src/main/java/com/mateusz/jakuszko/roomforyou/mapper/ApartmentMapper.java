@@ -4,14 +4,17 @@ import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class ApartmentMapper {
-    public ApartmentDto mapToApartmentDto(Apartment apartment, List<Long> reservationsIds) {
+    public ApartmentDto mapToApartmentDto(Apartment apartment) {
+        log.info("Map Apartment to ApartmentDto");
         return ApartmentDto.builder()
                 .id(apartment.getId())
                 .city(apartment.getCity())
@@ -20,12 +23,15 @@ public class ApartmentMapper {
                 .apartmentNumber(apartment.getApartmentNumber())
                 .latitude(apartment.getLatitude())
                 .longitude(apartment.getLongitude())
-                .reservationsIds(reservationsIds)
+                .reservationsIds(apartment.getReservations().stream()
+                .map(Reservation::getId)
+                .collect(Collectors.toList()))
                 .userId(apartment.getCustomer().getId())
                 .build();
     }
 
     public Apartment mapToApartment(ApartmentDto apartmentDto, List<Reservation> reservations, Customer customer) {
+        log.info("Map ApartmentDto to Apartment");
         return Apartment.builder()
                 .id(apartmentDto.getId())
                 .city(apartmentDto.getCity())
@@ -40,6 +46,7 @@ public class ApartmentMapper {
     }
 
     public List<ApartmentDto> mapToApartmentDtos(List<Apartment> apartments) {
+        log.info("Map Apartments to ApartmentDtos");
         return apartments.stream()
                 .map(apartment -> ApartmentDto.builder()
                         .id(apartment.getId())

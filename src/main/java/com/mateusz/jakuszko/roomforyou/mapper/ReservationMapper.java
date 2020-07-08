@@ -6,14 +6,17 @@ import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class ReservationMapper {
     public ReservationDto mapToReservationDto(Reservation reservation, ApartmentDto apartmentDto) {
+        log.info("Map Reservation to ReservationDto");
         return ReservationDto.builder()
                 .id(reservation.getId())
                 .startDate(reservation.getStartDate())
@@ -24,6 +27,7 @@ public class ReservationMapper {
     }
 
     public Reservation mapToReservation(ReservationDto reservationDto, Apartment apartment, Customer customer) {
+        log.info("Map ReservationDto to Reservation");
         return Reservation.builder()
                 .id(reservationDto.getId())
                 .startDate(reservationDto.getStartDate())
@@ -34,6 +38,7 @@ public class ReservationMapper {
     }
 
     public List<ReservationDto> mapToReservationDtos(List<Reservation> reservations, List<ApartmentDto> apartmentDtos) {
+        log.info("Map Reservations to ReservationDtos");
         return reservations.stream()
                 .map(reservation -> ReservationDto.builder()
                         .id(reservation.getId())

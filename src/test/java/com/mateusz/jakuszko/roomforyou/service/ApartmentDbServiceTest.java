@@ -24,8 +24,8 @@ public class ApartmentDbServiceTest {
 
     private Apartment createApartment() {
         return Apartment.builder()
-                .latitude(11L)
-                .longitude(12L)
+                .latitude(11.0)
+                .longitude(12.0)
                 .street("WallStreet")
                 .streetNumber("13")
                 .apartmentNumber(14)
@@ -63,8 +63,8 @@ public class ApartmentDbServiceTest {
         assertEquals(2, apartments.size());
         assertTrue(apartments.stream()
                 .allMatch(apartment -> apartment.getId() != null &&
-                        apartment.getLatitude().equals(11L) &&
-                        apartment.getLongitude().equals(12L) &&
+                        apartment.getLatitude().equals(11.0) &&
+                        apartment.getLongitude().equals(12.0) &&
                         apartment.getStreet().equals("WallStreet") &&
                         apartment.getStreetNumber().equals("13") &&
                         apartment.getApartmentNumber().equals(14)
@@ -84,8 +84,8 @@ public class ApartmentDbServiceTest {
         Optional<Apartment> updatedApartment = apartmentDbService.getApartment(apartmentId);
         //Then
         assertTrue(updatedApartment.isPresent());
-        assertEquals(11L, updatedApartment.get().getLatitude().longValue());
-        assertEquals(12L, updatedApartment.get().getLongitude().longValue());
+        assertEquals(11.0, updatedApartment.get().getLatitude(), 0);
+        assertEquals(12.0, updatedApartment.get().getLongitude(), 0);
         assertEquals("UpdatedStreet", updatedApartment.get().getStreet());
         assertEquals("13", updatedApartment.get().getStreetNumber());
         assertEquals(14, updatedApartment.get().getApartmentNumber().intValue());

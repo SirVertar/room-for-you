@@ -1,18 +1,18 @@
 package com.mateusz.jakuszko.roomforyou.facade;
 
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
+import com.mateusz.jakuszko.roomforyou.dto.CustomerDto;
 import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
-import com.mateusz.jakuszko.roomforyou.dto.UserDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
-import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import com.mateusz.jakuszko.roomforyou.mapper.ApartmentMapper;
+import com.mateusz.jakuszko.roomforyou.mapper.CustomerMapper;
 import com.mateusz.jakuszko.roomforyou.mapper.ReservationMapper;
-import com.mateusz.jakuszko.roomforyou.mapper.UserMapper;
 import com.mateusz.jakuszko.roomforyou.service.ApartmentDbService;
+import com.mateusz.jakuszko.roomforyou.service.CustomerDbService;
 import com.mateusz.jakuszko.roomforyou.service.ReservationDbService;
-import com.mateusz.jakuszko.roomforyou.service.UserDbService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +34,9 @@ import static org.junit.Assert.*;
 public class CustomerDbFacadeTest {
 
     @Autowired
-    private UserDbFacade userDbFacade;
+    private CustomerDbFacade customerDbFacade;
     @Autowired
-    private UserDbService userDbService;
+    private CustomerDbService customerDbService;
     @Autowired
     private ApartmentDbService apartmentDbService;
     @Autowired
@@ -44,7 +44,7 @@ public class CustomerDbFacadeTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private UserMapper userMapper;
+    private CustomerMapper customerMapper;
     @Autowired
     private ApartmentMapper apartmentMapper;
     @Autowired
@@ -66,8 +66,8 @@ public class CustomerDbFacadeTest {
                 .street("Kraszewskiego")
                 .streetNumber("26")
                 .apartmentNumber(5)
-                .latitude(123L)
-                .longitude(321L)
+                .latitude(123.0)
+                .longitude(321.0)
                 .customer(customer)
                 .build();
         Reservation reservation = Reservation.builder()
@@ -89,7 +89,7 @@ public class CustomerDbFacadeTest {
         apartmentDbService.save(apartment);
         reservationDbService.save(reservation);
 
-        userDbService.save(customer, passwordEncoder);
+        customerDbService.save(customer, passwordEncoder);
         List<Long> ids = new ArrayList<>();
         ids.add(customer.getId());
         ids.add(apartment.getId());
@@ -103,20 +103,20 @@ public class CustomerDbFacadeTest {
         //Given
         Long userId = prepareAndSaveDataIntoDbAndReturnDataIds().get(0);
         //When
-        UserDto userDto = userDbFacade.getUser(userId);
+        CustomerDto customerDto = customerDbFacade.getCustomer(userId);
         //Then
-        assertEquals("Mateusz", userDto.getName());
-        assertEquals("Jakuszko", userDto.getSurname());
-        assertEquals("matanos", userDto.getUsername());
-        assertEquals("mateusz.jakuszko@gmail.com", userDto.getEmail());
-        assertEquals(userId, userDto.getId());
-        assertTrue(passwordEncoder.matches("abc123", userDto.getPassword()));
-        assertTrue(userDto.getReservations().stream()
+        assertEquals("Mateusz", customerDto.getName());
+        assertEquals("Jakuszko", customerDto.getSurname());
+        assertEquals("matanos", customerDto.getUsername());
+        assertEquals("mateusz.jakuszko@gmail.com", customerDto.getEmail());
+        assertEquals(userId, customerDto.getId());
+        assertTrue(passwordEncoder.matches("abc123", customerDto.getPassword()));
+        assertTrue(customerDto.getReservations().stream()
                 .allMatch(reservationDto -> reservationDto.getStartDate().equals(LocalDate.of(2020, 1, 12)) &&
                         reservationDto.getEndDate().equals(LocalDate.of(2020, 3, 14))));
-        assertTrue(userDto.getApartments().stream()
-                .allMatch(apartmentDto -> apartmentDto.getLatitude().equals(123L) &&
-                        apartmentDto.getLongitude().equals(321L) &&
+        assertTrue(customerDto.getApartments().stream()
+                .allMatch(apartmentDto -> apartmentDto.getLatitude().equals(123.0) &&
+                        apartmentDto.getLongitude().equals(321.0) &&
                         apartmentDto.getApartmentNumber().equals(5) &&
                         apartmentDto.getCity().equals("Terespol") &&
                         apartmentDto.getStreet().equals("Kraszewskiego") &&
@@ -129,7 +129,7 @@ public class CustomerDbFacadeTest {
         //Given
         Long userId = prepareAndSaveDataIntoDbAndReturnDataIds().get(0);
         //When
-        List<UserDto> users = userDbFacade.getUsers();
+        List<CustomerDto> users = customerDbFacade.getCustomers();
         //Then
         assertEquals(1, users.size());
         assertEquals("Mateusz", users.get(0).getName());
@@ -142,8 +142,8 @@ public class CustomerDbFacadeTest {
                 .allMatch(reservationDto -> reservationDto.getStartDate().equals(LocalDate.of(2020, 1, 12)) &&
                         reservationDto.getEndDate().equals(LocalDate.of(2020, 3, 14))));
         assertTrue(users.get(0).getApartments().stream()
-                .allMatch(apartmentDto -> apartmentDto.getLatitude().equals(123L) &&
-                        apartmentDto.getLongitude().equals(321L) &&
+                .allMatch(apartmentDto -> apartmentDto.getLatitude().equals(123.0) &&
+                        apartmentDto.getLongitude().equals(321.0) &&
                         apartmentDto.getApartmentNumber().equals(5) &&
                         apartmentDto.getCity().equals("Terespol") &&
                         apartmentDto.getStreet().equals("Kraszewskiego") &&
@@ -162,9 +162,9 @@ public class CustomerDbFacadeTest {
                 .email("mateusz.jakuszko@gmail.com")
                 .build();
         //When
-        UserDto userDto = userMapper.mapToUserDto(customer, new ArrayList<>(), new ArrayList<>());
-        Long userId = userDbFacade.createUser(userDto).getId();
-        UserDto createdUser = userDbFacade.getUser(userId);
+        CustomerDto customerDto = customerMapper.mapToCustomerDto(customer, new ArrayList<>(), new ArrayList<>());
+        Long userId = customerDbFacade.createCustomer(customerDto).getId();
+        CustomerDto createdUser = customerDbFacade.getCustomer(userId);
         //Then
         assertEquals("Mateusz", createdUser.getName());
         assertEquals("Jakuszko", createdUser.getSurname());
@@ -183,14 +183,14 @@ public class CustomerDbFacadeTest {
         Long reservationId = idsList.get(2);
         Apartment apartment = apartmentDbService.getApartment(apartmentId).orElseThrow(NotFoundException::new);
         Reservation reservation = reservationDbService.gerReservation(reservationId).orElseThrow(NotFoundException::new);
-        Customer customer = userDbService.getUser(userId).orElseThrow(NotFoundException::new);
-        ApartmentDto apartmentDto = apartmentMapper.mapToApartmentDto(apartment, Collections.singletonList(reservationId));
+        Customer customer = customerDbService.getUser(userId).orElseThrow(NotFoundException::new);
+        ApartmentDto apartmentDto = apartmentMapper.mapToApartmentDto(apartment);
         ReservationDto reservationDto = reservationMapper.mapToReservationDto(reservation, apartmentDto);
         //When
         customer.setName("Weronika");
-        UserDto userDto = userMapper.mapToUserDto(customer, Collections.singletonList(apartmentDto), Collections.singletonList(reservationDto));
-        userDbFacade.updateUser(userDto);
-        UserDto updatedUser = userDbFacade.getUser(userId);
+        CustomerDto customerDto = customerMapper.mapToCustomerDto(customer, Collections.singletonList(apartmentDto), Collections.singletonList(reservationDto));
+        customerDbFacade.updateCustomer(customerDto);
+        CustomerDto updatedUser = customerDbFacade.getCustomer(userId);
         //Then
         assertEquals("Weronika", updatedUser.getName());
         assertEquals("Jakuszko", updatedUser.getSurname());
@@ -208,10 +208,10 @@ public class CustomerDbFacadeTest {
         Long apartmentId = idsList.get(1);
         Long reservationId = idsList.get(2);
         //When
-        userDbFacade.deleteUser(userId);
+        customerDbFacade.deleteCustomer(userId);
         //Then
-        userDbFacade.getUser(userId);
-        assertFalse(userDbService.getUser(userId).isPresent());
+        customerDbFacade.getCustomer(userId);
+        assertFalse(customerDbService.getUser(userId).isPresent());
         assertFalse(apartmentDbService.getApartment(apartmentId).isPresent());
         assertFalse(reservationDbService.gerReservation(reservationId).isPresent());
     }

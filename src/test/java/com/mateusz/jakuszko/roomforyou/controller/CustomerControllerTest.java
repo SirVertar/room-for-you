@@ -1,8 +1,8 @@
 package com.mateusz.jakuszko.roomforyou.controller;
 
 import com.google.gson.Gson;
-import com.mateusz.jakuszko.roomforyou.dto.UserDto;
-import com.mateusz.jakuszko.roomforyou.facade.UserDbFacade;
+import com.mateusz.jakuszko.roomforyou.dto.CustomerDto;
+import com.mateusz.jakuszko.roomforyou.facade.CustomerDbFacade;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,10 +40,10 @@ public class CustomerControllerTest {
     }
 
     @MockBean
-    private UserDbFacade userDbFacade;
+    private CustomerDbFacade customerDbFacade;
 
-    private UserDto createUserDto(Long id, String name) {
-        return UserDto.builder()
+    private CustomerDto createUserDto(Long id, String name) {
+        return CustomerDto.builder()
                 .id(id)
                 .name(name)
                 .surname("Jakuszko")
@@ -57,8 +57,8 @@ public class CustomerControllerTest {
     @Test
     public void getUser() throws Exception {
         //Given
-        UserDto userDto = createUserDto(1L, "Mateusz");
-        when(userDbFacade.getUser(1L)).thenReturn(userDto);
+        CustomerDto customerDto = createUserDto(1L, "Mateusz");
+        when(customerDbFacade.getCustomer(1L)).thenReturn(customerDto);
 
         //When & Then
         mockMvc.perform(get("/v1/users/1").contentType(MediaType.APPLICATION_JSON))
@@ -74,12 +74,12 @@ public class CustomerControllerTest {
     @Test
     public void getUsersTest() throws Exception {
         //Given
-        UserDto userDto1 = createUserDto(1L, "Mateusz");
-        UserDto userDto2 = createUserDto(2L, "Stasia");
-        List<UserDto> userDto = new ArrayList<>();
-        userDto.add(userDto1);
-        userDto.add(userDto2);
-        when(userDbFacade.getUsers()).thenReturn(userDto);
+        CustomerDto customerDto1 = createUserDto(1L, "Mateusz");
+        CustomerDto customerDto2 = createUserDto(2L, "Stasia");
+        List<CustomerDto> customerDto = new ArrayList<>();
+        customerDto.add(customerDto1);
+        customerDto.add(customerDto2);
+        when(customerDbFacade.getCustomers()).thenReturn(customerDto);
 
         //When & Then
         mockMvc.perform(get("/v1/users").contentType(MediaType.APPLICATION_JSON))
@@ -102,11 +102,11 @@ public class CustomerControllerTest {
     @Test
     public void createTest() throws Exception {
         //Given
-        UserDto userDto = createUserDto(1L, "Mateusz");
-        when(userDbFacade.createUser(userDto)).thenReturn(userDto);
+        CustomerDto customerDto = createUserDto(1L, "Mateusz");
+        when(customerDbFacade.createCustomer(customerDto)).thenReturn(customerDto);
 
         Gson gson = new Gson();
-        String jsContent = gson.toJson(userDto);
+        String jsContent = gson.toJson(customerDto);
 
         //When & Then
         mockMvc.perform(post("/v1/users")
@@ -119,11 +119,11 @@ public class CustomerControllerTest {
     @Test
     public void updateTest() throws Exception {
         //Given
-        UserDto userDto = createUserDto(1L, "Mateusz");
-        when(userDbFacade.updateUser(ArgumentMatchers.any(UserDto.class))).thenReturn(userDto);
+        CustomerDto customerDto = createUserDto(1L, "Mateusz");
+        when(customerDbFacade.updateCustomer(ArgumentMatchers.any(CustomerDto.class))).thenReturn(customerDto);
 
         Gson gson = new Gson();
-        String jsContent = gson.toJson(userDto);
+        String jsContent = gson.toJson(customerDto);
 
         //When & Then
         mockMvc.perform(put("/v1/users")
