@@ -31,7 +31,7 @@ public class ReservationDbServiceTest {
     }
 
     @Test
-    public void saveAndGetReservationTest() {
+    public void whenSaveReservationShouldBeAbleToGetThisReservationFromDb() {
         //Given
         Reservation reservation = createReservation();
         //When
@@ -45,7 +45,7 @@ public class ReservationDbServiceTest {
     }
 
     @Test
-    public void getReservationsTest() {
+    public void whenGetReservationsFromDbShouldReturnListOfAllReservations() {
         //Given
         Reservation reservation1 = createReservation();
         Reservation reservation2 = createReservation();
@@ -63,7 +63,7 @@ public class ReservationDbServiceTest {
     }
 
     @Test
-    public void updateTest() {
+    public void whenUpdateReservationShouldReturnUpdatedReservationFromDb() {
         //Given
         Reservation reservation = createReservation();
         //When
@@ -81,7 +81,7 @@ public class ReservationDbServiceTest {
     }
 
     @Test
-    public void deleteTest() {
+    public void whenDeleteReservationShouldNotBeAbleToFindItInDb() {
         //Given
         Reservation reservation = createReservation();
         //When

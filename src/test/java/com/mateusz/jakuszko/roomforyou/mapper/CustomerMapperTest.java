@@ -52,7 +52,7 @@ public class CustomerMapperTest {
     }
 
     @Test
-    public void mapToUserDtoTest() {
+    public void whenMapCustomerToCustomerDtoShouldReturnExactCustomerDtoObject() {
         //Given
         Customer customer = createUser();
         CustomerDto expectedCustomerDto = createUserDto();
@@ -73,7 +73,7 @@ public class CustomerMapperTest {
     }
 
     @Test
-    public void mapToUserTest() {
+    public void whenMapCustomerDtoToCustomerShouldReturnExactCustomerObject() {
         //Given
         CustomerDto customerDto = createUserDto();
         Customer expectedCustomer = createUser();
@@ -94,7 +94,7 @@ public class CustomerMapperTest {
     }
 
     @Test
-    public void mapToUserDtosTest() {
+    public void whenMapCustomersToCustomerDtosShouldReturnExactListOfCustomerDto() {
         //Given
         Customer customer = createUser();
         List<Customer> customers = new ArrayList<>();

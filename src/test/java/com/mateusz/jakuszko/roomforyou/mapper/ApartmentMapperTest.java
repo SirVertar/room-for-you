@@ -52,7 +52,7 @@ public class ApartmentMapperTest {
     }
 
     @Test
-    public void mapToApartmentDtoTest() {
+    public void whenMapApartmentToApartmentDtoShouldReturnExactApartmentDtoObject() {
         //Given
         Apartment apartment = createApartment();
         //When
@@ -68,11 +68,10 @@ public class ApartmentMapperTest {
         assertEquals(expectedApartmentDto.getStreetNumber(), apartmentDto.getStreetNumber());
         assertEquals(expectedApartmentDto.getStreet(), apartmentDto.getStreet());
         assertEquals(expectedApartmentDto.getReservationsIds().get(0), apartmentDto.getReservationsIds().get(0));
-
     }
 
     @Test
-    public void mapToApartmentTest() {
+    public void whenMapApartmentDtoToApartmentShouldReturnExactApartmentObject() {
         //Given
         ApartmentDto apartmentDto = createApartmentDto();
         //When
@@ -93,7 +92,7 @@ public class ApartmentMapperTest {
     }
 
     @Test
-    public void mapToApartmentDtosTest() {
+    public void whenMapApartmentsToApartmentDtosShouldReturnExactListOfApartmentDto() {
         //Given
         Apartment apartment = createApartment();
         List<Apartment> apartments = new ArrayList<>();
@@ -111,6 +110,6 @@ public class ApartmentMapperTest {
         assertEquals("Terespol", apartmentDtos.get(0).getCity());
         assertEquals("Kraszewskiego", apartmentDtos.get(0).getStreet());
         assertEquals("26", apartmentDtos.get(0).getStreetNumber());
-        assertEquals(5 , apartmentDtos.get(0).getApartmentNumber().longValue());
+        assertEquals(5, apartmentDtos.get(0).getApartmentNumber().longValue());
     }
 }

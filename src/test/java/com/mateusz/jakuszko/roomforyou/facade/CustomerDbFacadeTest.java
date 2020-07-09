@@ -94,12 +94,11 @@ public class CustomerDbFacadeTest {
         ids.add(customer.getId());
         ids.add(apartment.getId());
         ids.add(reservation.getId());
-
         return ids;
     }
 
     @Test
-    public void getUserTest() {
+    public void whenGetCustomerShouldReturnCorrectCustomerFromDb() {
         //Given
         Long userId = prepareAndSaveDataIntoDbAndReturnDataIds().get(0);
         //When
@@ -125,7 +124,7 @@ public class CustomerDbFacadeTest {
     }
 
     @Test
-    public void getUsersTest() {
+    public void whenGetCustomersShouldReturnListOfAllCustomersFromDb() {
         //Given
         Long userId = prepareAndSaveDataIntoDbAndReturnDataIds().get(0);
         //When
@@ -152,7 +151,7 @@ public class CustomerDbFacadeTest {
     }
 
     @Test
-    public void createUserTest() {
+    public void whenCreateCustomerShouldBeAbleToGetCreatedCustomerFromDb() {
         //Given
         Customer customer = Customer.builder()
                 .name("Mateusz")
@@ -175,7 +174,7 @@ public class CustomerDbFacadeTest {
     }
 
     @Test
-    public void updateUserTest() {
+    public void whenUpdateCustomerShouldBeAbleToGetFromDbUpdatedCustomerWithData() {
         //Given
         List<Long> idsList = prepareAndSaveDataIntoDbAndReturnDataIds();
         Long userId = idsList.get(0);
@@ -201,7 +200,7 @@ public class CustomerDbFacadeTest {
     }
 
     @Test(expected = NotFoundException.class)
-    public void deleteUserTest() {
+    public void whenDeleteCustomerShouldNotFindDeletedCustomerInDb() {
         //Given
         List<Long> idsList = prepareAndSaveDataIntoDbAndReturnDataIds();
         Long userId = idsList.get(0);

@@ -37,7 +37,7 @@ public class CustomerDbServiceTest {
     }
 
     @Test
-    public void saveAndGetUserTest() {
+    public void whenSaveCustomerShouldBeAbleToGetThisCustomerFromDb() {
         //Given
         Customer customer = createUser();
         //When
@@ -56,7 +56,7 @@ public class CustomerDbServiceTest {
     }
 
     @Test
-    public void getUsersTest() {
+    public void whenGetCustomersFromDbShouldReturnListOfAllCustomers() {
         //Given
         Customer customer1 = createUser();
         Customer customer2 = createUser();
@@ -67,17 +67,17 @@ public class CustomerDbServiceTest {
         //Then
         assertEquals(2, customers.size());
         assertTrue(customers.stream()
-        .allMatch(user -> user.getId() != null &&
-                user.getEmail().equals("mateusz.jakuszko@gmail.com") &&
-                user.getName().equals("Mateusz") &&
-                user.getSurname().equals("Jakuszko") &&
-                user.getUsername().equals("matanos") &&
-                user.getRole().equals("Admin") &&
-                passwordEncoder.matches("abc123", user.getPassword())));
+                .allMatch(user -> user.getId() != null &&
+                        user.getEmail().equals("mateusz.jakuszko@gmail.com") &&
+                        user.getName().equals("Mateusz") &&
+                        user.getSurname().equals("Jakuszko") &&
+                        user.getUsername().equals("matanos") &&
+                        user.getRole().equals("Admin") &&
+                        passwordEncoder.matches("abc123", user.getPassword())));
     }
 
     @Test
-    public void updateTest() {
+    public void whenUpdateCustomerShouldReturnUpdatedCustomerFromDb() {
         //Given
         Customer customer = createUser();
         //When
@@ -98,7 +98,7 @@ public class CustomerDbServiceTest {
     }
 
     @Test
-    public void deleteTest() {
+    public void whenDeleteCustomerShouldNotBeAbleToFindItInDb() {
         //Given
         Customer customer = createUser();
         //When

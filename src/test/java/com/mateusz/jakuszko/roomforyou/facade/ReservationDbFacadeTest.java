@@ -88,7 +88,7 @@ public class ReservationDbFacadeTest {
     }
 
     @Test
-    public void getReservationTest() {
+    public void whenGetReservationShouldReturnCorrectReservationFromDb() {
         //Given
         List<Long> ids = prepareAndSaveDataIntoDbAndReturnDataIds();
         Long userId = ids.get(0);
@@ -105,7 +105,7 @@ public class ReservationDbFacadeTest {
     }
 
     @Test
-    public void getReservationsTest() {
+    public void whenGetReservationsShouldReturnListOfAllReservationsFromDb() {
         //Given
         List<Long> ids = prepareAndSaveDataIntoDbAndReturnDataIds();
         Long userId = ids.get(0);
@@ -123,7 +123,7 @@ public class ReservationDbFacadeTest {
     }
 
     @Test
-    public void createReservationTest() {
+    public void whenCreateReservationShouldBeAbleToGetCreatedReservationFromDb() {
         //Given
         List<Long> ids = prepareAndSaveDataIntoDbAndReturnDataIds();
         Long userId = ids.get(0);
@@ -146,7 +146,7 @@ public class ReservationDbFacadeTest {
     }
 
     @Test
-    public void updateReservationTest() {
+    public void whenUpdateReservationShouldBeAbleToGetFromDbUpdatedReservationWithData() {
         //Given
         List<Long> ids = prepareAndSaveDataIntoDbAndReturnDataIds();
         Long userId = ids.get(0);
@@ -172,8 +172,7 @@ public class ReservationDbFacadeTest {
     }
 
     @Test
-    public void deleteReservationTest() {
-
+    public void whenDeleteReservationShouldNotFindDeletedReservationInDb() {
         //Given
         List<Long> ids = prepareAndSaveDataIntoDbAndReturnDataIds();
         Long userId = ids.get(0);

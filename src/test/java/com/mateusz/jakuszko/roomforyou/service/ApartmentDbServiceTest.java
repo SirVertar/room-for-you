@@ -33,7 +33,7 @@ public class ApartmentDbServiceTest {
     }
 
     @Test
-    public void saveAndGetApartmentTest() {
+    public void whenSaveApartmentShouldBeAbleToGetThisApartmentFromDb() {
         //Given
         Apartment apartment = createApartment();
         //When
@@ -51,7 +51,7 @@ public class ApartmentDbServiceTest {
     }
 
     @Test
-    public void getApartmentsTest() {
+    public void whenGetApartmentsFromDbShouldReturnListOfAllApartments() {
         //Given
         Apartment apartment1 = createApartment();
         Apartment apartment2 = createApartment();
@@ -72,7 +72,7 @@ public class ApartmentDbServiceTest {
     }
 
     @Test
-    public void updateTest() {
+    public void whenUpdateApartmentShouldReturnUpdatedApartmentFromDb() {
         //Given
         Apartment apartment = createApartment();
         //When
@@ -92,7 +92,7 @@ public class ApartmentDbServiceTest {
     }
 
     @Test
-    public void deleteTest() {
+    public void whenDeleteApartmentShouldNotBeAbleToFindItInDb() {
         //Given
         Apartment apartment = createApartment();
         //When

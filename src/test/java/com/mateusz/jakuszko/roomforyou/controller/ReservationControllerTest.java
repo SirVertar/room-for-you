@@ -29,10 +29,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//import static org.hamcrest.Matchers.hasSize;
-//import static org.hamcrest.Matchers.is;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -61,7 +57,7 @@ public class ReservationControllerTest {
     }
 
     @Test
-    public void getReservation() throws Exception {
+    public void whenGetReservationShouldReturnCorrectJson() throws Exception {
         //Given
         ReservationDto reservationDto = createReservation(1L);
         when(reservationDbFacade.getReservation(1L)).thenReturn(reservationDto);
@@ -74,7 +70,7 @@ public class ReservationControllerTest {
     }
 
     @Test
-    public void getReservationsTest() throws Exception {
+    public void whenGetReservationsShouldReturnListOfAllReservationsInCorrectJson() throws Exception {
         //Given
         ReservationDto reservationDto1 = createReservation(1L);
         ReservationDto reservationDto2 = createReservation(2L);
@@ -95,17 +91,15 @@ public class ReservationControllerTest {
     }
 
     @Test
-    public void createTest() throws Exception {
+    public void whenCreateReservationShouldReturnCorrectHttpStatus() throws Exception {
         //Given
         ReservationDto reservationDto = createReservation(1L);
         when(reservationDbFacade.createReservation(ArgumentMatchers.any(ReservationDto.class))).thenReturn(reservationDto);
-
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(LocalDate.class, localDateAdapter)
                 .create();
         String jsContent = gson.toJson(reservationDto);
-
         //When & Then
         mockMvc.perform(post("/v1/reservations")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -115,11 +109,10 @@ public class ReservationControllerTest {
     }
 
     @Test
-    public void updateTest() throws Exception {
+    public void whenUpdateReservationShouldReturnCorrectJson() throws Exception {
         //Given
         ReservationDto reservationDto = createReservation(1L);
         when(reservationDbFacade.updateReservation(ArgumentMatchers.any(ReservationDto.class))).thenReturn(reservationDto);
-
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(LocalDate.class, localDateAdapter)
@@ -138,7 +131,7 @@ public class ReservationControllerTest {
     }
 
     @Test
-    public void deleteTest() throws Exception {
+    public void whenDeleteReservationShouldReturnCorrectHttpStatus() throws Exception {
         //When & Then
         mockMvc.perform(delete("/v1/reservations/1")
                 .contentType(MediaType.APPLICATION_JSON)

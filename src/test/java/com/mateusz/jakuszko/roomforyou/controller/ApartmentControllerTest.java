@@ -55,7 +55,7 @@ public class ApartmentControllerTest {
     }
 
     @Test
-    public void getApartmentTest() throws Exception {
+    public void whenGetApartmentShouldReturnCorrectJson() throws Exception {
         //Given
         ApartmentDto apartmentDto = createApartment(1L);
         when(apartmentDbFacade.getApartment(1L)).thenReturn(apartmentDto);
@@ -69,11 +69,10 @@ public class ApartmentControllerTest {
                 .andExpect(jsonPath("$.apartmentNumber", is(14)))
                 .andExpect(jsonPath("$.latitude", is(11.0)))
                 .andExpect(jsonPath("$.longitude", is(12.0)));
-
     }
 
     @Test
-    public void getApartmentsTest() throws Exception {
+    public void whenGetApartmentsShouldReturnListOfAllApartmentsInCorrectJson() throws Exception {
         //Given
         ApartmentDto apartmentDto1 = createApartment(1L);
         ApartmentDto apartmentDto2 = createApartment(2L);
@@ -102,7 +101,7 @@ public class ApartmentControllerTest {
     }
 
     @Test
-    public void createApartmentTest() throws Exception {
+    public void whenCreateApartmentShouldReturnCorrectHttpStatus() throws Exception {
         //Given
         ApartmentDto apartmentDto = createApartment(1L);
         when(apartmentDbFacade.createApartment(apartmentDto)).thenReturn(apartmentDto);
@@ -119,7 +118,7 @@ public class ApartmentControllerTest {
     }
 
     @Test
-    public void updateApartmentTest() throws Exception {
+    public void whenUpdateApartmentShouldReturnCorrectJson() throws Exception {
         //Given
         ApartmentDto apartmentDto = createApartment(1L);
         when(apartmentDbFacade.updateApartment(ArgumentMatchers.any(ApartmentDto.class))).thenReturn(apartmentDto);
@@ -138,13 +137,13 @@ public class ApartmentControllerTest {
                 .andExpect(jsonPath("$.city", is("Terespol")))
                 .andExpect(jsonPath("$.street", is("WallStreet")))
                 .andExpect(jsonPath("$.streetNumber", is("13")))
-                .andExpect(jsonPath("$.apartmentNumber", is(14)))
+                .andExpect(jsonPath("$.apartmentNumber", is(32)))
                 .andExpect(jsonPath("$.latitude", is(11.0)))
                 .andExpect(jsonPath("$.longitude", is(12.0)));
     }
 
     @Test
-    public void deleteApartmentTest() throws Exception {
+    public void whenDeleteApartmentShouldReturnCorrectHttpStatus() throws Exception {
         //When & Then
         mockMvc.perform(delete("/v1/apartments/1")
                 .contentType(MediaType.APPLICATION_JSON)

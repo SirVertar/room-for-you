@@ -45,7 +45,7 @@ public class ReservationMapperTest {
     }
 
     @Test
-    public void mapToReservationDtoTest() {
+    public void whenMapReservationToReservationDtoShouldReturnExactReservationDtoObject() {
         //Given
         Reservation reservation = createReservation();
         ReservationDto expectedReservationDto = createReservationDto();
@@ -58,11 +58,10 @@ public class ReservationMapperTest {
         assertEquals(expectedReservationDto.getApartmentId(), reservationDto.getApartmentId());
         assertEquals(expectedReservationDto.getEndDate(), reservationDto.getEndDate());
         assertEquals(expectedReservationDto.getStartDate(), reservationDto.getStartDate());
-
     }
 
     @Test
-    public void mapToReservationTest() {
+    public void whenMapReservationDtoToReservationShouldReturnExactReservationObject() {
         //Given
         ReservationDto reservationDto = createReservationDto();
         Reservation expectedReservation = createReservation();
@@ -78,7 +77,7 @@ public class ReservationMapperTest {
     }
 
     @Test
-    public void mapToReservationDtosTest() {
+    public void whenMapReservationsToReservationDtosShouldReturnExactListOfReservationDto() {
         //Given
         List<Reservation> reservations = Arrays.asList(createReservation());
         List<ReservationDto> expectedReservationDtos = Arrays.asList(createReservationDto());

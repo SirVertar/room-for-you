@@ -55,7 +55,7 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void getUser() throws Exception {
+    public void whenGetCustomerShouldReturnCorrectJson() throws Exception {
         //Given
         CustomerDto customerDto = createUserDto(1L, "Mateusz");
         when(customerDbFacade.getCustomer(1L)).thenReturn(customerDto);
@@ -72,7 +72,7 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void getUsersTest() throws Exception {
+    public void whenGetCustomersShouldReturnListOfAllCustomersInCorrectJson() throws Exception {
         //Given
         CustomerDto customerDto1 = createUserDto(1L, "Mateusz");
         CustomerDto customerDto2 = createUserDto(2L, "Stasia");
@@ -100,14 +100,12 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void createTest() throws Exception {
+    public void whenCreateCustomerShouldReturnCorrectHttpStatus() throws Exception {
         //Given
         CustomerDto customerDto = createUserDto(1L, "Mateusz");
         when(customerDbFacade.createCustomer(customerDto)).thenReturn(customerDto);
-
         Gson gson = new Gson();
         String jsContent = gson.toJson(customerDto);
-
         //When & Then
         mockMvc.perform(post("/v1/customers")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -117,14 +115,12 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void updateTest() throws Exception {
+    public void whenUpdateCustomerShouldReturnCorrectJson() throws Exception {
         //Given
         CustomerDto customerDto = createUserDto(1L, "Mateusz");
         when(customerDbFacade.updateCustomer(ArgumentMatchers.any(CustomerDto.class))).thenReturn(customerDto);
-
         Gson gson = new Gson();
         String jsContent = gson.toJson(customerDto);
-
         //When & Then
         mockMvc.perform(put("/v1/customers")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -141,7 +137,7 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void deleteTest() throws Exception {
+    public void whenDeleteCustomerShouldReturnCorrectHttpStatus() throws Exception {
         //When & Then
         mockMvc.perform(delete("/v1/customers/1")
                 .contentType(MediaType.APPLICATION_JSON)
