@@ -6,7 +6,7 @@ import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import com.mateusz.jakuszko.roomforyou.mapper.ApartmentMapper;
-import com.mateusz.jakuszko.roomforyou.opencagegeocoder.client.OpenCageGeocoderClient;
+import com.mateusz.jakuszko.roomforyou.opencagegeocoder.OpenCageGeocoderClient;
 import com.mateusz.jakuszko.roomforyou.service.ApartmentDbService;
 import com.mateusz.jakuszko.roomforyou.service.CustomerDbService;
 import com.mateusz.jakuszko.roomforyou.service.ReservationDbService;

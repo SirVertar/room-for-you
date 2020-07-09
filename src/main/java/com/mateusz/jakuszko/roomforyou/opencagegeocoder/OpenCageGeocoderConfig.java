@@ -1,4 +1,4 @@
-package com.mateusz.jakuszko.roomforyou.opencagegeocoder.configuration;
+package com.mateusz.jakuszko.roomforyou.opencagegeocoder;
 
 import lombok.Getter;
 import lombok.Setter;

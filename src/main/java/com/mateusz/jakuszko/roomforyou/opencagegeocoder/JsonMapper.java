@@ -1,4 +1,4 @@
-package com.mateusz.jakuszko.roomforyou.opencagegeocoder.mapper;
+package com.mateusz.jakuszko.roomforyou.opencagegeocoder;
 
 import com.mateusz.jakuszko.roomforyou.dto.OpenCageGeocoder.GetResponse;
 import lombok.AllArgsConstructor;
