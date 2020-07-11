@@ -1,7 +1,9 @@
 package com.mateusz.jakuszko.roomforyou.controller;
 
 import com.mateusz.jakuszko.roomforyou.dto.CustomerDto;
+import com.mateusz.jakuszko.roomforyou.exceptions.NotUniqueUsernameException;
 import com.mateusz.jakuszko.roomforyou.facade.CustomerDbFacade;
+import com.mateusz.jakuszko.roomforyou.validator.CustomerValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -16,6 +18,7 @@ import java.util.List;
 public class CustomerController {
 
     private final CustomerDbFacade customerDbFacade;
+    private final CustomerValidator customerValidator;
 
     @GetMapping
     public List<CustomerDto> get() {
@@ -31,6 +34,10 @@ public class CustomerController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDto create(@RequestBody CustomerDto customerDto) {
+        if (!customerValidator.isUsernameUnique(customerDto.getUsername())) {
+            log.warn("Username is not unique");
+            throw new NotUniqueUsernameException();
+        }
         log.info("Create customer__username - " + customerDto.getUsername());
         return customerDbFacade.createCustomer(customerDto);
     }
