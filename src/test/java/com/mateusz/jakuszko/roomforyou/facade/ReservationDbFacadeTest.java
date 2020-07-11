@@ -37,7 +37,6 @@ public class ReservationDbFacadeTest {
     private ReservationDbService reservationDbService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private ReservationDbFacade reservationDbFacade;
 
@@ -131,7 +130,8 @@ public class ReservationDbFacadeTest {
         Long reservationId = ids.get(2);
         ReservationDto reservationDto = reservationDbFacade.getReservation(reservationId);
         reservationDto.setId(null);
-        reservationDto.setEndDate(LocalDate.of(1990, 5, 10));
+        reservationDto.setStartDate(LocalDate.of(2020, 4, 15));
+        reservationDto.setEndDate(LocalDate.of(2020, 4, 18));
         //When
         reservationDbFacade.createReservation(reservationDto);
         List<Reservation> reservations = reservationDbService.getReservationsByUserId(userId);
@@ -141,7 +141,7 @@ public class ReservationDbFacadeTest {
         assertEquals(2, reservations.size());
         assertEquals(2, reservationsInApartment.size());
         assertTrue(reservations.stream()
-                .anyMatch(reservation -> reservation.getEndDate().equals(LocalDate.of(1990, 5, 10)))
+                .anyMatch(reservation -> reservation.getEndDate().equals(LocalDate.of(2020, 4, 18)))
         );
     }
 

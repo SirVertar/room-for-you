@@ -5,12 +5,14 @@ import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.entity.Reservation;
+import com.mateusz.jakuszko.roomforyou.exceptions.InvalidReservationDateException;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import com.mateusz.jakuszko.roomforyou.mapper.ApartmentMapper;
 import com.mateusz.jakuszko.roomforyou.mapper.ReservationMapper;
 import com.mateusz.jakuszko.roomforyou.service.ApartmentDbService;
 import com.mateusz.jakuszko.roomforyou.service.CustomerDbService;
 import com.mateusz.jakuszko.roomforyou.service.ReservationDbService;
+import com.mateusz.jakuszko.roomforyou.validator.ReservationValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,7 +31,7 @@ public class ReservationDbFacade {
     private final ApartmentMapper apartmentMapper;
     private final ReservationDbService reservationDbService;
     private final ReservationMapper reservationMapper;
-
+    private final ReservationValidator reservationValidator;
 
     public ReservationDto getReservation(Long reservationId) {
         log.info("Get Reservation by id - " + reservationId);
@@ -57,6 +59,9 @@ public class ReservationDbFacade {
                 "Apartment_Id - " + reservationDto.getApartmentId() +
                 ", Start_Date - " + reservationDto.getStartDate() +
                 ", End_date - " + reservationDto.getEndDate());
+        if (!reservationValidator.checkIsTherePossibilityToMakeReservation(reservationDto)) {
+            throw new InvalidReservationDateException();
+        }
         Customer customer = customerDbService.getUser(reservationDto.getUserId()).orElseThrow(NotFoundException::new);
         Apartment apartment = apartmentDbService.getApartment(reservationDto.getApartmentId())
                 .orElseThrow(NotFoundException::new);
