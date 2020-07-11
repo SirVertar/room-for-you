@@ -120,7 +120,7 @@ public class CustomerDbFacadeTest {
                         apartmentDto.getCity().equals("Terespol") &&
                         apartmentDto.getStreet().equals("Kraszewskiego") &&
                         apartmentDto.getStreetNumber().equals("26") &&
-                        apartmentDto.getUserId().equals(userId)));
+                        apartmentDto.getCustomerId().equals(userId)));
     }
 
     @Test
@@ -147,7 +147,7 @@ public class CustomerDbFacadeTest {
                         apartmentDto.getCity().equals("Terespol") &&
                         apartmentDto.getStreet().equals("Kraszewskiego") &&
                         apartmentDto.getStreetNumber().equals("26") &&
-                        apartmentDto.getUserId().equals(userId)));
+                        apartmentDto.getCustomerId().equals(userId)));
     }
 
     @Test

@@ -1,4 +1,4 @@
-package com.mateusz.jakuszko.roomforyou.dto.OpenCageGeocoder;
+package com.mateusz.jakuszko.roomforyou.opencagegeocoderapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

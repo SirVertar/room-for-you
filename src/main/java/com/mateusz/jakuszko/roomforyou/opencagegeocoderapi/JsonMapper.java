@@ -1,6 +1,6 @@
-package com.mateusz.jakuszko.roomforyou.opencagegeocoder;
+package com.mateusz.jakuszko.roomforyou.opencagegeocoderapi;
 
-import com.mateusz.jakuszko.roomforyou.dto.OpenCageGeocoder.GetResponse;
+import com.mateusz.jakuszko.roomforyou.opencagegeocoderapi.dto.GetGeoResponse;
 import lombok.AllArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -43,8 +43,8 @@ public class JsonMapper {
     }
 
     //TODO Resolve problem with wrong response
-    public GetResponse getResponse(String url) {
-        return restTemplate.getForObject(url, GetResponse.class);
+    public GetGeoResponse getResponse(String url) {
+        return restTemplate.getForObject(url, GetGeoResponse.class);
     }
 }
 

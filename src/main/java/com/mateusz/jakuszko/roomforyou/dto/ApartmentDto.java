@@ -18,5 +18,5 @@ public class ApartmentDto {
     private String streetNumber;
     private Integer apartmentNumber;
     private List<Long> reservationsIds;
-    private Long userId;
+    private Long customerId;
 }

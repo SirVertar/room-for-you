@@ -26,7 +26,7 @@ public class ApartmentMapper {
                 .reservationsIds(apartment.getReservations().stream()
                 .map(Reservation::getId)
                 .collect(Collectors.toList()))
-                .userId(apartment.getCustomer().getId())
+                .customerId(apartment.getCustomer().getId())
                 .build();
     }
 
@@ -56,7 +56,7 @@ public class ApartmentMapper {
                         .apartmentNumber(apartment.getApartmentNumber())
                         .latitude(apartment.getLatitude())
                         .longitude(apartment.getLongitude())
-                        .userId(apartment.getCustomer().getId())
+                        .customerId(apartment.getCustomer().getId())
                         .reservationsIds(apartment.getReservations().stream()
                                 .map(Reservation::getId)
                                 .collect(Collectors.toList()))

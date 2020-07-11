@@ -1,4 +1,4 @@
-package com.mateusz.jakuszko.roomforyou.opencagegeocoder;
+package com.mateusz.jakuszko.roomforyou.opencagegeocoderapi;
 
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import org.json.simple.parser.ParseException;
@@ -15,12 +15,12 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class OpenCageGeocoderCustomerTest {
+public class OpenCageGeocoderClientTest {
 
     @Autowired
     private OpenCageGeocoderClient openCageGeocoderClient;
 
-    private ApartmentDto createApartment(java.lang.Long id) {
+    private ApartmentDto createApartment(Long id) {
         return ApartmentDto.builder()
                 .id(id)
                 .latitude(11.0)

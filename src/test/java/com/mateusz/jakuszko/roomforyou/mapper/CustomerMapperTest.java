@@ -46,7 +46,7 @@ public class CustomerMapperTest {
                 .username("matanos")
                 .password("abc123")
                 .email("mateusz.jakuszko@gmail.com")
-                .apartmentDtos(Arrays.asList(ApartmentDto.builder().id(11L).userId(1L).build()))
+                .apartmentDtos(Arrays.asList(ApartmentDto.builder().id(11L).customerId(1L).build()))
                 .reservations(Arrays.asList(ReservationDto.builder().id(12L).userId(1L).build()))
                 .build();
     }
@@ -100,7 +100,8 @@ public class CustomerMapperTest {
         List<Customer> customers = new ArrayList<>();
         customers.add(customer);
         //When
-        List<CustomerDto> customerDtos = customerMapper.mapToCustomerDtos(customers, Arrays.asList(ApartmentDto.builder().id(11L).userId(1L).build()),
+        List<CustomerDto> customerDtos = customerMapper.mapToCustomerDtos(customers,
+                Arrays.asList(ApartmentDto.builder().id(11L).customerId(1L).build()),
                 Arrays.asList(ReservationDto.builder().id(12L).userId(1L).build()));
         //Then
         assertEquals(1, customerDtos.size());

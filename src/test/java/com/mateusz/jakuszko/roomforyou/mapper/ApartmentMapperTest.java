@@ -46,7 +46,7 @@ public class ApartmentMapperTest {
                 .apartmentNumber(5)
                 .latitude(123.0)
                 .longitude(321.0)
-                .userId(12L)
+                .customerId(12L)
                 .reservationsIds(Collections.singletonList(11L))
                 .build();
     }
@@ -60,7 +60,7 @@ public class ApartmentMapperTest {
         ApartmentDto apartmentDto = apartmentMapper.mapToApartmentDto(apartment);
         //Then
         assertEquals(expectedApartmentDto.getId(), apartmentDto.getId());
-        assertEquals(expectedApartmentDto.getUserId(), apartmentDto.getUserId());
+        assertEquals(expectedApartmentDto.getCustomerId(), apartmentDto.getCustomerId());
         assertEquals(expectedApartmentDto.getLatitude(), apartmentDto.getLatitude());
         assertEquals(expectedApartmentDto.getLongitude(), apartmentDto.getLongitude());
         assertEquals(expectedApartmentDto.getApartmentNumber(), apartmentDto.getApartmentNumber());
@@ -105,7 +105,7 @@ public class ApartmentMapperTest {
         assertEquals(1L, apartmentDtos.get(0).getId().longValue());
         assertEquals(123L, apartmentDtos.get(0).getLatitude().longValue());
         assertEquals(321L, apartmentDtos.get(0).getLongitude().longValue());
-        assertEquals(12L, apartmentDtos.get(0).getUserId().longValue());
+        assertEquals(12L, apartmentDtos.get(0).getCustomerId().longValue());
         assertEquals(11L, apartmentDtos.get(0).getReservationsIds().get(0).longValue());
         assertEquals("Terespol", apartmentDtos.get(0).getCity());
         assertEquals("Kraszewskiego", apartmentDtos.get(0).getStreet());

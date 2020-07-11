@@ -6,7 +6,7 @@ import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import com.mateusz.jakuszko.roomforyou.mapper.ApartmentMapper;
-import com.mateusz.jakuszko.roomforyou.opencagegeocoder.OpenCageGeocoderClient;
+import com.mateusz.jakuszko.roomforyou.opencagegeocoderapi.OpenCageGeocoderClient;
 import com.mateusz.jakuszko.roomforyou.service.ApartmentDbService;
 import com.mateusz.jakuszko.roomforyou.service.CustomerDbService;
 import com.mateusz.jakuszko.roomforyou.service.ReservationDbService;
@@ -55,7 +55,7 @@ public class ApartmentDbFacade {
     public ApartmentDto createApartment(ApartmentDto apartmentDto) throws IOException, ParseException {
         log.info("Create Apartment");
         List<Reservation> reservations = reservationDbService.getReservationsByApartmentId(apartmentDto.getId());
-        Customer customer = customerDbService.getUser(apartmentDto.getUserId()).orElseThrow(NotFoundException::new);
+        Customer customer = customerDbService.getUser(apartmentDto.getCustomerId()).orElseThrow(NotFoundException::new);
         Map<String, String> map =  openCageGeocoderClient.getGeometryValues(apartmentDto);
         Double latitude = Double.parseDouble(map.get("latitude"));
         Double longitude =Double.parseDouble(map.get("longitude"));

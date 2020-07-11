@@ -1,7 +1,9 @@
 package com.mateusz.jakuszko.roomforyou.controller;
 
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
+import com.mateusz.jakuszko.roomforyou.dto.TemperatureDto;
 import com.mateusz.jakuszko.roomforyou.facade.ApartmentDbFacade;
+import com.mateusz.jakuszko.roomforyou.facade.openweather.OpenWeatherFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
@@ -18,6 +20,7 @@ import java.util.List;
 public class ApartmentController {
 
     private final ApartmentDbFacade apartmentDbFacade;
+    private final OpenWeatherFacade openWeatherFacade;
 
     @GetMapping
     public List<ApartmentDto> get() {
@@ -47,5 +50,11 @@ public class ApartmentController {
     public void delete(@PathVariable Long id) {
         log.info("Delete apartment, id - " + id );
         apartmentDbFacade.deleteApartment(id);
+    }
+
+    @GetMapping("/{id}/temperature")
+    public TemperatureDto getTemperatureNearApartment(@PathVariable Long id) {
+        log.info("Get temperature near apartment with id - " + id);
+        return openWeatherFacade.getTemperaturesFromWeatherApiResponse(id);
     }
 }

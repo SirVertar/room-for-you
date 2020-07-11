@@ -111,7 +111,7 @@ public class ApartmentDbFacadeTest {
         assertEquals("Kraszewskiego", newApartmentDtoAfterCreate.getStreet());
         assertEquals("26A", newApartmentDtoAfterCreate.getStreetNumber());
         assertEquals(11, newApartmentDtoAfterCreate.getApartmentNumber().intValue());
-        assertEquals(userId, newApartmentDtoAfterCreate.getUserId());
+        assertEquals(userId, newApartmentDtoAfterCreate.getCustomerId());
         assertEquals(0, newApartmentDtoAfterCreate.getReservationsIds().size());
         assertTrue(newApartmentDtoAfterCreate.getReservationsIds().stream()
                 .allMatch(e -> e.equals(reservationId)));
@@ -136,7 +136,7 @@ public class ApartmentDbFacadeTest {
         assertEquals("Kraszewskiego", apartmentDto.getStreet());
         assertEquals("26A", apartmentDto.getStreetNumber());
         assertEquals(5, apartmentDto.getApartmentNumber().intValue());
-        assertEquals(userId, apartmentDto.getUserId());
+        assertEquals(userId, apartmentDto.getCustomerId());
         assertTrue(apartmentDto.getReservationsIds().stream()
                 .allMatch(e -> e.equals(reservationId)));
     }
@@ -159,7 +159,7 @@ public class ApartmentDbFacadeTest {
         assertEquals("Kraszewskiego", apartmentDtos.get(0).getStreet());
         assertEquals("26A", apartmentDtos.get(0).getStreetNumber());
         assertEquals(5, apartmentDtos.get(0).getApartmentNumber().intValue());
-        assertEquals(userId, apartmentDtos.get(0).getUserId());
+        assertEquals(userId, apartmentDtos.get(0).getCustomerId());
         assertTrue(apartmentDtos.get(0).getReservationsIds().stream()
                 .allMatch(e -> e.equals(reservationId)));
     }

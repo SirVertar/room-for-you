@@ -1,7 +1,7 @@
-package com.mateusz.jakuszko.roomforyou.opencagegeocoder;
+package com.mateusz.jakuszko.roomforyou.opencagegeocoderapi;
 
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
-import com.mateusz.jakuszko.roomforyou.dto.OpenCageGeocoder.GetResponse;
+import com.mateusz.jakuszko.roomforyou.opencagegeocoderapi.dto.GetGeoResponse;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
@@ -41,7 +41,7 @@ public class OpenCageGeocoderClient {
     }
 
     //TODO Resolve problem with wrong response
-    public GetResponse getResponse(ApartmentDto apartmentDto) {
+    public GetGeoResponse getResponse(ApartmentDto apartmentDto) {
         StringBuilder url = new StringBuilder();
         url.append(openCageGeocoderConfig.getUrl()).append(openCageGeocoderConfig.getVersion()).append("/json?q=");
         if (apartmentDto.getStreetNumber() != null) {

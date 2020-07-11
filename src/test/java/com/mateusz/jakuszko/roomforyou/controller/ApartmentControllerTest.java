@@ -2,7 +2,9 @@ package com.mateusz.jakuszko.roomforyou.controller;
 
 import com.google.gson.Gson;
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
+import com.mateusz.jakuszko.roomforyou.dto.TemperatureDto;
 import com.mateusz.jakuszko.roomforyou.facade.ApartmentDbFacade;
+import com.mateusz.jakuszko.roomforyou.facade.openweather.OpenWeatherFacade;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +39,9 @@ public class ApartmentControllerTest {
 
     @MockBean
     private ApartmentDbFacade apartmentDbFacade;
+
+    @MockBean
+    private OpenWeatherFacade openWeatherFacade;
 
     @Before
     public void setUp() {
@@ -149,5 +155,18 @@ public class ApartmentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getTemperatureNearApartment() throws Exception {
+        //Given
+        ApartmentDto apartmentDto = createApartment(1L);
+        when(apartmentDbFacade.getApartment(1L)).thenReturn(apartmentDto);
+        TemperatureDto temperatureDto = TemperatureDto.builder().temp(BigDecimal.TEN).build();
+        when(openWeatherFacade.getTemperaturesFromWeatherApiResponse(1L)).thenReturn(temperatureDto);
+        //When & Then
+        mockMvc.perform(get("/v1/apartments/1/temperature"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.temp", is(10)));
     }
 }
