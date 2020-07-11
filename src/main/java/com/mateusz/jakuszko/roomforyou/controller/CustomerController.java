@@ -2,6 +2,7 @@ package com.mateusz.jakuszko.roomforyou.controller;
 
 import com.mateusz.jakuszko.roomforyou.dto.CustomerDto;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotUniqueUsernameException;
+import com.mateusz.jakuszko.roomforyou.exceptions.PasswordIncorrectException;
 import com.mateusz.jakuszko.roomforyou.facade.CustomerDbFacade;
 import com.mateusz.jakuszko.roomforyou.validator.CustomerValidator;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,14 @@ public class CustomerController {
         if (!customerValidator.isUsernameUnique(customerDto.getUsername())) {
             log.warn("Username is not unique");
             throw new NotUniqueUsernameException();
+        }
+        if (!customerValidator.isPasswordEnoughLong(customerDto.getPassword())) {
+            log.warn("Password is to short, should be minimum: " + CustomerValidator.MIN_PASSWORD_LENGTH + " length");
+            throw new PasswordIncorrectException();
+        }
+        if (!customerValidator.isPasswordConsistOfAtLeastOneNumber(customerDto.getPassword())) {
+            log.warn("Password has any numbers");
+            throw new PasswordIncorrectException();
         }
         log.info("Create customer__username - " + customerDto.getUsername());
         return customerDbFacade.createCustomer(customerDto);
