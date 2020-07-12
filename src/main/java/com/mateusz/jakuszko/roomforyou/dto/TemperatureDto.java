@@ -4,11 +4,10 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
 public class TemperatureDto {
     private BigDecimal temp;
 }

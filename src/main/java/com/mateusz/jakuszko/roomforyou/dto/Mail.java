@@ -1,14 +1,11 @@
 package com.mateusz.jakuszko.roomforyou.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Data
 @Builder
-@Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Mail {
     private String mailTo;
     private String subject;

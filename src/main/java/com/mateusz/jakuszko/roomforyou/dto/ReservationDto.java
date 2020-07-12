@@ -5,11 +5,10 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class ReservationDto {
     private java.lang.Long id;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")

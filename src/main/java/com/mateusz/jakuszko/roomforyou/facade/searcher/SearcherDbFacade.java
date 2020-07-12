@@ -27,8 +27,14 @@ public class SearcherDbFacade {
         Root<com.mateusz.jakuszko.roomforyou.entity.Apartment> apartmentsRoot = criteriaQuery.from(Apartment.class);
         Predicate predicateForCity = criteriaBuilder.equal(apartmentsRoot.get("city"), city);
         Predicate predicateForStreet = criteriaBuilder.equal(apartmentsRoot.get("street"), street);
-        Predicate finalPredicate = criteriaBuilder.and(predicateForCity, predicateForStreet);
-        criteriaQuery.where(finalPredicate);
+        if (city.length() > 0 && street.length() > 0) {
+            Predicate finalPredicate = criteriaBuilder.and(predicateForCity, predicateForStreet);
+            criteriaQuery.where(finalPredicate);
+        } else if (city.length() > 0) {
+            criteriaQuery.where(predicateForCity);
+        } else if (street.length() > 0) {
+            criteriaQuery.where(predicateForStreet);
+        }
         return apartmentMapper.mapToApartmentDtos(entityManager.createQuery(criteriaQuery).getResultList());
     }
 }

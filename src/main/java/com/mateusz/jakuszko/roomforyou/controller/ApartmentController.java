@@ -4,6 +4,7 @@ import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import com.mateusz.jakuszko.roomforyou.dto.TemperatureDto;
 import com.mateusz.jakuszko.roomforyou.facade.ApartmentDbFacade;
 import com.mateusz.jakuszko.roomforyou.facade.openweather.OpenWeatherFacade;
+import com.mateusz.jakuszko.roomforyou.facade.searcher.SearcherDbFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
@@ -21,6 +22,7 @@ public class ApartmentController {
 
     private final ApartmentDbFacade apartmentDbFacade;
     private final OpenWeatherFacade openWeatherFacade;
+    private final SearcherDbFacade searcherDbFacade;
 
     @GetMapping
     public List<ApartmentDto> get() {
@@ -48,7 +50,7 @@ public class ApartmentController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        log.info("Delete apartment, id - " + id );
+        log.info("Delete apartment, id - " + id);
         apartmentDbFacade.deleteApartment(id);
     }
 
@@ -56,5 +58,11 @@ public class ApartmentController {
     public TemperatureDto getTemperatureNearApartment(@PathVariable Long id) {
         log.info("Get temperature near apartment with id - " + id);
         return openWeatherFacade.getTemperaturesFromWeatherApiResponse(id);
+    }
+
+    @GetMapping("/search")
+    public List<ApartmentDto> getApartmentsByCityAndStreet(@RequestParam String city, @RequestParam String street) {
+        log.info("Get apartments with parameters - city: " + city + ", street: " + street);
+        return searcherDbFacade.searchApartments(city, street);
     }
 }

@@ -4,11 +4,10 @@ import lombok.*;
 
 import java.util.List;
 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
 public class CustomerDto {
     private java.lang.Long id;
     private String username;

@@ -4,11 +4,10 @@ import lombok.*;
 
 import java.util.List;
 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
 public class ApartmentDto {
     private Long id;
     private Double latitude;

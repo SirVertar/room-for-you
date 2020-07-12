@@ -20,6 +20,6 @@ public class ReservationValidator {
         List<Reservation> reservations = reservationDbService
                 .getReservationsByApartmentId(reservationDto.getApartmentId());
         return reservations.stream().noneMatch(reservation -> reservation.getStartDate().isBefore(endDate) &&
-                        reservation.getEndDate().isAfter(startDate));
+                reservation.getEndDate().isAfter(startDate));
     }
 }
