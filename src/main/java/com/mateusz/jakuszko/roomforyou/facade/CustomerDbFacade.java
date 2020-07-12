@@ -43,7 +43,7 @@ public class CustomerDbFacade {
         List<Reservation> reservations = customer.getReservations();
         List<ApartmentDto> apartmentDtos = apartmentMapper.mapToApartmentDtos(apartments);
         List<ReservationDto> reservationDtos = reservationMapper
-                .mapToReservationDtos(reservations, apartmentDtos);
+                .mapToReservationDtos(reservations);
         return customerMapper.mapToCustomerDto(customer, apartmentDtos, reservationDtos);
 
     }
@@ -56,7 +56,7 @@ public class CustomerDbFacade {
         List<Reservation> reservations = reservationDbService.getReservations();
         List<Apartment> apartments = apartmentDbService.getApartments();
         List<ApartmentDto> apartmentDtos = apartmentMapper.mapToApartmentDtos(apartments);
-        List<ReservationDto> reservationDtos = reservationMapper.mapToReservationDtos(reservations, apartmentDtos);
+        List<ReservationDto> reservationDtos = reservationMapper.mapToReservationDtos(reservations);
         return customerMapper.mapToCustomerDtos(customers, apartmentDtos, reservationDtos);
     }
 
@@ -75,8 +75,7 @@ public class CustomerDbFacade {
         List<Apartment> apartments = apartmentDbService.findByUserId(customerDto.getId());
         List<Reservation> reservations = reservationDbService.getReservationsByUserId(customerDto.getId());
         List<ApartmentDto> apartmentDtos = apartmentMapper.mapToApartmentDtos(apartments);
-        List<ReservationDto> reservationDtos = reservationMapper.mapToReservationDtos(reservations,
-                apartmentDtos);
+        List<ReservationDto> reservationDtos = reservationMapper.mapToReservationDtos(reservations);
         Customer customer = customerMapper.mapToCustomer(customerDto, apartments, reservations);
         Customer updatedCustomer = customerDbService.update(customer);
         return customerMapper.mapToCustomerDto(updatedCustomer, apartmentDtos, reservationDtos);

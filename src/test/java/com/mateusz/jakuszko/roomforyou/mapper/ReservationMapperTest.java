@@ -1,6 +1,5 @@
 package com.mateusz.jakuszko.roomforyou.mapper;
 
-import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
@@ -51,7 +50,7 @@ public class ReservationMapperTest {
         ReservationDto expectedReservationDto = createReservationDto();
         //When
         ReservationDto reservationDto = reservationMapper
-                .mapToReservationDto(reservation, ApartmentDto.builder().id(3L).build());
+                .mapToReservationDto(reservation);
         //Then
         assertEquals(expectedReservationDto.getId(), reservationDto.getId());
         assertEquals(expectedReservationDto.getUserId(), reservationDto.getUserId());
@@ -82,8 +81,7 @@ public class ReservationMapperTest {
         List<Reservation> reservations = Arrays.asList(createReservation());
         List<ReservationDto> expectedReservationDtos = Arrays.asList(createReservationDto());
         //When
-        List<ReservationDto> reservationDtos = reservationMapper.mapToReservationDtos(reservations,
-                Arrays.asList(ApartmentDto.builder().id(3L).reservationsIds(Arrays.asList(1L)).build()));
+        List<ReservationDto> reservationDtos = reservationMapper.mapToReservationDtos(reservations);
         //Then
         assertEquals(expectedReservationDtos.size(), reservationDtos.size());
         assertEquals(expectedReservationDtos.get(0).getId(), reservationDtos.get(0).getId());

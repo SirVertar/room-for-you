@@ -3,8 +3,10 @@ package com.mateusz.jakuszko.roomforyou.facade.searcher;
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
+import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.service.ApartmentDbService;
 import com.mateusz.jakuszko.roomforyou.service.CustomerDbService;
+import com.mateusz.jakuszko.roomforyou.service.ReservationDbService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +28,8 @@ public class SearcherDbFacadeTest {
     private CustomerDbService customerDbService;
     @Autowired
     private ApartmentDbService apartmentDbService;
+    @Autowired
+    private ReservationDbService reservationDbService;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -78,7 +83,7 @@ public class SearcherDbFacadeTest {
         apartmentDbService.save(apartment2);
         apartmentDbService.save(apartment3);
         //When
-        List<ApartmentDto> apartmentDtos = searcherDbFacade.searchApartments("Terespol", "Kraszewskiego");
+        List<ApartmentDto> apartmentDtos = searcherDbFacade.getApartments("Terespol", "Kraszewskiego");
         //Then
         assertEquals(2, apartmentDtos.size());
         apartmentDtos.stream()
@@ -86,5 +91,27 @@ public class SearcherDbFacadeTest {
                         apartmentDto.getCity().equals("Terespol") &&
                                 apartmentDto.getStreet().equals("Kraszewkisego") &&
                                 (apartmentDto.getStreetNumber().equals("26") || apartmentDto.getStreetNumber().equals("27")));
+    }
+
+    @Test
+    public void shouldReturnApartmentWithDateAfter1WeekBeforeToday() {
+        //Given
+        Reservation reservation1 = Reservation.builder()
+                .startDate(LocalDate.now().minusDays(7))
+                .endDate(LocalDate.now().plusDays(20))
+                .build();
+        Reservation reservation2 = Reservation.builder()
+                .startDate(LocalDate.now().minusDays(8))
+                .endDate(LocalDate.now().plusDays(20))
+                .build();
+        reservationDbService.save(reservation1);
+        reservationDbService.save(reservation2);
+        //When
+
+        List<Reservation> reservations = searcherDbFacade.getReservationsIdThoseStartDateIsEarlierThanInAWeek();
+        //Then
+        assertEquals(1, reservations.size());
+        assertEquals(LocalDate.now().minusDays(7), reservations.get(0).getStartDate());
+        assertEquals(LocalDate.now().plusDays(20), reservations.get(0).getEndDate());
     }
 }

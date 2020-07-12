@@ -184,7 +184,7 @@ public class CustomerDbFacadeTest {
         Reservation reservation = reservationDbService.gerReservation(reservationId).orElseThrow(NotFoundException::new);
         Customer customer = customerDbService.getUser(userId).orElseThrow(NotFoundException::new);
         ApartmentDto apartmentDto = apartmentMapper.mapToApartmentDto(apartment);
-        ReservationDto reservationDto = reservationMapper.mapToReservationDto(reservation, apartmentDto);
+        ReservationDto reservationDto = reservationMapper.mapToReservationDto(reservation);
         //When
         customer.setName("Weronika");
         CustomerDto customerDto = customerMapper.mapToCustomerDto(customer, Collections.singletonList(apartmentDto), Collections.singletonList(reservationDto));

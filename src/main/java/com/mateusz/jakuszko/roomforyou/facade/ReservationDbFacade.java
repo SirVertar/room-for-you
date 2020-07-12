@@ -40,7 +40,7 @@ public class ReservationDbFacade {
         Apartment apartment = reservation.getApartment();
         ApartmentDto apartmentDto = apartmentMapper
                 .mapToApartmentDto(apartment);
-        return reservationMapper.mapToReservationDto(reservation, apartmentDto);
+        return reservationMapper.mapToReservationDto(reservation);
     }
 
     public List<ReservationDto> getReservations() {
@@ -50,7 +50,7 @@ public class ReservationDbFacade {
         List<ApartmentDto> apartmentDtos = apartments.stream()
                 .map(apartmentMapper::mapToApartmentDto)
                 .collect(Collectors.toList());
-        return reservationMapper.mapToReservationDtos(reservations, apartmentDtos);
+        return reservationMapper.mapToReservationDtos(reservations);
     }
 
     @Transactional

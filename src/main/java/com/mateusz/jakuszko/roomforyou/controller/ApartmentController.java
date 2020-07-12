@@ -63,6 +63,6 @@ public class ApartmentController {
     @GetMapping("/search")
     public List<ApartmentDto> getApartmentsByCityAndStreet(@RequestParam String city, @RequestParam String street) {
         log.info("Get apartments with parameters - city: " + city + ", street: " + street);
-        return searcherDbFacade.searchApartments(city, street);
+        return searcherDbFacade.getApartments(city, street);
     }
 }

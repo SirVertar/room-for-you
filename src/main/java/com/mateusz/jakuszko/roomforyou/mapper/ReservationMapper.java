@@ -1,6 +1,5 @@
 package com.mateusz.jakuszko.roomforyou.mapper;
 
-import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
@@ -15,13 +14,13 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class ReservationMapper {
-    public ReservationDto mapToReservationDto(Reservation reservation, ApartmentDto apartmentDto) {
+    public ReservationDto mapToReservationDto(Reservation reservation) {
         log.info("Map Reservation to ReservationDto");
         return ReservationDto.builder()
                 .id(reservation.getId())
                 .startDate(reservation.getStartDate())
                 .endDate(reservation.getEndDate())
-                .apartmentId(apartmentDto.getId())
+                .apartmentId(reservation.getApartment().getId())
                 .userId(reservation.getCustomer().getId())
                 .build();
     }
@@ -37,16 +36,15 @@ public class ReservationMapper {
                 .build();
     }
 
-    public List<ReservationDto> mapToReservationDtos(List<Reservation> reservations, List<ApartmentDto> apartmentDtos) {
+    public List<ReservationDto> mapToReservationDtos(List<Reservation> reservations) {
         log.info("Map Reservations to ReservationDtos");
         return reservations.stream()
                 .map(reservation -> ReservationDto.builder()
                         .id(reservation.getId())
                         .startDate(reservation.getStartDate())
                         .endDate(reservation.getEndDate())
-                        .apartmentId(apartmentDtos.stream()
-                                .filter(apartment -> apartment.getId().equals(reservation.getApartment().getId()))
-                                .map(ApartmentDto::getId)
+                        .apartmentId(reservations.stream()
+                                .map(e -> e.getApartment().getId())
                                 .findAny().orElseThrow(NotFoundException::new))
                         .userId(reservation.getCustomer().getId())
                         .build())
