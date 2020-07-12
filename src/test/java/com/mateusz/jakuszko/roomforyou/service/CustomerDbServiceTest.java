@@ -1,7 +1,9 @@
 package com.mateusz.jakuszko.roomforyou.service;
 
+import com.mateusz.jakuszko.roomforyou.clearer.TableClearer;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class CustomerDbServiceTest {
     private CustomerDbService customerDbService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private TableClearer clearer;
 
     private Customer createUser() {
         return Customer.builder()
@@ -34,6 +38,11 @@ public class CustomerDbServiceTest {
                 .role("Admin")
                 .email("mateusz.jakuszko@gmail.com")
                 .build();
+    }
+
+    @Before
+    public void clear() {
+        clearer.clearTables();
     }
 
     @Test

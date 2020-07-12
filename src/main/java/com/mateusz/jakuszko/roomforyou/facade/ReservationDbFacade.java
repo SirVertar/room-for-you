@@ -1,13 +1,11 @@
 package com.mateusz.jakuszko.roomforyou.facade;
 
-import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.exceptions.InvalidReservationDateException;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
-import com.mateusz.jakuszko.roomforyou.mapper.ApartmentMapper;
 import com.mateusz.jakuszko.roomforyou.mapper.ReservationMapper;
 import com.mateusz.jakuszko.roomforyou.service.ApartmentDbService;
 import com.mateusz.jakuszko.roomforyou.service.CustomerDbService;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,7 +25,6 @@ public class ReservationDbFacade {
 
     private final CustomerDbService customerDbService;
     private final ApartmentDbService apartmentDbService;
-    private final ApartmentMapper apartmentMapper;
     private final ReservationDbService reservationDbService;
     private final ReservationMapper reservationMapper;
     private final ReservationValidator reservationValidator;
@@ -37,19 +33,12 @@ public class ReservationDbFacade {
         log.info("Get Reservation by id - " + reservationId);
         Reservation reservation = reservationDbService.gerReservation(reservationId)
                 .orElseThrow(NotFoundException::new);
-        Apartment apartment = reservation.getApartment();
-        ApartmentDto apartmentDto = apartmentMapper
-                .mapToApartmentDto(apartment);
         return reservationMapper.mapToReservationDto(reservation);
     }
 
     public List<ReservationDto> getReservations() {
         log.info("Get All reservations");
         List<Reservation> reservations = reservationDbService.getReservations();
-        List<Apartment> apartments = apartmentDbService.getApartments();
-        List<ApartmentDto> apartmentDtos = apartments.stream()
-                .map(apartmentMapper::mapToApartmentDto)
-                .collect(Collectors.toList());
         return reservationMapper.mapToReservationDtos(reservations);
     }
 

@@ -1,7 +1,9 @@
 package com.mateusz.jakuszko.roomforyou.service;
 
+import com.mateusz.jakuszko.roomforyou.clearer.TableClearer;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,13 @@ public class ApartmentDbServiceTest {
 
     @Autowired
     private ApartmentDbService apartmentDbService;
+    @Autowired
+    private TableClearer clearer;
+
+    @Before
+    public void clear() {
+        clearer.clearTables();
+    }
 
     private Apartment createApartment() {
         return Apartment.builder()
