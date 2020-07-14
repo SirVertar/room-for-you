@@ -113,7 +113,7 @@ public class CustomerDbFacadeTest {
         assertTrue(customerDto.getReservations().stream()
                 .allMatch(reservationDto -> reservationDto.getStartDate().equals(LocalDate.of(2020, 1, 12)) &&
                         reservationDto.getEndDate().equals(LocalDate.of(2020, 3, 14))));
-        assertTrue(customerDto.getApartmentDtos().stream()
+        assertTrue(customerDto.getApartments().stream()
                 .allMatch(apartmentDto -> apartmentDto.getLatitude().equals(123.0) &&
                         apartmentDto.getLongitude().equals(321.0) &&
                         apartmentDto.getApartmentNumber().equals(5) &&
@@ -140,7 +140,7 @@ public class CustomerDbFacadeTest {
         assertTrue(users.get(0).getReservations().stream()
                 .allMatch(reservationDto -> reservationDto.getStartDate().equals(LocalDate.of(2020, 1, 12)) &&
                         reservationDto.getEndDate().equals(LocalDate.of(2020, 3, 14))));
-        assertTrue(users.get(0).getApartmentDtos().stream()
+        assertTrue(users.get(0).getApartments().stream()
                 .allMatch(apartmentDto -> apartmentDto.getLatitude().equals(123.0) &&
                         apartmentDto.getLongitude().equals(321.0) &&
                         apartmentDto.getApartmentNumber().equals(5) &&

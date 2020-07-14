@@ -17,5 +17,5 @@ public class CustomerDto {
     private String email;
     private String role;
     private List<ReservationDto> reservations;
-    private List<ApartmentDto> apartmentDtos;
+    private List<ApartmentDto> apartments;
 }
