@@ -6,6 +6,9 @@ import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.entity.Reservation;
+import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedApartment;
+import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedCustomer;
+import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedReservation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -49,21 +52,36 @@ public class CustomerMapper {
     public List<CustomerDto> mapToCustomerDtos(List<Customer> customers, List<ApartmentDto> apartmentDtos, List<ReservationDto> reservationDtos) {
         log.info("Map Users to UserDtos");
         return customers.stream()
-                .map(user -> CustomerDto.builder()
-                        .id(user.getId())
-                        .name(user.getName())
-                        .surname(user.getSurname())
-                        .password(user.getPassword())
-                        .username(user.getUsername())
-                        .email(user.getEmail())
-                        .role(user.getRole())
+                .map(customer -> CustomerDto.builder()
+                        .id(customer.getId())
+                        .name(customer.getName())
+                        .surname(customer.getSurname())
+                        .password(customer.getPassword())
+                        .username(customer.getUsername())
+                        .email(customer.getEmail())
+                        .role(customer.getRole())
                         .apartments(apartmentDtos.stream()
-                                .filter(apartmentDto -> apartmentDto.getCustomerId().equals(user.getId()))
+                                .filter(apartmentDto -> apartmentDto.getCustomerId().equals(customer.getId()))
                                 .collect(Collectors.toList()))
                         .reservations(reservationDtos.stream()
-                                .filter(reservationDto -> reservationDto.getUserId().equals(user.getId()))
+                                .filter(reservationDto -> reservationDto.getUserId().equals(customer.getId()))
                                 .collect(Collectors.toList()))
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public DeletedCustomer mapToDeletedCustomer(Customer customer, List<DeletedApartment> apartments,
+                                                List<DeletedReservation> reservations) {
+        return DeletedCustomer.builder()
+                .id(customer.getId())
+                .name(customer.getName())
+                .surname(customer.getSurname())
+                .password(customer.getPassword())
+                .username(customer.getUsername())
+                .email(customer.getEmail())
+                .role(customer.getRole())
+                .apartments(apartments)
+                .reservations(reservations)
+                .build();
     }
 }

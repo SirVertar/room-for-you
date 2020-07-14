@@ -27,5 +27,5 @@ public class DeletedCustomer {
     private List<DeletedReservation> reservations = new ArrayList<>();
     @Builder.Default
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
-    private List<DeletedReservation> apartments = new ArrayList<>();
+    private List<DeletedApartment> apartments = new ArrayList<>();
 }

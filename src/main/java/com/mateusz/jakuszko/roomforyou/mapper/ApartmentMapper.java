@@ -4,6 +4,9 @@ import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.entity.Reservation;
+import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedApartment;
+import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedCustomer;
+import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedReservation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -62,5 +65,20 @@ public class ApartmentMapper {
                                 .collect(Collectors.toList()))
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public DeletedApartment mapToDeletedApartment(Apartment apartment, DeletedCustomer customer,
+            List<DeletedReservation> reservations) {
+        return DeletedApartment.builder()
+                .id(apartment.getId())
+                .city(apartment.getCity())
+                .street(apartment.getStreet())
+                .streetNumber(apartment.getStreetNumber())
+                .apartmentNumber(apartment.getApartmentNumber())
+                .latitude(apartment.getLatitude())
+                .longitude(apartment.getLongitude())
+                .customer(customer)
+                .reservations(reservations)
+                .build();
     }
 }
