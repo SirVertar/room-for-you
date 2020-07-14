@@ -1,4 +1,4 @@
-package com.mateusz.jakuszko.roomforyou.entity;
+package com.mateusz.jakuszko.roomforyou.entity.deleted;
 
 import lombok.*;
 
@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Apartment {
+public class DeletedApartment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -22,7 +22,7 @@ public class Apartment {
     private String streetNumber;
     private Integer apartmentNumber;
     @OneToMany(mappedBy = "apartment", fetch = FetchType.EAGER)
-    private List<Reservation> reservations;
+    private List<DeletedReservation> reservations;
     @ManyToOne(fetch = FetchType.EAGER)
-    private Customer customer;
+    private DeletedCustomer customer;
 }

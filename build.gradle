@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.mateusz.jakuszko'
-version = 'V.0.0.7'
+version = 'V.0.0.8'
 sourceCompatibility = '1.8'
 
 configurations {

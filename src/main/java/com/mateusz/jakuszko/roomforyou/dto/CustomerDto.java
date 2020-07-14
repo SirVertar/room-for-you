@@ -18,4 +18,5 @@ public class CustomerDto {
     private String role;
     private List<ReservationDto> reservations;
     private List<ApartmentDto> apartments;
+
 }
