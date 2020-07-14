@@ -5,6 +5,7 @@ import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import com.mateusz.jakuszko.roomforyou.dto.TemperatureDto;
 import com.mateusz.jakuszko.roomforyou.facade.ApartmentDbFacade;
 import com.mateusz.jakuszko.roomforyou.facade.openweather.OpenWeatherFacade;
+import com.mateusz.jakuszko.roomforyou.mapper.GsonSingleton;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -112,7 +113,7 @@ public class ApartmentControllerTest {
         ApartmentDto apartmentDto = createApartment(1L);
         when(apartmentDbFacade.createApartment(apartmentDto)).thenReturn(apartmentDto);
 
-        Gson gson = new Gson();
+        Gson gson = GsonSingleton.getInstance();
         String jsContent = gson.toJson(apartmentDto);
 
         //When & Then
@@ -129,7 +130,7 @@ public class ApartmentControllerTest {
         ApartmentDto apartmentDto = createApartment(1L);
         when(apartmentDbFacade.updateApartment(ArgumentMatchers.any(ApartmentDto.class))).thenReturn(apartmentDto);
 
-        Gson gson = new Gson();
+        Gson gson = GsonSingleton.getInstance();
         String jsContent = gson.toJson(apartmentDto);
 
         //When & Then

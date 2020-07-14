@@ -3,6 +3,7 @@ package com.mateusz.jakuszko.roomforyou.controller;
 import com.google.gson.Gson;
 import com.mateusz.jakuszko.roomforyou.dto.CustomerDto;
 import com.mateusz.jakuszko.roomforyou.facade.CustomerDbFacade;
+import com.mateusz.jakuszko.roomforyou.mapper.GsonSingleton;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -104,7 +105,7 @@ public class CustomerControllerTest {
         //Given
         CustomerDto customerDto = createUserDto(1L, "Mateusz");
         when(customerDbFacade.createCustomer(customerDto)).thenReturn(customerDto);
-        Gson gson = new Gson();
+        Gson gson = GsonSingleton.getInstance();
         String jsContent = gson.toJson(customerDto);
         //When & Then
         mockMvc.perform(post("/v1/customers")
@@ -119,7 +120,7 @@ public class CustomerControllerTest {
         //Given
         CustomerDto customerDto = createUserDto(1L, "Mateusz");
         when(customerDbFacade.updateCustomer(ArgumentMatchers.any(CustomerDto.class))).thenReturn(customerDto);
-        Gson gson = new Gson();
+        Gson gson = GsonSingleton.getInstance();
         String jsContent = gson.toJson(customerDto);
         //When & Then
         mockMvc.perform(put("/v1/customers")

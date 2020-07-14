@@ -135,8 +135,7 @@ public class ReservationControllerTest {
         //When & Then
         mockMvc.perform(delete("/v1/reservations/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding("UTF-8"))
-                .andExpect(status().isOk());
+                .characterEncoding("UTF-8")).andExpect(status().isOk());
     }
 }
 

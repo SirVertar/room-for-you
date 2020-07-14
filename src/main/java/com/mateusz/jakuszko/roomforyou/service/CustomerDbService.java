@@ -38,8 +38,4 @@ public class CustomerDbService {
     public void delete(Long id) {
         customerRepository.deleteById(id);
     }
-
-    public Optional<Customer> getByUsername(String username) {
-        return customerRepository.findByUsername(username);
-    }
 }
