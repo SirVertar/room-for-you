@@ -19,8 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -84,7 +83,24 @@ public class CustomerDbFacade {
     @Transactional
     public void deleteCustomer(Long userId) {
         log.info("Delete Customer - " + userId);
-        reservationDbService.deleteReservationsByUserId(userId);
+        Optional<Customer> customer = customerDbService.getUser(userId);
+        if (!customer.isPresent()) {
+            log.error("Customer already doesn't exist");
+            throw new NotFoundException();
+        }
+        Set<Long> deletedReservation = new HashSet<>();
+        for (Reservation reservation : customer.get().getReservations()) {
+            deletedReservation.add(reservation.getId());
+            reservationDbService.delete(reservation.getId());
+        }
+        for (Apartment apartment : customer.get().getApartments()) {
+            for (Reservation reservation : apartment.getReservations()) {
+                if(!deletedReservation.contains(reservation.getId())) {
+                    reservationDbService.delete(reservation.getId());
+                    deletedReservation.add(reservation.getId());
+                }
+            }
+        }
         apartmentDbService.deleteApartmentsByUserId(userId);
         customerDbService.delete(userId);
     }
