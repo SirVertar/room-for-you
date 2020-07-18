@@ -22,4 +22,10 @@ public class ReservationValidator {
         return reservations.stream().noneMatch(reservation -> reservation.getStartDate().isBefore(endDate) &&
                 reservation.getEndDate().isAfter(startDate));
     }
+
+    public boolean checkIsEndDateAfterStartDateAndStartDateAfterNow(ReservationDto reservationDto) {
+        LocalDate startDate = reservationDto.getStartDate();
+        LocalDate endDate = reservationDto.getEndDate();
+        return startDate.isAfter(LocalDate.now()) && startDate.isBefore(endDate);
+    }
 }
