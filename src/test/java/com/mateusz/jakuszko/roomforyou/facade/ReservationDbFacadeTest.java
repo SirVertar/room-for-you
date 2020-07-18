@@ -23,7 +23,6 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 
-
 @Transactional
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -60,8 +59,8 @@ public class ReservationDbFacadeTest {
                 .customer(customer)
                 .build();
         Reservation reservation = Reservation.builder()
-                .startDate(LocalDate.of(2020, 1, 12))
-                .endDate(LocalDate.of(2020, 3, 14))
+                .startDate(LocalDate.now().plusDays(1))
+                .endDate(LocalDate.now().plusDays(4))
                 .apartment(apartment)
                 .customer(customer)
                 .build();
@@ -97,8 +96,8 @@ public class ReservationDbFacadeTest {
         ReservationDto reservationDto = reservationDbFacade.getReservation(reservationId);
         //Then
         assertEquals(reservationId, reservationDto.getId());
-        assertEquals(LocalDate.of(2020, 3, 14), reservationDto.getEndDate());
-        assertEquals(LocalDate.of(2020, 1, 12), reservationDto.getStartDate());
+        assertEquals(LocalDate.now().plusDays(4), reservationDto.getEndDate());
+        assertEquals(LocalDate.now().plusDays(1), reservationDto.getStartDate());
         assertEquals(userId, reservationDto.getCustomerId());
         assertEquals(apartmentId, reservationDto.getApartmentId());
     }
@@ -115,8 +114,8 @@ public class ReservationDbFacadeTest {
         //Then
         assertEquals(1, reservationDtos.size());
         assertEquals(reservationId, reservationDtos.get(0).getId());
-        assertEquals(LocalDate.of(2020, 3, 14), reservationDtos.get(0).getEndDate());
-        assertEquals(LocalDate.of(2020, 1, 12), reservationDtos.get(0).getStartDate());
+        assertEquals(LocalDate.now().plusDays(4), reservationDtos.get(0).getEndDate());
+        assertEquals(LocalDate.now().plusDays(1), reservationDtos.get(0).getStartDate());
         assertEquals(userId, reservationDtos.get(0).getCustomerId());
         assertEquals(apartmentId, reservationDtos.get(0).getApartmentId());
     }
@@ -130,8 +129,8 @@ public class ReservationDbFacadeTest {
         Long reservationId = ids.get(2);
         ReservationDto reservationDto = reservationDbFacade.getReservation(reservationId);
         reservationDto.setId(null);
-        reservationDto.setStartDate(LocalDate.of(2020, 4, 15));
-        reservationDto.setEndDate(LocalDate.of(2020, 4, 18));
+        reservationDto.setStartDate(LocalDate.now().plusDays(25));
+        reservationDto.setEndDate(LocalDate.now().plusDays(52));
         //When
         reservationDbFacade.createReservation(reservationDto);
         List<Reservation> reservations = reservationDbService.getReservationsByUserId(userId);
@@ -141,7 +140,7 @@ public class ReservationDbFacadeTest {
         assertEquals(2, reservations.size());
         assertEquals(2, reservationsInApartment.size());
         assertTrue(reservations.stream()
-                .anyMatch(reservation -> reservation.getEndDate().equals(LocalDate.of(2020, 4, 18)))
+                .anyMatch(reservation -> reservation.getEndDate().equals(LocalDate.now().plusDays(52)))
         );
     }
 
@@ -153,7 +152,7 @@ public class ReservationDbFacadeTest {
         Long apartmentId = ids.get(1);
         Long reservationId = ids.get(2);
         ReservationDto reservationDto = reservationDbFacade.getReservation(reservationId);
-        reservationDto.setEndDate(LocalDate.of(1990, 5, 10));
+        reservationDto.setEndDate(LocalDate.now().plusDays(22));
         //When
         reservationDbFacade.updateReservation(reservationDto);
         List<Reservation> reservationsInApartment = apartmentDbService.getApartment(apartmentId)
@@ -165,8 +164,8 @@ public class ReservationDbFacadeTest {
         assertEquals(1, reservations.size());
         assertEquals(1, reservationsInApartment.size());
         assertEquals(reservationId, reservationDto.getId());
-        assertEquals(LocalDate.of(1990, 5, 10), reservationDto.getEndDate());
-        assertEquals(LocalDate.of(2020, 1, 12), reservationDto.getStartDate());
+        assertEquals(LocalDate.now().plusDays(22), reservationDto.getEndDate());
+        assertEquals(LocalDate.now().plusDays(1), reservationDto.getStartDate());
         assertEquals(userId, reservationDto.getCustomerId());
         assertEquals(apartmentId, reservationDto.getApartmentId());
     }
