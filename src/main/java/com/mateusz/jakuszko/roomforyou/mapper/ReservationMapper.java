@@ -24,7 +24,7 @@ public class ReservationMapper {
                 .startDate(reservation.getStartDate())
                 .endDate(reservation.getEndDate())
                 .apartmentId(reservation.getApartment().getId())
-                .userId(reservation.getCustomer().getId())
+                .customerId(reservation.getCustomer().getId())
                 .build();
     }
 
@@ -49,7 +49,7 @@ public class ReservationMapper {
                         .apartmentId(reservations.stream()
                                 .map(e -> e.getApartment().getId())
                                 .findAny().orElseThrow(NotFoundException::new))
-                        .userId(reservation.getCustomer().getId())
+                        .customerId(reservation.getCustomer().getId())
                         .build())
                 .collect(Collectors.toList());
     }

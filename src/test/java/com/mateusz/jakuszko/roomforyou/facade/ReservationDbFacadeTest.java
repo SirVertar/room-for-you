@@ -99,7 +99,7 @@ public class ReservationDbFacadeTest {
         assertEquals(reservationId, reservationDto.getId());
         assertEquals(LocalDate.of(2020, 3, 14), reservationDto.getEndDate());
         assertEquals(LocalDate.of(2020, 1, 12), reservationDto.getStartDate());
-        assertEquals(userId, reservationDto.getUserId());
+        assertEquals(userId, reservationDto.getCustomerId());
         assertEquals(apartmentId, reservationDto.getApartmentId());
     }
 
@@ -117,7 +117,7 @@ public class ReservationDbFacadeTest {
         assertEquals(reservationId, reservationDtos.get(0).getId());
         assertEquals(LocalDate.of(2020, 3, 14), reservationDtos.get(0).getEndDate());
         assertEquals(LocalDate.of(2020, 1, 12), reservationDtos.get(0).getStartDate());
-        assertEquals(userId, reservationDtos.get(0).getUserId());
+        assertEquals(userId, reservationDtos.get(0).getCustomerId());
         assertEquals(apartmentId, reservationDtos.get(0).getApartmentId());
     }
 
@@ -167,7 +167,7 @@ public class ReservationDbFacadeTest {
         assertEquals(reservationId, reservationDto.getId());
         assertEquals(LocalDate.of(1990, 5, 10), reservationDto.getEndDate());
         assertEquals(LocalDate.of(2020, 1, 12), reservationDto.getStartDate());
-        assertEquals(userId, reservationDto.getUserId());
+        assertEquals(userId, reservationDto.getCustomerId());
         assertEquals(apartmentId, reservationDto.getApartmentId());
     }
 

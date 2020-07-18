@@ -51,7 +51,7 @@ public class ReservationDbFacade {
         if (!reservationValidator.checkIsTherePossibilityToMakeReservation(reservationDto)) {
             throw new InvalidReservationDateException();
         }
-        Customer customer = customerDbService.getUser(reservationDto.getUserId()).orElseThrow(NotFoundException::new);
+        Customer customer = customerDbService.getUser(reservationDto.getCustomerId()).orElseThrow(NotFoundException::new);
         Apartment apartment = apartmentDbService.getApartment(reservationDto.getApartmentId())
                 .orElseThrow(NotFoundException::new);
         Reservation reservation = reservationMapper.mapToReservation(reservationDto, apartment, customer);
@@ -70,7 +70,7 @@ public class ReservationDbFacade {
                 "Apartment_Id - " + reservationDto.getApartmentId() +
                 ", Start_Date - " + reservationDto.getStartDate() +
                 ", End_date - " + reservationDto.getEndDate());
-        Customer customer = customerDbService.getUser(reservationDto.getUserId()).orElseThrow(NotFoundException::new);
+        Customer customer = customerDbService.getUser(reservationDto.getCustomerId()).orElseThrow(NotFoundException::new);
         Apartment apartment = apartmentDbService.getApartment(reservationDto.getApartmentId())
                 .orElseThrow(NotFoundException::new);
         Reservation reservation = reservationMapper.mapToReservation(reservationDto, apartment, customer);

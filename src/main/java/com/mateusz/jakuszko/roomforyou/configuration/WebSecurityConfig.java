@@ -19,18 +19,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    private final CustomerDetailsServiceImpl userDetailsService;
+    private final CustomerDetailsServiceImpl customerDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(customerDetailsService);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.headers().disable();
-//        http.authorizeRequests()
-//                .antMatchers("/v1/customers/").hasRole("user");
+        http.authorizeRequests()
+                .anyRequest().anonymous()
+                .and()
+                .formLogin().defaultSuccessUrl("http://localhost:8070/");
+
     }
 }

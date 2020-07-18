@@ -16,5 +16,5 @@ public class ReservationDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate endDate;
     private Long apartmentId;
-    private Long userId;
+    private Long customerId;
 }

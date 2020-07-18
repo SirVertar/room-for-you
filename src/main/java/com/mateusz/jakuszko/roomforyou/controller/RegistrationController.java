@@ -18,13 +18,13 @@ public class RegistrationController {
 
     private final CustomerDbFacade customerDbFacade;
 
-    @GetMapping("/signup")
+    @GetMapping("v1/signup")
     public String signUp(Model model) {
         model.addAttribute("user", new CustomerDto());
         return "sign-up";
     }
 
-    @PostMapping("/register")
+    @PostMapping("v1/register")
     public String register(CustomerDto user) {
         customerDbFacade.createCustomer(user);
         return "sign-up";

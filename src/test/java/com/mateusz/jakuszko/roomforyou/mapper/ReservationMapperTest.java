@@ -36,7 +36,7 @@ public class ReservationMapperTest {
     private ReservationDto createReservationDto() {
         return ReservationDto.builder()
                 .id(1L)
-                .userId(2L)
+                .customerId(2L)
                 .startDate(LocalDate.of(2020, 10, 20))
                 .endDate(LocalDate.of(2020, 11, 20))
                 .apartmentId(3L)
@@ -53,7 +53,7 @@ public class ReservationMapperTest {
                 .mapToReservationDto(reservation);
         //Then
         assertEquals(expectedReservationDto.getId(), reservationDto.getId());
-        assertEquals(expectedReservationDto.getUserId(), reservationDto.getUserId());
+        assertEquals(expectedReservationDto.getCustomerId(), reservationDto.getCustomerId());
         assertEquals(expectedReservationDto.getApartmentId(), reservationDto.getApartmentId());
         assertEquals(expectedReservationDto.getEndDate(), reservationDto.getEndDate());
         assertEquals(expectedReservationDto.getStartDate(), reservationDto.getStartDate());
@@ -87,7 +87,7 @@ public class ReservationMapperTest {
         assertEquals(expectedReservationDtos.get(0).getId(), reservationDtos.get(0).getId());
         assertEquals(expectedReservationDtos.get(0).getStartDate(), reservationDtos.get(0).getStartDate());
         assertEquals(expectedReservationDtos.get(0).getEndDate(), reservationDtos.get(0).getEndDate());
-        assertEquals(expectedReservationDtos.get(0).getUserId(), reservationDtos.get(0).getUserId());
+        assertEquals(expectedReservationDtos.get(0).getCustomerId(), reservationDtos.get(0).getCustomerId());
         assertEquals(expectedReservationDtos.get(0).getApartmentId(), reservationDtos.get(0).getApartmentId());
     }
 }

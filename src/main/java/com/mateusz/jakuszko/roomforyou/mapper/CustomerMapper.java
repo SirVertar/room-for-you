@@ -64,7 +64,7 @@ public class CustomerMapper {
                                 .filter(apartmentDto -> apartmentDto.getCustomerId().equals(customer.getId()))
                                 .collect(Collectors.toList()))
                         .reservations(reservationDtos.stream()
-                                .filter(reservationDto -> reservationDto.getUserId().equals(customer.getId()))
+                                .filter(reservationDto -> reservationDto.getCustomerId().equals(customer.getId()))
                                 .collect(Collectors.toList()))
                         .build())
                 .collect(Collectors.toList());
