@@ -1,5 +1,6 @@
 package com.mateusz.jakuszko.roomforyou.mapper.deleted;
 
+import com.mateusz.jakuszko.roomforyou.dto.deleted.DeletedReservationDto;
 import com.mateusz.jakuszko.roomforyou.entity.Reservation;
 import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedReservation;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,28 @@ public class DeletedReservationMapper {
                         .endDate(reservation.getEndDate())
                         .previousCustomerId(reservation.getCustomer().getId())
                         .previousApartmentId(reservation.getApartment().getId()).build())
+                .collect(Collectors.toList());
+    }
+
+    public DeletedReservationDto mapToDeletedReservationDto(DeletedReservation reservation) {
+        return DeletedReservationDto.builder()
+                .id(reservation.getId())
+                .previousReservationId(reservation.getPreviousReservationId())
+                .previousApartmentId(reservation.getPreviousApartmentId())
+                .previousCustomerId(reservation.getPreviousCustomerId())
+                .startDate(reservation.getStartDate())
+                .endDate(reservation.getEndDate()).build();
+    }
+
+    public List<DeletedReservationDto> mapToDeletedReservationDtos(List<DeletedReservation> reservations) {
+        return reservations.stream()
+                .map(reservation -> DeletedReservationDto.builder()
+                        .id(reservation.getId())
+                        .previousReservationId(reservation.getPreviousReservationId())
+                        .previousApartmentId(reservation.getPreviousApartmentId())
+                        .previousCustomerId(reservation.getPreviousCustomerId())
+                        .startDate(reservation.getStartDate())
+                        .endDate(reservation.getEndDate()).build())
                 .collect(Collectors.toList());
     }
 }

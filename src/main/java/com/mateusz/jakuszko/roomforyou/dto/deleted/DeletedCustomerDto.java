@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -21,6 +20,6 @@ public class DeletedCustomerDto {
     private String surname;
     private String email;
     private String role;
-    private List<DeletedReservationDto> reservations = new ArrayList<>();
-    private List<DeletedApartmentDto> apartments = new ArrayList<>();
+    private List<DeletedReservationDto> reservations;
+    private List<DeletedApartmentDto> apartments;
 }

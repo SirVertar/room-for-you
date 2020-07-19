@@ -1,5 +1,6 @@
 package com.mateusz.jakuszko.roomforyou.mapper.deleted;
 
+import com.mateusz.jakuszko.roomforyou.dto.deleted.DeletedApartmentDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedApartment;
 import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedReservation;
@@ -52,4 +53,39 @@ public class DeletedApartmentMapper {
                         .reservations(new ArrayList<>()).build())
                 .collect(Collectors.toList());
     }
+
+    public DeletedApartmentDto mapToDeletedApartmentDto(DeletedApartment apartment) {
+        return DeletedApartmentDto.builder()
+                .id(apartment.getId())
+                .previousApartmentId(apartment.getPreviousApartmentId())
+                .previousCustomerId(apartment.getPreviousCustomerId())
+                .city(apartment.getCity())
+                .street(apartment.getStreet())
+                .streetNumber(apartment.getStreetNumber())
+                .apartmentNumber(apartment.getApartmentNumber())
+                .latitude(apartment.getLatitude())
+                .longitude(apartment.getLongitude())
+                .reservationIds(apartment.getReservations().stream()
+                .map(DeletedReservation::getId)
+                .collect(Collectors.toList())).build();
+    }
+
+    public List<DeletedApartmentDto> mapToDeletedApartmentDtos(List<DeletedApartment> apartments) {
+        return apartments.stream()
+                .map(apartment -> DeletedApartmentDto.builder()
+                        .id(apartment.getId())
+                        .previousApartmentId(apartment.getPreviousApartmentId())
+                        .previousCustomerId(apartment.getPreviousCustomerId())
+                        .city(apartment.getCity())
+                        .street(apartment.getStreet())
+                        .streetNumber(apartment.getStreetNumber())
+                        .apartmentNumber(apartment.getApartmentNumber())
+                        .latitude(apartment.getLatitude())
+                        .longitude(apartment.getLongitude())
+                        .reservationIds(apartment.getReservations().stream()
+                                .map(DeletedReservation::getId)
+                                .collect(Collectors.toList())).build())
+                .collect(Collectors.toList());
+    }
+
 }
