@@ -4,12 +4,15 @@ import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.entity.Reservation;
+import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedReservation;
 import com.mateusz.jakuszko.roomforyou.exceptions.InvalidReservationDateException;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import com.mateusz.jakuszko.roomforyou.mapper.ReservationMapper;
+import com.mateusz.jakuszko.roomforyou.mapper.deleted.DeletedReservationMapper;
 import com.mateusz.jakuszko.roomforyou.service.ApartmentDbService;
 import com.mateusz.jakuszko.roomforyou.service.CustomerDbService;
 import com.mateusz.jakuszko.roomforyou.service.ReservationDbService;
+import com.mateusz.jakuszko.roomforyou.service.deleted.DeletedReservationDbService;
 import com.mateusz.jakuszko.roomforyou.validator.ReservationValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +31,8 @@ public class ReservationDbFacade {
     private final ReservationDbService reservationDbService;
     private final ReservationMapper reservationMapper;
     private final ReservationValidator reservationValidator;
+    private final DeletedReservationMapper deletedReservationMapper;
+    private final DeletedReservationDbService deletedReservationDbService;
 
     public ReservationDto getReservation(Long reservationId) {
         log.info("Get Reservation by id - " + reservationId);
@@ -82,6 +87,7 @@ public class ReservationDbFacade {
     public void deleteReservation(Long id) {
         log.info("Delete Reservation by id - " + id);
         Reservation reservation = reservationDbService.gerReservation(id).orElseThrow(NotFoundException::new);
+        saveDeletedInformationAboutReservation(reservation);
         Long apartmentId = reservation.getApartment().getId();
         Long userId = reservation.getCustomer().getId();
         reservationDbService.delete(id);
@@ -93,5 +99,10 @@ public class ReservationDbFacade {
         reservationsInUser.remove(reservation);
         apartmentDbService.update(apartment);
         customerDbService.update(customer);
+    }
+
+    public void saveDeletedInformationAboutReservation(Reservation reservation) {
+        DeletedReservation deletedReservation = deletedReservationMapper.mapToDeletedReservation(reservation);
+        deletedReservationDbService.save(deletedReservation);
     }
 }

@@ -4,12 +4,18 @@ import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.entity.Reservation;
+import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedApartment;
+import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedReservation;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import com.mateusz.jakuszko.roomforyou.mapper.ApartmentMapper;
+import com.mateusz.jakuszko.roomforyou.mapper.deleted.DeletedApartmentMapper;
+import com.mateusz.jakuszko.roomforyou.mapper.deleted.DeletedReservationMapper;
 import com.mateusz.jakuszko.roomforyou.opencagegeocoderapi.OpenCageGeocoderClient;
 import com.mateusz.jakuszko.roomforyou.service.ApartmentDbService;
 import com.mateusz.jakuszko.roomforyou.service.CustomerDbService;
 import com.mateusz.jakuszko.roomforyou.service.ReservationDbService;
+import com.mateusz.jakuszko.roomforyou.service.deleted.DeletedApartmentDbService;
+import com.mateusz.jakuszko.roomforyou.service.deleted.DeletedReservationDbService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
@@ -20,7 +26,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,14 +37,15 @@ public class ApartmentDbFacade {
     private final ApartmentMapper apartmentMapper;
     private final ReservationDbService reservationDbService;
     private final OpenCageGeocoderClient openCageGeocoderClient;
+    private final DeletedApartmentMapper deletedApartmentMapper;
+    private final DeletedReservationMapper deletedReservationMapper;
+    private final DeletedApartmentDbService deletedApartmentDbService;
+    private final DeletedReservationDbService deletedReservationDbService;
 
     @Transactional
     public ApartmentDto getApartment(Long apartmentId) {
         log.info("Get apartment by id - " + apartmentId);
         Apartment apartment = apartmentDbService.getApartment(apartmentId).orElseThrow(NotFoundException::new);
-        List<Long> reservationsIds = apartment.getReservations().stream()
-                .map(Reservation::getId)
-                .collect(Collectors.toList());
         return apartmentMapper.mapToApartmentDto(apartment);
     }
 
@@ -80,6 +86,9 @@ public class ApartmentDbFacade {
         log.info("Delete apartment by id - " + apartmentId);
         Apartment apartment = apartmentDbService.getApartment(apartmentId).orElseThrow(NotFoundException::new);
         Customer customer = apartment.getCustomer();
+
+        saveDeletedInformationAboutApartment(apartment);
+
         Optional<Long> reservationId = apartment.getReservations().stream()
                 .map(Reservation::getId)
                 .findAny();
@@ -95,5 +104,15 @@ public class ApartmentDbFacade {
             customer.getApartments().remove(apartment);
             customerDbService.update(customer);
         }
+    }
+
+    private void saveDeletedInformationAboutApartment(Apartment apartment) {
+        List<DeletedReservation> deletedReservations = deletedReservationMapper
+                .mapToDeletedReservations(apartment.getReservations());
+        DeletedApartment deletedApartment = deletedApartmentMapper.mapToDeletedApartment(apartment, deletedReservations);
+        for (DeletedReservation reservation : deletedReservations) {
+            deletedReservationDbService.save(reservation);
+        }
+        deletedApartmentDbService.save(deletedApartment);
     }
 }

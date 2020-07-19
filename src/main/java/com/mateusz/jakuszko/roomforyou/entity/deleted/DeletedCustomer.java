@@ -24,9 +24,9 @@ public class DeletedCustomer {
     private String email;
     private String role;
     @Builder.Default
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+    @OneToMany
     private List<DeletedReservation> reservations = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+    @OneToMany
     private List<DeletedApartment> apartments = new ArrayList<>();
 }

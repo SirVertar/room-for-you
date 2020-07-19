@@ -16,14 +16,13 @@ public class DeletedApartment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long previousApartmentId;
+    private Long previousCustomerId;
     private Double latitude;
     private Double longitude;
     private String city;
     private String street;
     private String streetNumber;
     private Integer apartmentNumber;
-    @OneToMany(mappedBy = "apartment", fetch = FetchType.EAGER)
+    @OneToMany
     private List<DeletedReservation> reservations;
-    @ManyToOne(fetch = FetchType.EAGER)
-    private DeletedCustomer customer;
 }

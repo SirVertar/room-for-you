@@ -4,9 +4,6 @@ import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.entity.Reservation;
-import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedApartment;
-import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedCustomer;
-import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedReservation;
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -52,16 +49,5 @@ public class ReservationMapper {
                         .customerId(reservation.getCustomer().getId())
                         .build())
                 .collect(Collectors.toList());
-    }
-
-    public DeletedReservation mapToDeletedReservation(Reservation reservation, DeletedApartment apartment,
-                                                      DeletedCustomer customer) {
-        return DeletedReservation.builder()
-                .id(reservation.getId())
-                .startDate(reservation.getStartDate())
-                .endDate(reservation.getEndDate())
-                .apartment(apartment)
-                .customer(customer)
-                .build();
     }
 }
