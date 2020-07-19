@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerDto {
-    private java.lang.Long id;
+    private Long id;
     private String username;
     private String password;
     private String name;
