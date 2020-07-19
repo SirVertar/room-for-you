@@ -15,6 +15,7 @@ public class DeletedApartment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private Long previousApartmentId;
     private Double latitude;
     private Double longitude;
     private String city;

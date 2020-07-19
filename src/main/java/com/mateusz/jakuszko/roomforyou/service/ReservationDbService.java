@@ -37,13 +37,12 @@ public class ReservationDbService {
         reservationRepository.deleteById(id);
     }
 
-    //TODO-TEST
     public List<Reservation> getReservationsByUserId(Long userId) {
         return getReservations().stream()
                 .filter(reservation -> reservation.getCustomer().getId().equals(userId))
                 .collect(Collectors.toList());
     }
-    //TODO-TEST
+
     public void deleteReservationsByUserId(Long userId) {
         getReservations().stream()
                 .filter(reservation -> reservation.getCustomer().getId().equals(userId))

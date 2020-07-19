@@ -15,6 +15,7 @@ public class DeletedReservation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private Long previousReservationId;
     private LocalDate startDate;
     private LocalDate endDate;
     @ManyToOne(fetch = FetchType.EAGER)
