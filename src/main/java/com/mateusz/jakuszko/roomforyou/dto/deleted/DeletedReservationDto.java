@@ -15,10 +15,10 @@ import java.time.LocalDate;
 public class DeletedReservationDto {
     private Long id;
     private Long previousReservationId;
+    private Long previousCustomerId;
+    private Long previousApartmentId;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate startDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate endDate;
-    private Long apartmentId;
-    private Long customerId;
 }

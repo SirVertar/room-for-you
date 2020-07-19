@@ -14,12 +14,12 @@ import java.util.List;
 public class DeletedApartmentDto {
     private Long id;
     private Long previousApartmentId;
+    private Long previousCustomerId;
     private Double latitude;
     private Double longitude;
     private String city;
     private String street;
     private String streetNumber;
     private Integer apartmentNumber;
-    private List<Long> reservationsIds;
-    private Long customerId;
+    private List<Long> reservationIds;
 }
