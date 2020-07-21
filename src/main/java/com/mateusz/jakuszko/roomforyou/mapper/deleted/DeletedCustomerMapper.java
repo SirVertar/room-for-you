@@ -29,21 +29,6 @@ public class DeletedCustomerMapper {
                 .apartments(apartments).build();
     }
 
-    public DeletedCustomerDto mapToDeletedCustomerDto(DeletedCustomer deletedCustomer,
-                                                      List<DeletedApartmentDto> apartments,
-                                                      List<DeletedReservationDto> reservations) {
-        return DeletedCustomerDto.builder()
-                .id(deletedCustomer.getId())
-                .previousCustomerId(deletedCustomer.getPreviousCustomerId())
-                .username(deletedCustomer.getUsername())
-                .name(deletedCustomer.getName())
-                .surname(deletedCustomer.getSurname())
-                .email(deletedCustomer.getEmail())
-                .password(deletedCustomer.getPassword())
-                .apartments(apartments)
-                .reservations(reservations).build();
-    }
-
     public List<DeletedCustomerDto> mapToDeletedCustomerDtos(List<DeletedCustomer> deletedCustomers,
                                                              List<DeletedApartmentDto> apartments,
                                                              List<DeletedReservationDto> reservations) {
@@ -66,5 +51,4 @@ public class DeletedCustomerMapper {
                         .collect(Collectors.toList())).build())
                 .collect(Collectors.toList());
     }
-
 }

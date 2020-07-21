@@ -49,7 +49,7 @@ public class CustomerControllerTest {
                 .name(name)
                 .surname("Jakuszko")
                 .username("matanos")
-                .password("abc123")
+                .password("abcdefg123")
                 .role("Admin")
                 .email("mateusz.jakuszko@gmail.com")
                 .build();

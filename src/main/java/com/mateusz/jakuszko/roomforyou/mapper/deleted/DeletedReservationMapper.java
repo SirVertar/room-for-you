@@ -32,16 +32,6 @@ public class DeletedReservationMapper {
                 .collect(Collectors.toList());
     }
 
-    public DeletedReservationDto mapToDeletedReservationDto(DeletedReservation reservation) {
-        return DeletedReservationDto.builder()
-                .id(reservation.getId())
-                .previousReservationId(reservation.getPreviousReservationId())
-                .previousApartmentId(reservation.getPreviousApartmentId())
-                .previousCustomerId(reservation.getPreviousCustomerId())
-                .startDate(reservation.getStartDate())
-                .endDate(reservation.getEndDate()).build();
-    }
-
     public List<DeletedReservationDto> mapToDeletedReservationDtos(List<DeletedReservation> reservations) {
         return reservations.stream()
                 .map(reservation -> DeletedReservationDto.builder()

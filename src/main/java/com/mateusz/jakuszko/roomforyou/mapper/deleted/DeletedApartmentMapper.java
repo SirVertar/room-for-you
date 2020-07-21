@@ -23,6 +23,8 @@ public class DeletedApartmentMapper {
                 .streetNumber(apartment.getStreetNumber())
                 .apartmentNumber(apartment.getApartmentNumber())
                 .previousCustomerId(apartment.getCustomer().getId())
+                .latitude(apartment.getLatitude())
+                .longitude(apartment.getLongitude())
                 .reservations(reservations).build();
     }
 
@@ -35,6 +37,8 @@ public class DeletedApartmentMapper {
                         .streetNumber(apartment.getStreetNumber())
                         .apartmentNumber(apartment.getApartmentNumber())
                         .previousCustomerId(apartment.getCustomer().getId())
+                        .latitude(apartment.getLatitude())
+                        .longitude(apartment.getLongitude())
                         .reservations(reservations.stream()
                                 .filter(reservation -> reservation.getPreviousApartmentId().equals(apartment.getId()))
                                 .collect(Collectors.toList())).build())
@@ -50,25 +54,12 @@ public class DeletedApartmentMapper {
                         .streetNumber(apartment.getStreetNumber())
                         .apartmentNumber(apartment.getApartmentNumber())
                         .previousCustomerId(apartment.getCustomer().getId())
+                        .latitude(apartment.getLatitude())
+                        .longitude(apartment.getLongitude())
                         .reservations(new ArrayList<>()).build())
                 .collect(Collectors.toList());
     }
 
-    public DeletedApartmentDto mapToDeletedApartmentDto(DeletedApartment apartment) {
-        return DeletedApartmentDto.builder()
-                .id(apartment.getId())
-                .previousApartmentId(apartment.getPreviousApartmentId())
-                .previousCustomerId(apartment.getPreviousCustomerId())
-                .city(apartment.getCity())
-                .street(apartment.getStreet())
-                .streetNumber(apartment.getStreetNumber())
-                .apartmentNumber(apartment.getApartmentNumber())
-                .latitude(apartment.getLatitude())
-                .longitude(apartment.getLongitude())
-                .reservationIds(apartment.getReservations().stream()
-                .map(DeletedReservation::getId)
-                .collect(Collectors.toList())).build();
-    }
 
     public List<DeletedApartmentDto> mapToDeletedApartmentDtos(List<DeletedApartment> apartments) {
         return apartments.stream()
@@ -83,9 +74,8 @@ public class DeletedApartmentMapper {
                         .latitude(apartment.getLatitude())
                         .longitude(apartment.getLongitude())
                         .reservationIds(apartment.getReservations().stream()
-                                .map(DeletedReservation::getId)
+                                .map(DeletedReservation::getPreviousReservationId)
                                 .collect(Collectors.toList())).build())
                 .collect(Collectors.toList());
     }
-
 }
