@@ -17,7 +17,7 @@ public class Reservation {
     private Long id;
     private LocalDate startDate;
     private LocalDate endDate;
-    @ManyToOne (fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Apartment apartment;
     @ManyToOne(fetch = FetchType.EAGER)
     private Customer customer;

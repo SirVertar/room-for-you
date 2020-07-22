@@ -19,7 +19,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class EmailScheduler {
-
     private EmailService emailService;
     private SearcherDbFacade searcherDbFacade;
     private ReservationMapper reservationMapper;

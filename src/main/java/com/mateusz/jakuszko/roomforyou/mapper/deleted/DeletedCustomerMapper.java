@@ -42,13 +42,13 @@ public class DeletedCustomerMapper {
                         .email(customer.getEmail())
                         .password(customer.getPassword())
                         .apartments(apartments.stream()
-                        .filter(deletedApartmentDto -> deletedApartmentDto
-                                .getPreviousCustomerId().equals(customer.getPreviousCustomerId()))
-                        .collect(Collectors.toList()))
+                                .filter(deletedApartmentDto -> deletedApartmentDto
+                                        .getPreviousCustomerId().equals(customer.getPreviousCustomerId()))
+                                .collect(Collectors.toList()))
                         .reservations(reservations.stream()
-                        .filter(deletedReservationDto -> deletedReservationDto
-                                .getPreviousCustomerId().equals(customer.getPreviousCustomerId()))
-                        .collect(Collectors.toList())).build())
+                                .filter(deletedReservationDto -> deletedReservationDto
+                                        .getPreviousCustomerId().equals(customer.getPreviousCustomerId()))
+                                .collect(Collectors.toList())).build())
                 .collect(Collectors.toList());
     }
 }

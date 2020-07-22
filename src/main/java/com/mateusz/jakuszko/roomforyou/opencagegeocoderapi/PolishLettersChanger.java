@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PolishLettersChanger {
+
     public String changePolishLettersToEnglish(String word) {
         StringBuilder resultWord = new StringBuilder();
         char[] wordArray = word.toCharArray();

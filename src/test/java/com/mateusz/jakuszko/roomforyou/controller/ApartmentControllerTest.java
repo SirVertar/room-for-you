@@ -50,7 +50,7 @@ public class ApartmentControllerTest {
     }
 
     private ApartmentDto createApartment(Long id) {
-        return ApartmentDto.builder()
+        return new ApartmentDto.Builder()
                 .id(id)
                 .latitude(11.0)
                 .longitude(12.0)

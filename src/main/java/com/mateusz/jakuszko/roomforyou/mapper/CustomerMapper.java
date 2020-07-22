@@ -6,9 +6,6 @@ import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.entity.Customer;
 import com.mateusz.jakuszko.roomforyou.entity.Reservation;
-import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedApartment;
-import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedCustomer;
-import com.mateusz.jakuszko.roomforyou.entity.deleted.DeletedReservation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -68,20 +65,5 @@ public class CustomerMapper {
                                 .collect(Collectors.toList()))
                         .build())
                 .collect(Collectors.toList());
-    }
-
-    public DeletedCustomer mapToDeletedCustomer(Customer customer, List<DeletedApartment> apartments,
-                                                List<DeletedReservation> reservations) {
-        return DeletedCustomer.builder()
-                .id(customer.getId())
-                .name(customer.getName())
-                .surname(customer.getSurname())
-                .password(customer.getPassword())
-                .username(customer.getUsername())
-                .email(customer.getEmail())
-                .role(customer.getRole())
-                .apartments(apartments)
-                .reservations(reservations)
-                .build();
     }
 }

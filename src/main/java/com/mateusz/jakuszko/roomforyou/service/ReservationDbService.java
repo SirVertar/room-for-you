@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class ReservationDbService {
-
     private final ReservationRepository reservationRepository;
 
     public ReservationDbService(ReservationRepository reservationRepository) {
@@ -41,13 +40,6 @@ public class ReservationDbService {
         return getReservations().stream()
                 .filter(reservation -> reservation.getCustomer().getId().equals(userId))
                 .collect(Collectors.toList());
-    }
-
-    public void deleteReservationsByUserId(Long userId) {
-        getReservations().stream()
-                .filter(reservation -> reservation.getCustomer().getId().equals(userId))
-                .map(Reservation::getId)
-                .forEach(this::delete);
     }
 
     public List<Reservation> getReservationsByApartmentId(Long apartmentId) {

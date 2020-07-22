@@ -21,7 +21,7 @@ public class OpenCageGeocoderClientTest {
     private OpenCageGeocoderClient openCageGeocoderClient;
 
     private ApartmentDto createApartment(Long id) {
-        return ApartmentDto.builder()
+        return new ApartmentDto.Builder()
                 .id(id)
                 .latitude(11.0)
                 .longitude(12.0)
@@ -35,7 +35,7 @@ public class OpenCageGeocoderClientTest {
     @Test
     public void whenPutApartmentDtoThenReceiveGeolocationValues() throws IOException, ParseException {
         //Given
-        ApartmentDto apartmentDto = ApartmentDto.builder()
+        ApartmentDto apartmentDto = new ApartmentDto.Builder()
                 .id(1L)
                 .city("Terespol")
                 .street("Kraszewskiego")
@@ -54,7 +54,7 @@ public class OpenCageGeocoderClientTest {
     @Test
     public void whenPutApartmentDtoWithAThenReceiveGeolocationValues() throws IOException, ParseException {
         //Given
-        ApartmentDto apartmentDto = ApartmentDto.builder()
+        ApartmentDto apartmentDto = new ApartmentDto.Builder()
                 .id(1L)
                 .city("Poznań")
                 .street("Stefana Żeromskiego")

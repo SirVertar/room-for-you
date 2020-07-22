@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class ReservationMapper {
+
     public ReservationDto mapToReservationDto(Reservation reservation) {
         log.info("Map Reservation to ReservationDto");
         return ReservationDto.builder()

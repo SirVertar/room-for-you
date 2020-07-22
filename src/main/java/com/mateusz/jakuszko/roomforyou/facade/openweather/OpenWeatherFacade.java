@@ -23,7 +23,7 @@ public class OpenWeatherFacade {
     public TemperatureDto getTemperaturesFromWeatherApiResponse(Long apartmentId) {
         log.info("Get apartment from db with id - " + apartmentId);
         Apartment apartment = apartmentDbService.getApartment(apartmentId).orElseThrow(NotFoundException::new);
-        ApartmentDto apartmentDto = ApartmentDto.builder()
+        ApartmentDto apartmentDto = new ApartmentDto.Builder()
                 .latitude(apartment.getLatitude())
                 .longitude(apartment.getLongitude()).build();
         GetTemperatureResponse temperatureResponse = openWeatherApiClient.getTemperatureResponse(apartmentDto);

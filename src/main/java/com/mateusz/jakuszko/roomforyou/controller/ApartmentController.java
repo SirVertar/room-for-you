@@ -19,7 +19,6 @@ import java.util.List;
 @RestController
 @RequestMapping("v1/apartments")
 public class ApartmentController {
-
     private final ApartmentDbFacade apartmentDbFacade;
     private final OpenWeatherFacade openWeatherFacade;
     private final SearcherDbFacade searcherDbFacade;

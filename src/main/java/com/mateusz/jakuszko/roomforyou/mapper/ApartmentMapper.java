@@ -13,9 +13,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class ApartmentMapper {
+
     public ApartmentDto mapToApartmentDto(Apartment apartment) {
         log.info("Map Apartment to ApartmentDto");
-        return ApartmentDto.builder()
+        return new ApartmentDto.Builder()
                 .id(apartment.getId())
                 .city(apartment.getCity())
                 .street(apartment.getStreet())
@@ -24,8 +25,8 @@ public class ApartmentMapper {
                 .latitude(apartment.getLatitude())
                 .longitude(apartment.getLongitude())
                 .reservationsIds(apartment.getReservations().stream()
-                .map(Reservation::getId)
-                .collect(Collectors.toList()))
+                        .map(Reservation::getId)
+                        .collect(Collectors.toList()))
                 .customerId(apartment.getCustomer().getId())
                 .build();
     }
@@ -48,7 +49,7 @@ public class ApartmentMapper {
     public List<ApartmentDto> mapToApartmentDtos(List<Apartment> apartments) {
         log.info("Map Apartments to ApartmentDtos");
         return apartments.stream()
-                .map(apartment -> ApartmentDto.builder()
+                .map(apartment -> new ApartmentDto.Builder()
                         .id(apartment.getId())
                         .city(apartment.getCity())
                         .street(apartment.getStreet())

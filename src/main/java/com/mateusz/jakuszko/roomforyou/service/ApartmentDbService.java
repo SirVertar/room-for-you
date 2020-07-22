@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class ApartmentDbService {
-
     private final ApartmentRepository apartmentRepository;
 
     public ApartmentDbService(ApartmentRepository apartmentRepository) {

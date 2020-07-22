@@ -38,7 +38,7 @@ public class ApartmentMapperTest {
     }
 
     private ApartmentDto createApartmentDto() {
-        return ApartmentDto.builder()
+        return new ApartmentDto.Builder()
                 .id(1L)
                 .city("Terespol")
                 .street("Kraszewskiego")

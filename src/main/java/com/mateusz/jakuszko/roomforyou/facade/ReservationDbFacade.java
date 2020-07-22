@@ -25,7 +25,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class ReservationDbFacade {
-
     private final CustomerDbService customerDbService;
     private final ApartmentDbService apartmentDbService;
     private final ReservationDbService reservationDbService;
@@ -54,7 +53,7 @@ public class ReservationDbFacade {
                 ", Start_Date - " + reservationDto.getStartDate() +
                 ", End_date - " + reservationDto.getEndDate());
         if (!reservationValidator.checkIsTherePossibilityToMakeReservation(reservationDto) ||
-        !reservationValidator.checkIsEndDateAfterStartDateAndStartDateAfterNow(reservationDto)) {
+                !reservationValidator.checkIsEndDateAfterStartDateAndStartDateAfterNow(reservationDto)) {
             throw new InvalidReservationDateException();
         }
         Customer customer = customerDbService.getUser(reservationDto.getCustomerId()).orElseThrow(NotFoundException::new);

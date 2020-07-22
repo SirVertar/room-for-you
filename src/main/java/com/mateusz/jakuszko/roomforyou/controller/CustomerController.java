@@ -17,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("v1/customers")
 public class CustomerController {
-
     private final CustomerDbFacade customerDbFacade;
     private final CustomerValidator customerValidator;
 

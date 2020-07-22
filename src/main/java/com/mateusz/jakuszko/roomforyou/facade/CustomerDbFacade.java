@@ -34,7 +34,6 @@ import java.util.*;
 @RequiredArgsConstructor
 @Service
 public class CustomerDbFacade {
-
     private final CustomerDbService customerDbService;
     private final CustomerMapper customerMapper;
     private final ApartmentDbService apartmentDbService;
@@ -59,7 +58,6 @@ public class CustomerDbFacade {
         List<ReservationDto> reservationDtos = reservationMapper
                 .mapToReservationDtos(reservations);
         return customerMapper.mapToCustomerDto(customer, apartmentDtos, reservationDtos);
-
     }
 
     @Transactional
@@ -102,9 +100,7 @@ public class CustomerDbFacade {
             log.error("Customer doesn't exist");
             throw new NotFoundException();
         }
-
         saveDeletedInformationAboutCustomer(customer.get());
-
         Set<Long> deletedReservation = new HashSet<>();
         for (Reservation reservation : customer.get().getReservations()) {
             deletedReservation.add(reservation.getId());

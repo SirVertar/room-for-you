@@ -14,9 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TableClearer {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
     private final DataSource dataSource;
-
     private Connection connection;
 
     public void clearTables() {

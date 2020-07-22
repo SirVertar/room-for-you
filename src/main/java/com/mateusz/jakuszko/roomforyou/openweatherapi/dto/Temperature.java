@@ -20,4 +20,3 @@ public class Temperature {
     @JsonProperty("main")
     private TemperatureResponse temperatureResponse;
 }
-

@@ -9,7 +9,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableScheduling
 public class CoreConfiguration implements WebMvcConfigurer {
-
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();

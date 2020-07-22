@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class DeletedReservationMapper {
+
     public DeletedReservation mapToDeletedReservation(Reservation reservation) {
         return DeletedReservation.builder()
                 .previousReservationId(reservation.getId())

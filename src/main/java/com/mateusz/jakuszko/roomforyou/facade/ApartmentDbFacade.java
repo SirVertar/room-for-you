@@ -31,7 +31,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class ApartmentDbFacade {
-
     private final CustomerDbService customerDbService;
     private final ApartmentDbService apartmentDbService;
     private final ApartmentMapper apartmentMapper;
@@ -62,9 +61,9 @@ public class ApartmentDbFacade {
         log.info("Create Apartment");
         List<Reservation> reservations = reservationDbService.getReservationsByApartmentId(apartmentDto.getId());
         Customer customer = customerDbService.getUser(apartmentDto.getCustomerId()).orElseThrow(NotFoundException::new);
-        Map<String, String> map =  openCageGeocoderClient.getGeometryValues(apartmentDto);
+        Map<String, String> map = openCageGeocoderClient.getGeometryValues(apartmentDto);
         Double latitude = Double.parseDouble(map.get("latitude"));
-        Double longitude =Double.parseDouble(map.get("longitude"));
+        Double longitude = Double.parseDouble(map.get("longitude"));
         apartmentDto.setLatitude(latitude);
         apartmentDto.setLongitude(longitude);
         Apartment apartment = apartmentMapper.mapToApartment(apartmentDto, reservations, customer);
@@ -80,7 +79,6 @@ public class ApartmentDbFacade {
         return createApartment(apartmentDto);
     }
 
-    // TODO Add functionality - After delete apartment and reservations from user -> save in other entity
     @Transactional
     public void deleteApartment(Long apartmentId) {
         log.info("Delete apartment by id - " + apartmentId);
@@ -93,17 +91,14 @@ public class ApartmentDbFacade {
                 .map(Reservation::getId)
                 .findAny();
         if (reservationId.isPresent()) {
-            Reservation reservation = reservationDbService.gerReservation(reservationId.get()).orElseThrow(NotFoundException::new);
-            apartmentDbService.delete(apartmentId);
-            customer.getReservations().remove(reservation);
-            customer.getApartments().remove(apartment);
-            customerDbService.update(customer);
-            reservationDbService.delete(reservationId.get());
-        } else {
-            apartmentDbService.delete(apartmentId);
-            customer.getApartments().remove(apartment);
-            customerDbService.update(customer);
+            for (Reservation reservation : apartment.getReservations()) {
+                reservationDbService.delete(reservation.getId());
+            }
         }
+        customer.getApartments().remove(apartment);
+        customer.getReservations().removeAll(apartment.getReservations());
+        customerDbService.update(customer);
+        apartmentDbService.delete(apartmentId);
     }
 
     private void saveDeletedInformationAboutApartment(Apartment apartment) {

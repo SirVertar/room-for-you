@@ -1,6 +1,5 @@
 package com.mateusz.jakuszko.roomforyou.controller;
 
-
 import com.mateusz.jakuszko.roomforyou.dto.ReservationDto;
 import com.mateusz.jakuszko.roomforyou.facade.ReservationDbFacade;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("v1/reservations")
 public class ReservationController {
-
     private final ReservationDbFacade reservationDbFacade;
 
     @GetMapping

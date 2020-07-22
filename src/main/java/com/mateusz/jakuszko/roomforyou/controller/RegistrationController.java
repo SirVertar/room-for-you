@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping
 @Controller
 public class RegistrationController {
-
     private final CustomerDbFacade customerDbFacade;
 
     @GetMapping("v1/signup")
