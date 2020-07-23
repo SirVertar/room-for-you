@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RegistrationController {
     private final CustomerDbFacade customerDbFacade;
 
-    @GetMapping("v1/signup")
+    @GetMapping("/v1/signup")
     public String signUp(Model model) {
-        model.addAttribute("user", new CustomerDto());
+        model.addAttribute("customer", new CustomerDto());
         return "sign-up";
     }
 
-    @PostMapping("v1/register")
-    public String register(CustomerDto user) {
-        customerDbFacade.createCustomer(user);
+    @PostMapping("/v1/register")
+    public String register(CustomerDto customer) {
+        customerDbFacade.createCustomer(customer);
         return "sign-up";
     }
 }

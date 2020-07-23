@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.headers().disable();
         http.authorizeRequests()
-                .anyRequest().anonymous()
+                .antMatchers("/v1/deleted/customers").hasRole("admin")
                 .and()
                 .formLogin().defaultSuccessUrl("http://localhost:8070/");
     }
