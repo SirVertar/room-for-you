@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class DeletedCustomerMapper {
+
     public DeletedCustomer mapToDeletedCustomer(Customer customer, List<DeletedReservation> reservations,
                                                 List<DeletedApartment> apartments) {
         return DeletedCustomer.builder()

@@ -15,7 +15,7 @@ public class GsonSingleton {
 
     public static Gson getInstance() {
         if (gson == null) {
-            synchronized (GsonSingleton.class) {
+            synchronized (Gson.class) {
                 if (gson == null) {
                     gson = new Gson();
                 }

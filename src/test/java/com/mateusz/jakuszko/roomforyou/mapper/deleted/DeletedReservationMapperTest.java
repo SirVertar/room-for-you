@@ -15,10 +15,6 @@ public class DeletedReservationMapperTest {
     }
 
     @Test
-    public void mapToDeletedReservationDto() {
-    }
-
-    @Test
     public void mapToDeletedReservationDtos() {
     }
 }
