@@ -32,6 +32,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/v1/deleted/customers").hasRole("admin")
                 .and()
-                .formLogin().defaultSuccessUrl("http://localhost:8070/");
+                .formLogin().defaultSuccessUrl("http://mjakuszko.pl:8080/roomfront");
     }
 }

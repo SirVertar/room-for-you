@@ -19,7 +19,7 @@ public class DeletedReservationMapper {
                 .startDate(reservation.getStartDate())
                 .endDate(reservation.getEndDate())
                 .previousCustomerId(reservation.getCustomer().getId())
-                .previousCustomerId(reservation.getApartment().getId()).build();
+                .previousApartmentId(reservation.getApartment().getId()).build();
     }
 
     public List<DeletedReservation> mapToDeletedReservations(List<Reservation> reservations) {

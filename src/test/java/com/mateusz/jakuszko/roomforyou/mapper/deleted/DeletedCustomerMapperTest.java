@@ -80,7 +80,7 @@ public class DeletedCustomerMapperTest {
     }
 
     @Test
-    public void mapToDeletedCustomerDtos() {
+    public void shouldMapDeletedCustomersToDeletedCustomerDtos() {
         //Given
         List<DeletedCustomer> customers = Collections.singletonList(createDeletedCustomer());
         //When
