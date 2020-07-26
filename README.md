@@ -124,7 +124,29 @@
         * Requirements : RequestParameters - street, city
         * Sample of response for http://mjakuszko.pl:8080/room/v1/apartments/search?city=Terespol&street=Kraszewskiego
         * ![Algorithm](src/main/resources/img/CityStreet.png)
-    
+        
+* Deleted Entities endpoints
+    * Get deleted apartments
+        * Http method - GET
+        * Action - receive a deleted apartments
+        * URL : http://mjakuszko.pl:8080/room/v1/deleted/apartments/
+        * Sample of response:
+        * ![Algorithm](src/main/resources/img/DeletedApartments.png)
+    * Get deleted reservations
+        * Http method - GET
+        * Action - receive a deleted reservations
+        * URL : http://mjakuszko.pl:8080/room/v1/deleted/reservations/
+        * Sample of response:
+        * ![Algorithm](src/main/resources/img/DeletedReservations.png)
+    * Get deleted customers - available only for admin only
+        * If You want to use this endpoint for tests u need to login as admin: 
+            * username is "Admin" and password is "kodilla123"
+        * Http method - GET
+        * Action - receive a deleted customers
+        * URL : http://mjakuszko.pl:8080/room/v1/deleted/customers/
+        * Sample of response:
+        * ![Algorithm](src/main/resources/img/DeletedCustomers.png)
+        
 ## Technology
 - Java 8
 - JUnit
@@ -133,6 +155,10 @@
 - SpringBoot
 - H2 database
 - Postgresql database
+
+## In the projects I used connection with the following REST api's: 
+- url : https://openweathermap.org/
+- url : https://opencagedata.com/
 
 ## How to start up an application
 * First option
