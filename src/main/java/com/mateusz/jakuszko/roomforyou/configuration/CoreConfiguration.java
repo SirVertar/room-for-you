@@ -13,5 +13,4 @@ public class CoreConfiguration implements WebMvcConfigurer {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-
 }

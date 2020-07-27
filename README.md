@@ -2,12 +2,13 @@
 
 ## Table of contents
 * [Introduction](##Introduction)
-* [Screenshots](##Screenshots)
+* [Api endpoints documentation](##Api endpoints documentation)
 * [Technology](##Technology)
+* [External api used in application](##External api used in application)
 * [How to start up an application](##HowToStartUpAnApplication)
 
 ## Introduction
-###Room For You is a simple REST Api that has the capabilities to:
+### Room For You is a simple REST Api that has the capabilities to:
 * Customer
     * create a customer,
     * update a customer,
@@ -27,7 +28,7 @@
     * delete a reservation,
     * get data about reservations.
 
-## Api endpoints documentation: 
+## Api endpoints documentation
 * Customer endpoints
     * Get a list of all customers:
         * Http method - GET
@@ -119,7 +120,7 @@
         * ![Algorithm](src/main/resources/img/Temperature.png)
     * Get apartments by city and street name
         * Http method - GET
-        * Action - receive actual temperature near apartment in Celsius degrees
+        * Action - receive a list of apartments witch specific city and street 
         * URL : http://mjakuszko.pl:8080/room/v1/apartments/search?city=cityParameter&street=streetParameter
         * Requirements : RequestParameters - street, city
         * Sample of response for http://mjakuszko.pl:8080/room/v1/apartments/search?city=Terespol&street=Kraszewskiego
@@ -138,7 +139,7 @@
         * URL : http://mjakuszko.pl:8080/room/v1/deleted/reservations/
         * Sample of response:
         * ![Algorithm](src/main/resources/img/DeletedReservations.png)
-    * Get deleted customers - available only for admin only
+    * Get deleted customers - available for admin only
         * If You want to use this endpoint for tests u need to login as admin: 
             * username is "Admin" and password is "kodilla123"
         * Http method - GET
@@ -153,10 +154,11 @@
 - Gradle
 - Spring
 - SpringBoot
+- Spring security
 - H2 database
-- Postgresql database
+- PostgreSQL database (only in deployed application)
 
-## In the projects I used connection with the following REST api's: 
+## External api used in application
 - url : https://openweathermap.org/
 - url : https://opencagedata.com/
 
@@ -164,10 +166,17 @@
 * First option
     * application has been deployed on Tomcat server on my private VPS:
         * url to backend application: http://mjakuszko.pl:8080/room/
-    * there is also very simple frontend application which also has been deployed on the same sever:
+    * there is also very simple frontend application which has been deployed on the same sever, and it uses connection
+    to Room For You api:
         * url to frontend application: http://mjakuszko.pl:8080/roomfront/
 * Second option
     * download code from: 
         * https://github.com/SirVertar/room-for-you
+        * server port: default
     * if you want frontend application You can download code from:
         * https://github.com/SirVertar/room-for-you-front
+        * server port: 8070
+    * run a backend application in IntelliJ IDEA or Eclipse
+        * now u have available all endpoints which consist "Room For You" application 
+    * run a frontend application. After a run it will be available on port 8070:
+        * url : https://localhost:8070
