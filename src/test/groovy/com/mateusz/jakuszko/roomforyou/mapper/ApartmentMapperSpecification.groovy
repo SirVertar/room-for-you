@@ -39,7 +39,7 @@ class ApartmentMapperSpecification extends Specification {
                 .longitude(321.0)
                 .customerId(12L)
                 .reservationsIds(Collections.singletonList(11L))
-                .build();
+                .build()
     }
 
     def "assert bean creation"() {
@@ -47,7 +47,7 @@ class ApartmentMapperSpecification extends Specification {
         apartmentMapper != null
     }
 
-    def "aap Apartment to ApartmentDto class"() {
+    def "map Apartment to ApartmentDto class"() {
 
         given: "create apartment"
         Apartment apartment = createApartment()
