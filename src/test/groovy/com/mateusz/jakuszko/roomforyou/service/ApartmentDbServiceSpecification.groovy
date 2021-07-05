@@ -16,13 +16,12 @@ class ApartmentDbServiceSpecification extends Specification {
     @Autowired
     ApartmentRepository repository
 
-    def "should throw an exception when there isn't such apartment"() {
-        when: "pull apartment from database which doesn't exist"
+    def "Should not fetch any apartment for nonexistent id"() {
+        when:
         Optional<Apartment> apartment = service.getApartment(123)
-        apartment.orElseThrow(NotFoundException::new)
 
         then:
-        thrown(NotFoundException)
+        apartment.isEmpty()
     }
 
     def "should save and load apartment from db"() {
@@ -37,7 +36,7 @@ class ApartmentDbServiceSpecification extends Specification {
         checkIfFieldsAreCorrect(savedApartment, apartment)
     }
 
-    def "should save apartments and return list of apartments after pull from db"() {
+    def "Should return list of apartments"() {
         given:
         createAndSaveApartments()
 
@@ -58,22 +57,25 @@ class ApartmentDbServiceSpecification extends Specification {
     def "should update existing apartment"() {
         given:
         Apartment apartment = createApartment()
-        Apartment savedApartment = saveAndGetApartmentFromDb(apartment)
+        service.save(apartment)
+        Apartment savedApartment = service.getApartment(apartment.getId()).orElseThrow(NotFoundException::new)
 
         when:
-        Apartment updatedApartment = changeFieldsUpdateAndGetApartmentFromDb(savedApartment)
+        changeFieldsOfApartment(savedApartment)
+        service.update(savedApartment)
+        Optional <Apartment> updatedApartment = service.getApartment(savedApartment.getId())
 
         then:
-        notThrown(NotFoundException)
-        updatedApartment.getCity() == "Warsaw"
-        updatedApartment.getLatitude() == 23.2
-        updatedApartment.getLongitude() == 52.2
-        updatedApartment.getApartmentNumber() == 23
-        updatedApartment.getStreet() == "Pilsudskiego"
-        updatedApartment.getStreetNumber() == "43"
+        updatedApartment.isPresent()
+        updatedApartment.get().getCity() == "Warsaw"
+        updatedApartment.get().getLatitude() == 23.2
+        updatedApartment.get().getLongitude() == 52.2
+        updatedApartment.get().getApartmentNumber() == 23
+        updatedApartment.get().getStreet() == "Pilsudskiego"
+        updatedApartment.get().getStreetNumber() == "43"
     }
 
-    def "should not found an apartment when it hase been deleted"() {
+    def "should not found an apartment when it has been deleted"() {
         given: "create and save apartment into database"
         Apartment apartment = createApartment()
         service.save(apartment)
@@ -81,10 +83,9 @@ class ApartmentDbServiceSpecification extends Specification {
 
         when: "delete apartment and try to pull it from database"
         service.delete(id)
-        service.getApartment(id).orElseThrow(NotFoundException::new)
 
         then: "apartment shouldn't found"
-        thrown(NotFoundException)
+        service.getApartment(id).isEmpty()
     }
 
     private static Apartment createApartment() {
@@ -98,23 +99,20 @@ class ApartmentDbServiceSpecification extends Specification {
                 .build()
     }
 
-    private Apartment changeFieldsUpdateAndGetApartmentFromDb(Apartment savedApartment) {
+    private static void changeFieldsOfApartment(Apartment savedApartment) {
         savedApartment.setCity("Warsaw")
         savedApartment.setLatitude(23.2)
         savedApartment.setLongitude(52.2)
         savedApartment.setApartmentNumber(23)
         savedApartment.setStreet("Pilsudskiego")
         savedApartment.setStreetNumber("43")
-        service.update(savedApartment)
-        Apartment updatedApartment = service.getApartment(savedApartment.getId()).orElseThrow(NotFoundException::new)
-        updatedApartment
     }
 
     private Apartment saveAndGetApartmentFromDb(Apartment apartment) {
         service.save(apartment)
         Long apartmentId = apartment.getId()
         Optional<Apartment> savedApartmentOptional = service.getApartment(apartmentId)
-        savedApartmentOptional.orElseThrow(NotFoundException::new)
+        return savedApartmentOptional.orElseThrow(NotFoundException::new)
     }
 
     private static void checkIfFieldsAreCorrect(Apartment apartment1, Apartment apartment2) {
