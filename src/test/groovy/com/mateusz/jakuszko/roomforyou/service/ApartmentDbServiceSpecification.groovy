@@ -16,21 +16,6 @@ class ApartmentDbServiceSpecification extends Specification {
     @Autowired
     ApartmentRepository repository
 
-    private static Apartment createApartment() {
-        return Apartment.builder()
-                .latitude(11.0)
-                .longitude(12.0)
-                .street("WallStreet")
-                .streetNumber("13")
-                .apartmentNumber(14)
-                .reservations(new ArrayList<Reservation>())
-                .build()
-    }
-
-    def cleanup() {
-        repository.deleteAll()
-    }
-
     def "should throw an exception when there isn't such apartment"() {
         when: "pull apartment from database which doesn't exist"
         Optional<Apartment> apartment = service.getApartment(123)
@@ -41,37 +26,20 @@ class ApartmentDbServiceSpecification extends Specification {
     }
 
     def "should save and load apartment from db"() {
-        given: "create apartment"
+        given:
         Apartment apartment = createApartment()
 
-        when: "save an apartment"
-        service.save(apartment)
-        Long apartmentId = apartment.getId()
-        and: "pull apartment from database"
-        Optional<Apartment> savedApartmentOptional = service.getApartment(apartmentId)
-        Apartment savedApartment = savedApartmentOptional.orElseThrow(NotFoundException::new)
+        when:
+        def savedApartment = saveAndGetApartmentFromDb(apartment)
 
-        then: "check if there is an exception"
+        then:
         notThrown(NotFoundException)
-        and: "assert all fields"
-        savedApartment.getId() == apartmentId
-        savedApartment.getReservations() == apartment.getReservations()
-        savedApartment.getStreetNumber() == apartment.getStreetNumber()
-        savedApartment.getApartmentNumber() == apartment.getApartmentNumber()
-        savedApartment.getStreet() == apartment.getStreet()
-        savedApartment.getLongitude() == apartment.getLongitude()
-        savedApartment.getLatitude() == apartment.getLatitude()
-        savedApartment.getCustomer() == apartment.getCustomer()
-        savedApartment.getCity() == apartment.getCity()
+        checkIfFieldsAreCorrect(savedApartment, apartment)
     }
 
     def "should save apartments and return list of apartments after pull from db"() {
-        given: "create apartments"
-        Apartment apartment1 = createApartment()
-        Apartment apartment2 = createApartment()
-        and: "save apartments"
-        service.save(apartment2)
-        service.save(apartment1)
+        given:
+        createAndSaveApartments()
 
         when: "pull apartments from db"
         List<Apartment> apartments = service.getApartments()
@@ -88,29 +56,15 @@ class ApartmentDbServiceSpecification extends Specification {
     }
 
     def "should update existing apartment"() {
-        given: "create and save apartment into database"
+        given:
         Apartment apartment = createApartment()
-        service.save(apartment)
-        Long apartmentId = apartment.getId()
-        and: "pull apartment from database"
-        Optional<Apartment> savedApartmentOptional = service.getApartment(apartmentId)
-        Apartment savedApartment = savedApartmentOptional.orElseThrow(NotFoundException::new)
+        Apartment savedApartment = saveAndGetApartmentFromDb(apartment)
 
-        when: "change fields and update apartment"
-        savedApartment.setCity("Warsaw")
-        savedApartment.setLatitude(23.2)
-        savedApartment.setLongitude(52.2)
-        savedApartment.setApartmentNumber(23)
-        savedApartment.setStreet("Pilsudskiego")
-        savedApartment.setStreetNumber("43")
-        and: "update changed apartment"
-        service.update(savedApartment)
-        and: "pull updated apartment"
-        Apartment updatedApartment = service.getApartment(apartmentId).orElseThrow(NotFoundException::new)
+        when:
+        Apartment updatedApartment = changeFieldsUpdateAndGetApartmentFromDb(savedApartment)
 
-        then: "shouldn't throw an exception"
+        then:
         notThrown(NotFoundException)
-        and: "all changed fields should be correct"
         updatedApartment.getCity() == "Warsaw"
         updatedApartment.getLatitude() == 23.2
         updatedApartment.getLongitude() == 52.2
@@ -131,5 +85,58 @@ class ApartmentDbServiceSpecification extends Specification {
 
         then: "apartment shouldn't found"
         thrown(NotFoundException)
+    }
+
+    private static Apartment createApartment() {
+        return Apartment.builder()
+                .latitude(11.0)
+                .longitude(12.0)
+                .street("WallStreet")
+                .streetNumber("13")
+                .apartmentNumber(14)
+                .reservations(new ArrayList<Reservation>())
+                .build()
+    }
+
+    private Apartment changeFieldsUpdateAndGetApartmentFromDb(Apartment savedApartment) {
+        savedApartment.setCity("Warsaw")
+        savedApartment.setLatitude(23.2)
+        savedApartment.setLongitude(52.2)
+        savedApartment.setApartmentNumber(23)
+        savedApartment.setStreet("Pilsudskiego")
+        savedApartment.setStreetNumber("43")
+        service.update(savedApartment)
+        Apartment updatedApartment = service.getApartment(apartmentId).orElseThrow(NotFoundException::new)
+        updatedApartment
+    }
+
+    private Apartment saveAndGetApartmentFromDb(Apartment apartment) {
+        service.save(apartment)
+        Long apartmentId = apartment.getId()
+        Optional<Apartment> savedApartmentOptional = service.getApartment(apartmentId)
+        savedApartmentOptional.orElseThrow(NotFoundException::new)
+    }
+
+    private static void checkIfFieldsAreCorrect(Apartment apartment1, Apartment apartment2) {
+        assert apartment1.getId() == apartment2.getId()
+        assert apartment1.getReservations() == apartment2.getReservations()
+        assert apartment1.getStreetNumber() == apartment2.getStreetNumber()
+        assert apartment1.getApartmentNumber() == apartment2.getApartmentNumber()
+        assert apartment1.getStreet() == apartment2.getStreet()
+        assert apartment1.getLongitude() == apartment2.getLongitude()
+        assert apartment1.getLatitude() == apartment2.getLatitude()
+        assert apartment1.getCustomer() == apartment2.getCustomer()
+        assert apartment1.getCity() == apartment2.getCity()
+    }
+
+    private void createAndSaveApartments() {
+        Apartment apartment1 = createApartment()
+        Apartment apartment2 = createApartment()
+        service.save(apartment2)
+        service.save(apartment1)
+    }
+
+    def cleanup() {
+        repository.deleteAll()
     }
 }
