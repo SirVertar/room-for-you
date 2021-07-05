@@ -66,7 +66,7 @@ public class OpenCageGeocoderClientTest {
         String latitude = coordinatesMap.get("latitude");
         String longitude = coordinatesMap.get("longitude");
         //Then
-        assertEquals("52.4189675", latitude);
+        assertEquals("52.4189676", latitude);
         assertEquals("16.8941083", longitude);
     }
 
