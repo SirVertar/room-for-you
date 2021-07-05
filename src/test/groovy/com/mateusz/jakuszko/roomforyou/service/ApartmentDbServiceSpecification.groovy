@@ -106,7 +106,7 @@ class ApartmentDbServiceSpecification extends Specification {
         savedApartment.setStreet("Pilsudskiego")
         savedApartment.setStreetNumber("43")
         service.update(savedApartment)
-        Apartment updatedApartment = service.getApartment(apartmentId).orElseThrow(NotFoundException::new)
+        Apartment updatedApartment = service.getApartment(savedApartment.getId()).orElseThrow(NotFoundException::new)
         updatedApartment
     }
 
