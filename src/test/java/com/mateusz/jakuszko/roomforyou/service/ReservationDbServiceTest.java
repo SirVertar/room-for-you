@@ -37,7 +37,7 @@ public class ReservationDbServiceTest {
         //When
         reservationDbService.save(reservation);
         Long reservationId = reservation.getId();
-        Optional<Reservation> savedReservation = reservationDbService.gerReservation(reservationId);
+        Optional<Reservation> savedReservation = reservationDbService.getReservation(reservationId);
         //Then
         assertTrue(savedReservation.isPresent());
         assertEquals(LocalDate.of(2020, 5, 6), savedReservation.get().getEndDate());
@@ -70,10 +70,10 @@ public class ReservationDbServiceTest {
         reservationDbService.save(reservation);
         Long reservationId = reservation.getId();
         Reservation savedReservation = reservationDbService
-                .gerReservation(reservationId).orElseThrow(NotFoundException::new);
+                .getReservation(reservationId).orElseThrow(NotFoundException::new);
         savedReservation.setEndDate(LocalDate.of(2020, 7, 21));
         reservationDbService.update(savedReservation);
-        Optional<Reservation> updatedReservation = reservationDbService.gerReservation(reservationId);
+        Optional<Reservation> updatedReservation = reservationDbService.getReservation(reservationId);
         //Then
         assertTrue(updatedReservation.isPresent());
         assertEquals(LocalDate.of(2020, 7, 21), updatedReservation.get().getEndDate());
@@ -88,7 +88,7 @@ public class ReservationDbServiceTest {
         reservationDbService.save(reservation);
         Long reservationId = reservation.getId();
         reservationDbService.delete(reservationId);
-        Optional<Reservation> deletedReservation = reservationDbService.gerReservation(reservationId);
+        Optional<Reservation> deletedReservation = reservationDbService.getReservation(reservationId);
         //Then
         assertFalse(deletedReservation.isPresent());
     }

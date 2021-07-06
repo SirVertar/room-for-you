@@ -16,7 +16,7 @@ public class ReservationDbService {
         this.reservationRepository = reservationRepository;
     }
 
-    public Optional<Reservation> gerReservation(Long id) {
+    public Optional<Reservation> getReservation(Long id) {
         return reservationRepository.findById(id);
     }
 

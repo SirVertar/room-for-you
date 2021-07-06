@@ -197,7 +197,7 @@ public class ApartmentDbFacadeTest {
         apartmentDbFacade.deleteApartment(apartmentId);
         Optional<Apartment> deletedApartment = apartmentDbService.getApartment(apartmentId);
         Optional<Customer> user = customerDbService.getUser(userId);
-        Optional<Reservation> reservation = reservationDbService.gerReservation(reservationId);
+        Optional<Reservation> reservation = reservationDbService.getReservation(reservationId);
         //Then
         assertFalse(deletedApartment.isPresent());
         assertTrue(user.isPresent());

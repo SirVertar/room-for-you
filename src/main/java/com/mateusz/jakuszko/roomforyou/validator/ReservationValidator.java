@@ -26,6 +26,6 @@ public class ReservationValidator {
     public boolean checkIsEndDateAfterStartDateAndStartDateAfterNow(ReservationDto reservationDto) {
         LocalDate startDate = reservationDto.getStartDate();
         LocalDate endDate = reservationDto.getEndDate();
-        return startDate.isAfter(LocalDate.now()) && startDate.isBefore(endDate);
+        return startDate != null && endDate!= null && startDate.isAfter(LocalDate.now().minusDays(1)) && startDate.isBefore(endDate.plusDays(1));
     }
 }

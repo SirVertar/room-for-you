@@ -158,7 +158,7 @@ public class ReservationDbFacadeTest {
         List<Reservation> reservationsInApartment = apartmentDbService.getApartment(apartmentId)
                 .orElseThrow(NotFoundException::new).getReservations();
         List<Reservation> reservations = reservationDbService.getReservationsByUserId(userId);
-        Optional<Reservation> reservation = reservationDbService.gerReservation(reservationId);
+        Optional<Reservation> reservation = reservationDbService.getReservation(reservationId);
         //Then
         assertTrue(reservation.isPresent());
         assertEquals(1, reservations.size());
@@ -179,7 +179,7 @@ public class ReservationDbFacadeTest {
         Long reservationId = ids.get(2);
         //When
         reservationDbFacade.deleteReservation(reservationId);
-        Optional<Reservation> deletedReservation = reservationDbService.gerReservation(reservationId);
+        Optional<Reservation> deletedReservation = reservationDbService.getReservation(reservationId);
         Optional<Apartment> apartment = apartmentDbService.getApartment(apartmentId);
         Optional<Customer> user = customerDbService.getUser(userId);
         //Then
