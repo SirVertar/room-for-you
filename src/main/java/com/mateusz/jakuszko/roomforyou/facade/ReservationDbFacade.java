@@ -52,7 +52,8 @@ public class ReservationDbFacade {
                 "Apartment_Id - " + reservationDto.getApartmentId() +
                 ", Start_Date - " + reservationDto.getStartDate() +
                 ", End_date - " + reservationDto.getEndDate());
-        if (!reservationValidator.checkIsTherePossibilityToMakeReservation(reservationDto) ||
+        if (!reservationValidator.heckIsEndAndStartDateAreNotNull(reservationDto) ||
+                !reservationValidator.checkIsTherePossibilityToMakeReservation(reservationDto) ||
                 !reservationValidator.checkIsEndDateAfterStartDateAndStartDateAfterNow(reservationDto)) {
             throw new InvalidReservationDateException();
         }
