@@ -35,7 +35,7 @@ public class ReservationDbFacade {
 
     public ReservationDto getReservation(Long reservationId) {
         log.info("Get Reservation by id - " + reservationId);
-        Reservation reservation = reservationDbService.gerReservation(reservationId)
+        Reservation reservation = reservationDbService.getReservation(reservationId)
                 .orElseThrow(NotFoundException::new);
         return reservationMapper.mapToReservationDto(reservation);
     }
@@ -52,8 +52,9 @@ public class ReservationDbFacade {
                 "Apartment_Id - " + reservationDto.getApartmentId() +
                 ", Start_Date - " + reservationDto.getStartDate() +
                 ", End_date - " + reservationDto.getEndDate());
-        if (!reservationValidator.checkIsTherePossibilityToMakeReservation(reservationDto) ||
-                !reservationValidator.checkIsEndDateAfterStartDateAndStartDateAfterNow(reservationDto)) {
+        if (!reservationValidator.areReservationDatesGiven(reservationDto) ||
+                !reservationValidator.isPossibilityToMakeReservation(reservationDto) ||
+                !reservationValidator.validateEndAndStartDate(reservationDto)) {
             throw new InvalidReservationDateException();
         }
         Customer customer = customerDbService.getUser(reservationDto.getCustomerId()).orElseThrow(NotFoundException::new);
@@ -66,7 +67,7 @@ public class ReservationDbFacade {
         reservationDbService.save(reservation);
         apartmentDbService.update(apartment);
         customerDbService.update(customer);
-        return reservationDto;
+        return reservationMapper.mapToReservationDto(reservation);
     }
 
     @Transactional
@@ -85,7 +86,7 @@ public class ReservationDbFacade {
 
     public void deleteReservation(Long id) {
         log.info("Delete Reservation by id - " + id);
-        Reservation reservation = reservationDbService.gerReservation(id).orElseThrow(NotFoundException::new);
+        Reservation reservation = reservationDbService.getReservation(id).orElseThrow(NotFoundException::new);
         saveDeletedInformationAboutReservation(reservation);
         Long apartmentId = reservation.getApartment().getId();
         Long userId = reservation.getCustomer().getId();

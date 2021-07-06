@@ -181,7 +181,7 @@ public class CustomerDbFacadeTest {
         Long apartmentId = idsList.get(1);
         Long reservationId = idsList.get(2);
         Apartment apartment = apartmentDbService.getApartment(apartmentId).orElseThrow(NotFoundException::new);
-        Reservation reservation = reservationDbService.gerReservation(reservationId).orElseThrow(NotFoundException::new);
+        Reservation reservation = reservationDbService.getReservation(reservationId).orElseThrow(NotFoundException::new);
         Customer customer = customerDbService.getUser(userId).orElseThrow(NotFoundException::new);
         ApartmentDto apartmentDto = apartmentMapper.mapToApartmentDto(apartment);
         ReservationDto reservationDto = reservationMapper.mapToReservationDto(reservation);
@@ -212,6 +212,6 @@ public class CustomerDbFacadeTest {
         customerDbFacade.getCustomer(userId);
         assertFalse(customerDbService.getUser(userId).isPresent());
         assertFalse(apartmentDbService.getApartment(apartmentId).isPresent());
-        assertFalse(reservationDbService.gerReservation(reservationId).isPresent());
+        assertFalse(reservationDbService.getReservation(reservationId).isPresent());
     }
 }
