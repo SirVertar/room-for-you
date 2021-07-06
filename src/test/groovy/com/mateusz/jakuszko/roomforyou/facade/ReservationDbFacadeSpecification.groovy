@@ -3,8 +3,8 @@ package com.mateusz.jakuszko.roomforyou.facade
 import com.mateusz.jakuszko.roomforyou.dto.ReservationDto
 import com.mateusz.jakuszko.roomforyou.entity.Apartment
 import com.mateusz.jakuszko.roomforyou.entity.Customer
-import com.mateusz.jakuszko.roomforyou.entity.Reservation
 import com.mateusz.jakuszko.roomforyou.exceptions.InvalidReservationDateException
+import com.mateusz.jakuszko.roomforyou.repository.ReservationRepository
 import com.mateusz.jakuszko.roomforyou.service.ApartmentDbService
 import com.mateusz.jakuszko.roomforyou.service.CustomerDbService
 import com.mateusz.jakuszko.roomforyou.service.ReservationDbService
@@ -12,16 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.crypto.password.PasswordEncoder
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import java.time.LocalDate
 
 @SpringBootTest
 class ReservationDbFacadeSpecification extends Specification {
-
-    private static final int CUSTOMER_INDEX = 0
-    private static final int APARTMENT_INDEX = 1
-    private static final int RESERVATION_INDEX = 2
-    private List<Long> idsList
 
     @Autowired
     private CustomerDbService customerDbService
@@ -33,31 +29,65 @@ class ReservationDbFacadeSpecification extends Specification {
     private PasswordEncoder passwordEncoder
     @Autowired
     private ReservationDbFacade reservationDbFacade
+    @Autowired
+    private ReservationRepository repository
+
+    private Customer customer
+    private Apartment apartment
 
     def setup() {
-        idsList = prepareData()
+        createCustomer()
+        createApartment(customer)
+    }
+
+    def cleanup() {
+        repository.deleteAll()
     }
 
     def "should fetch reservation from db"() {
+        given:
+        ReservationDto reservationDto = createReservationDto(LocalDate.now().plusDays(20),
+                LocalDate.now().plusDays(24),
+                customer,
+                apartment)
+        Long id = reservationDbFacade.createReservation(reservationDto).getId()
+
         when:
-        ReservationDto reservation = reservationDbFacade.getReservation(idsList.get(RESERVATION_INDEX))
+        ReservationDto reservation = reservationDbFacade.getReservation(id)
+
         then:
-        verifyAllFields(reservation, LocalDate.now().plusDays(20), LocalDate.now().plusDays(24))
+        verifyAllFields(reservation, LocalDate.now().plusDays(20),
+                LocalDate.now().plusDays(24), customer.getId(), apartment.getId())
     }
 
     def "should create reservation"() {
         given:
-        ReservationDto reservationDto = createReservation(LocalDate.now().plusDays(5), LocalDate.now().plusDays(8))
+        ReservationDto reservationDto = createReservationDto(LocalDate.now().plusDays(5),
+                LocalDate.now().plusDays(8),
+                customer,
+                apartment)
+
         when:
         ReservationDto createdReservation = reservationDbFacade.createReservation(reservationDto)
+
         then:
         reservationDbService.getReservation(createdReservation.getId()).isPresent()
-        verifyAllFields(createdReservation, LocalDate.now().plusDays(5), LocalDate.now().plusDays(8))
+        verifyAllFields(createdReservation, LocalDate.now().plusDays(5),
+                LocalDate.now().plusDays(8), customer.getId(), apartment.getId())
     }
 
-    def "shouldn't create a reservation - invalid reservation dates"() {
+    @Unroll('start - #startDate, end - #endDate')
+    def "shouldn't create a reservation because of invalid reservation dates"() {
+        given:
+        ReservationDto reservationDto = createReservationDto(LocalDate.now().plusDays(20),
+                LocalDate.now().plusDays(24),
+                customer,
+                apartment)
+        reservationDbFacade.createReservation(reservationDto)
+
         when:
-        ReservationDto reservation = reservationDbFacade.createReservation(createReservation(startDate, endDate))
+        ReservationDto reservation = reservationDbFacade.createReservation(createReservationDto(startDate, endDate,
+                customer, apartment))
 
         then:
         reservation == null
@@ -77,9 +107,16 @@ class ReservationDbFacadeSpecification extends Specification {
         LocalDate.now().plusDays(0)  | null
     }
 
+    @Unroll('start - #startDate, end - #endDate')
     def "should create a reservation - correct reservation dates"() {
-        expect:
-        reservationDbFacade.createReservation(createReservation(startDate, endDate)) != null
+        given:
+        ReservationDto reservationDto = createReservationDto(startDate, endDate, customer, apartment)
+
+        when:
+        Long id = reservationDbFacade.createReservation(reservationDto).getId()
+
+        then:
+        verifyAllFields(reservationDbFacade.getReservation(id), startDate, endDate, customer.getId(), apartment.getId())
 
         where:
         startDate                    | endDate
@@ -92,25 +129,41 @@ class ReservationDbFacadeSpecification extends Specification {
 
     def "should update a reservation"() {
         given:
-        ReservationDto reservationDto = reservationDbFacade.getReservation(idsList.get(RESERVATION_INDEX))
+        ReservationDto reservationDto = createReservationDto(LocalDate.now().plusDays(20),
+                LocalDate.now().plusDays(24),
+                customer,
+                apartment)
+        Long id = reservationDbFacade.createReservation(reservationDto).getId()
+        ReservationDto fetchedReservation = reservationDbFacade.getReservation(id)
+        updateReservation(fetchedReservation, LocalDate.now().plusDays(22), LocalDate.now().plusDays(26))
+
         when:
-        updateReservation(reservationDto)
-        reservationDbFacade.updateReservation(reservationDto)
+        reservationDbFacade.updateReservation(fetchedReservation)
+
         then:
-        verifyAllFields(reservationDto,
+        verifyAllFields(reservationDbFacade.getReservation(id),
                 LocalDate.now().plusDays(22),
-                LocalDate.now().plusDays(26))
+                LocalDate.now().plusDays(26),
+                customer.getId(),
+                apartment.getId())
     }
 
     def "should delete reservation"() {
+        given:
+        ReservationDto reservationDto = createReservationDto(LocalDate.now().plusDays(20),
+                LocalDate.now().plusDays(24),
+                customer,
+                apartment)
+        Long id = reservationDbFacade.createReservation(reservationDto).getId()
+
         when:
-        reservationDbFacade.deleteReservation(idsList.get(RESERVATION_INDEX))
+        reservationDbFacade.deleteReservation(id)
+
         then:
-        reservationDbService.getReservation(idsList.get(RESERVATION_INDEX)).isEmpty()
+        reservationDbService.getReservation(id).isEmpty()
     }
 
-
-    private List<Long> prepareData() {
+    private void createCustomer() {
         Customer customer = Customer.builder()
                 .name("Mateusz")
                 .surname("Jakuszko")
@@ -119,7 +172,10 @@ class ReservationDbFacadeSpecification extends Specification {
                 .role("Admin")
                 .email("mateusz.jakuszko@gmail.com")
                 .build()
+        this.customer = customerDbService.save(customer, passwordEncoder)
+    }
 
+    private void createApartment(Customer customer) {
         Apartment apartment = Apartment.builder()
                 .city("Terespol")
                 .street("Kraszewskiego")
@@ -129,53 +185,26 @@ class ReservationDbFacadeSpecification extends Specification {
                 .longitude(321.0)
                 .customer(customer)
                 .build()
-
-        Reservation reservation = Reservation.builder()
-                .startDate(LocalDate.now().plusDays(20))
-                .endDate(LocalDate.now().plusDays(24))
-                .apartment(apartment)
-                .customer(customer)
-                .build()
-
-        customerDbService.save(customer, passwordEncoder)
-        apartmentDbService.save(apartment)
-
-        List<Apartment> apartments = [apartment]
-        List<Reservation> reservations = [reservation]
-        apartment.setReservations(reservations)
-
-        customer.setApartments(apartments)
-        customer.setReservations(reservations)
-
-        reservationDbService.save(reservation)
-        apartmentDbService.update(apartment)
-        customerDbService.update(customer)
-
-        List<Long> ids = new ArrayList<>()
-        ids.add(CUSTOMER_INDEX, customer.getId())
-        ids.add(APARTMENT_INDEX, apartment.getId())
-        ids.add(RESERVATION_INDEX, reservation.getId())
-        return ids
+        this.apartment = apartmentDbService.save(apartment)
     }
 
-    private void verifyAllFields(ReservationDto reservation, LocalDate startDate, LocalDate endDate) {
-        assert reservation.getCustomerId() == idsList.get(CUSTOMER_INDEX)
-        assert reservation.getApartmentId() == idsList.get(APARTMENT_INDEX)
+    private static void verifyAllFields(ReservationDto reservation, LocalDate startDate, LocalDate endDate, Long customerId, Long ApartmentId) {
+        assert reservation.getCustomerId() == customerId
+        assert reservation.getApartmentId() == ApartmentId
         assert reservation.getStartDate() == startDate
         assert reservation.getEndDate() == endDate
     }
 
-    private ReservationDto createReservation(LocalDate startDate, LocalDate endDate) {
+    private static ReservationDto createReservationDto(LocalDate startDate, LocalDate endDate, Customer customer, Apartment apartment) {
         return ReservationDto.builder()
-                .apartmentId(idsList.get(APARTMENT_INDEX))
-                .customerId(idsList.get(CUSTOMER_INDEX))
+                .apartmentId(apartment.getId())
+                .customerId(customer.getId())
                 .startDate(startDate)
                 .endDate(endDate).build()
     }
 
-    private static void updateReservation(reservationDto) {
-        reservationDto.setStartDate(reservationDto.getStartDate().plusDays(2))
-        reservationDto.setEndDate(reservationDto.getEndDate().plusDays(2))
+    private static void updateReservation(reservationDto, LocalDate startDate, LocalDate endDate) {
+        reservationDto.setStartDate(startDate)
+        reservationDto.setEndDate(endDate)
     }
-
 }

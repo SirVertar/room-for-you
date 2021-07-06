@@ -29,7 +29,7 @@ public class ReservationValidator {
         return startDate != null && endDate != null && startDate.isAfter(LocalDate.now().minusDays(1)) && startDate.isBefore(endDate.plusDays(1));
     }
 
-    public boolean heckIsEndAndStartDateAreNotNull(ReservationDto reservationDto) {
+    public boolean areReservationDatesGiven(ReservationDto reservationDto) {
         return reservationDto.getStartDate() != null && reservationDto.getEndDate() != null;
     }
 }
