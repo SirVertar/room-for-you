@@ -53,8 +53,8 @@ public class ReservationDbFacade {
                 ", Start_Date - " + reservationDto.getStartDate() +
                 ", End_date - " + reservationDto.getEndDate());
         if (!reservationValidator.areReservationDatesGiven(reservationDto) ||
-                !reservationValidator.checkIsTherePossibilityToMakeReservation(reservationDto) ||
-                !reservationValidator.checkIsEndDateAfterStartDateAndStartDateAfterNow(reservationDto)) {
+                !reservationValidator.isPossibilityToMakeReservation(reservationDto) ||
+                !reservationValidator.validateEndAndStartDate(reservationDto)) {
             throw new InvalidReservationDateException();
         }
         Customer customer = customerDbService.getUser(reservationDto.getCustomerId()).orElseThrow(NotFoundException::new);

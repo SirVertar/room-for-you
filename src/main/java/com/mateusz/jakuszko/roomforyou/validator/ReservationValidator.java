@@ -14,7 +14,7 @@ import java.util.List;
 public class ReservationValidator {
     private final ReservationDbService reservationDbService;
 
-    public boolean checkIsTherePossibilityToMakeReservation(ReservationDto reservationDto) {
+    public boolean isPossibilityToMakeReservation(ReservationDto reservationDto) {
         LocalDate startDate = reservationDto.getStartDate();
         LocalDate endDate = reservationDto.getEndDate();
         List<Reservation> reservations = reservationDbService
@@ -23,7 +23,7 @@ public class ReservationValidator {
                 reservation.getEndDate().isAfter(startDate));
     }
 
-    public boolean checkIsEndDateAfterStartDateAndStartDateAfterNow(ReservationDto reservationDto) {
+    public boolean validateEndAndStartDate(ReservationDto reservationDto) {
         LocalDate startDate = reservationDto.getStartDate();
         LocalDate endDate = reservationDto.getEndDate();
         return startDate != null && endDate != null && startDate.isAfter(LocalDate.now().minusDays(1)) && startDate.isBefore(endDate.plusDays(1));

@@ -88,13 +88,13 @@ public class ReservationValidatorTest {
                 .endDate(LocalDate.of(2020, 8, 15)).build();
 
         //When
-        boolean isItPossibleToMakeReservation1 = reservationValidator.checkIsTherePossibilityToMakeReservation(reservation1);
-        boolean isItPossibleToMakeReservation2 = reservationValidator.checkIsTherePossibilityToMakeReservation(reservation2);
-        boolean isItPossibleToMakeReservation3 = reservationValidator.checkIsTherePossibilityToMakeReservation(reservation3);
-        boolean isItPossibleToMakeReservation4 = reservationValidator.checkIsTherePossibilityToMakeReservation(reservation4);
-        boolean isItPossibleToMakeReservation5 = reservationValidator.checkIsTherePossibilityToMakeReservation(reservation5);
-        boolean isItPossibleToMakeReservation6 = reservationValidator.checkIsTherePossibilityToMakeReservation(reservation6);
-        boolean isItPossibleToMakeReservation7 = reservationValidator.checkIsTherePossibilityToMakeReservation(reservation7);
+        boolean isItPossibleToMakeReservation1 = reservationValidator.isPossibilityToMakeReservation(reservation1);
+        boolean isItPossibleToMakeReservation2 = reservationValidator.isPossibilityToMakeReservation(reservation2);
+        boolean isItPossibleToMakeReservation3 = reservationValidator.isPossibilityToMakeReservation(reservation3);
+        boolean isItPossibleToMakeReservation4 = reservationValidator.isPossibilityToMakeReservation(reservation4);
+        boolean isItPossibleToMakeReservation5 = reservationValidator.isPossibilityToMakeReservation(reservation5);
+        boolean isItPossibleToMakeReservation6 = reservationValidator.isPossibilityToMakeReservation(reservation6);
+        boolean isItPossibleToMakeReservation7 = reservationValidator.isPossibilityToMakeReservation(reservation7);
         //Then
         assertFalse(isItPossibleToMakeReservation1);
         assertTrue(isItPossibleToMakeReservation2);

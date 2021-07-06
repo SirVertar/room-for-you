@@ -32,13 +32,8 @@ class ReservationDbFacadeSpecification extends Specification {
     @Autowired
     private ReservationRepository repository
 
-    private Customer customer
-    private Apartment apartment
-
-    def setup() {
-        createCustomer()
-        createApartment(customer)
-    }
+    private Customer customer = createCustomer()
+    private Apartment apartment = createApartment(customer)
 
     def cleanup() {
         repository.deleteAll()
@@ -61,13 +56,11 @@ class ReservationDbFacadeSpecification extends Specification {
     }
 
     def "should create reservation"() {
-        given:
+        when:
         ReservationDto reservationDto = createReservationDto(LocalDate.now().plusDays(5),
                 LocalDate.now().plusDays(8),
                 customer,
                 apartment)
-
-        when:
         ReservationDto createdReservation = reservationDbFacade.createReservation(reservationDto)
 
         then:
@@ -76,8 +69,8 @@ class ReservationDbFacadeSpecification extends Specification {
                 LocalDate.now().plusDays(8), customer.getId(), apartment.getId())
     }
 
-    @Unroll('start - #startDate, end - #endDate')
-    def "shouldn't create a reservation because of invalid reservation dates"() {
+    @Unroll
+    def "shouldn't create a reservation because of invalid reservation dates | start #startDate, end #endDate"() {
         given:
         ReservationDto reservationDto = createReservationDto(LocalDate.now().plusDays(20),
                 LocalDate.now().plusDays(24),
@@ -107,12 +100,10 @@ class ReservationDbFacadeSpecification extends Specification {
         LocalDate.now().plusDays(0)  | null
     }
 
-    @Unroll('start - #startDate, end - #endDate')
-    def "should create a reservation - correct reservation dates"() {
-        given:
-        ReservationDto reservationDto = createReservationDto(startDate, endDate, customer, apartment)
-
+    @Unroll
+    def "should create a reservation - correct reservation dates | start #startDate, end #endDate"() {
         when:
+        ReservationDto reservationDto = createReservationDto(startDate, endDate, customer, apartment)
         Long id = reservationDbFacade.createReservation(reservationDto).getId()
 
         then:
@@ -135,9 +126,10 @@ class ReservationDbFacadeSpecification extends Specification {
                 apartment)
         Long id = reservationDbFacade.createReservation(reservationDto).getId()
         ReservationDto fetchedReservation = reservationDbFacade.getReservation(id)
-        updateReservation(fetchedReservation, LocalDate.now().plusDays(22), LocalDate.now().plusDays(26))
 
         when:
+        fetchedReservation.setStartDate(LocalDate.now().plusDays(22))
+        fetchedReservation.setEndDate(LocalDate.now().plusDays(26))
         reservationDbFacade.updateReservation(fetchedReservation)
 
         then:
@@ -163,7 +155,7 @@ class ReservationDbFacadeSpecification extends Specification {
         reservationDbService.getReservation(id).isEmpty()
     }
 
-    private void createCustomer() {
+    private Customer createCustomer() {
         Customer customer = Customer.builder()
                 .name("Mateusz")
                 .surname("Jakuszko")
@@ -172,10 +164,10 @@ class ReservationDbFacadeSpecification extends Specification {
                 .role("Admin")
                 .email("mateusz.jakuszko@gmail.com")
                 .build()
-        this.customer = customerDbService.save(customer, passwordEncoder)
+        return customerDbService.save(customer, passwordEncoder)
     }
 
-    private void createApartment(Customer customer) {
+    private Apartment createApartment(Customer customer) {
         Apartment apartment = Apartment.builder()
                 .city("Terespol")
                 .street("Kraszewskiego")
@@ -185,7 +177,7 @@ class ReservationDbFacadeSpecification extends Specification {
                 .longitude(321.0)
                 .customer(customer)
                 .build()
-        this.apartment = apartmentDbService.save(apartment)
+        return apartmentDbService.save(apartment)
     }
 
     private static void verifyAllFields(ReservationDto reservation, LocalDate startDate, LocalDate endDate, Long customerId, Long ApartmentId) {
@@ -201,10 +193,5 @@ class ReservationDbFacadeSpecification extends Specification {
                 .customerId(customer.getId())
                 .startDate(startDate)
                 .endDate(endDate).build()
-    }
-
-    private static void updateReservation(reservationDto, LocalDate startDate, LocalDate endDate) {
-        reservationDto.setStartDate(startDate)
-        reservationDto.setEndDate(endDate)
     }
 }
