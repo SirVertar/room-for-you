@@ -1,0 +1,7 @@
+version: '3'
+services:
+  room:
+    build: .
+    ports:
+      - "8100:8100"
+    restart: always

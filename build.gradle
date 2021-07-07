@@ -2,7 +2,6 @@ plugins {
     id 'org.springframework.boot' version '2.3.1.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
-    id 'war'
     id 'groovy'
 }
 
@@ -37,12 +36,10 @@ dependencies {
     testImplementation('org.spockframework:spock-core')
     testImplementation('org.spockframework:spock-spring:2.0-groovy-3.0')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation("org.testcontainers:testcontainers:1.15.3")
+    testImplementation("org.testcontainers:spock:1.15.3")
 
     compileOnly('org.springframework.boot:spring-boot-configuration-processor')
-
-
-    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
-    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 
     runtimeOnly('com.h2database:h2')
 
@@ -54,7 +51,7 @@ dependencies {
     implementation('org.springframework.security:spring-security-web:5.3.3.RELEASE')
     implementation('org.springframework.boot:spring-boot-starter-mail:1.5.7.RELEASE')
     implementation('com.google.code.gson:gson:2.8.2')
-    implementation ('com.googlecode.json-simple:json-simple:1.1.1')
+    implementation('com.googlecode.json-simple:json-simple:1.1.1')
 }
 
 test {
