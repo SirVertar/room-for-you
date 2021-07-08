@@ -1,6 +1,8 @@
 package com.mateusz.jakuszko.roomforyou.entity;
 
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,7 +23,7 @@ public class Apartment {
     private String street;
     private String streetNumber;
     private Integer apartmentNumber;
-    @OneToMany(mappedBy = "apartment", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "apartment")
     private List<Reservation> reservations;
     @ManyToOne(fetch = FetchType.EAGER)
     private Customer customer;

@@ -84,6 +84,7 @@ public class ReservationDbFacade {
         return reservationDto;
     }
 
+    @Transactional
     public void deleteReservation(Long id) {
         log.info("Delete Reservation by id - " + id);
         Reservation reservation = reservationDbService.getReservation(id).orElseThrow(NotFoundException::new);
