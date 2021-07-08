@@ -1,15 +1,17 @@
 package com.mateusz.jakuszko.roomforyou.service
 
+import com.mateusz.jakuszko.roomforyou.TestcontainersSpecification
 import com.mateusz.jakuszko.roomforyou.entity.Apartment
 import com.mateusz.jakuszko.roomforyou.entity.Reservation
 import com.mateusz.jakuszko.roomforyou.exceptions.NotFoundException
 import com.mateusz.jakuszko.roomforyou.repository.ApartmentRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import spock.lang.Specification
+import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest
-class ApartmentDbServiceSpecification extends Specification {
+@Transactional
+class ApartmentDbServiceSpecification extends TestcontainersSpecification {
 
     @Autowired
     private ApartmentDbService service
