@@ -1,15 +1,15 @@
 package com.mateusz.jakuszko.roomforyou.mapper
 
+import com.mateusz.jakuszko.roomforyou.TestcontainersSpecification
 import com.mateusz.jakuszko.roomforyou.dto.ApartmentDto
 import com.mateusz.jakuszko.roomforyou.entity.Apartment
 import com.mateusz.jakuszko.roomforyou.entity.Customer
 import com.mateusz.jakuszko.roomforyou.entity.Reservation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import spock.lang.Specification
 
 @SpringBootTest
-class ApartmentMapperSpecification extends Specification {
+class ApartmentMapperSpecification extends TestcontainersSpecification {
 
     @Autowired
     private ApartmentMapper apartmentMapper

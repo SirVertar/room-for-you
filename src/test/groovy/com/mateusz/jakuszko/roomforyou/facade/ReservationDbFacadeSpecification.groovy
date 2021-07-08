@@ -1,9 +1,11 @@
 package com.mateusz.jakuszko.roomforyou.facade
 
+import com.mateusz.jakuszko.roomforyou.TestcontainersSpecification
 import com.mateusz.jakuszko.roomforyou.dto.ReservationDto
 import com.mateusz.jakuszko.roomforyou.entity.Apartment
 import com.mateusz.jakuszko.roomforyou.entity.Customer
 import com.mateusz.jakuszko.roomforyou.exceptions.InvalidReservationDateException
+import com.mateusz.jakuszko.roomforyou.repository.ApartmentRepository
 import com.mateusz.jakuszko.roomforyou.repository.ReservationRepository
 import com.mateusz.jakuszko.roomforyou.service.ApartmentDbService
 import com.mateusz.jakuszko.roomforyou.service.CustomerDbService
@@ -11,13 +13,12 @@ import com.mateusz.jakuszko.roomforyou.service.ReservationDbService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.crypto.password.PasswordEncoder
-import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.time.LocalDate
 
 @SpringBootTest
-class ReservationDbFacadeSpecification extends Specification {
+class ReservationDbFacadeSpecification extends TestcontainersSpecification {
 
     @Autowired
     private CustomerDbService customerDbService
@@ -30,13 +31,21 @@ class ReservationDbFacadeSpecification extends Specification {
     @Autowired
     private ReservationDbFacade reservationDbFacade
     @Autowired
-    private ReservationRepository repository
+    private ReservationRepository reservationRepository
+    @Autowired
+    private ApartmentRepository apartmentRepository
 
-    private Customer customer = createCustomer()
-    private Apartment apartment = createApartment(customer)
+    private Customer customer
+    private Apartment apartment
+
+    def setup() {
+        customer = createCustomer()
+        apartment = createApartment(customer)
+    }
 
     def cleanup() {
-        repository.deleteAll()
+        reservationRepository.deleteAll()
+        apartmentRepository.deleteAll()
     }
 
     def "should fetch reservation from db"() {
