@@ -1,3 +1,14 @@
+buildscript {
+    ext {
+        springBootVersion = '2.3.1.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.2.6.RELEASE")
+    }
+}
 plugins {
     id 'org.springframework.boot' version '2.3.1.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
@@ -23,35 +34,45 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.hibernate:hibernate-gradle-plugin:5.5.3.Final'
     implementation('org.codehaus.groovy:groovy:3.0.8')
-    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
-    implementation('org.springframework.boot:spring-boot-starter-mail')
-    implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
-    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('com.google.code.gson:gson:2.8.2')
+    implementation('com.googlecode.json-simple:json-simple:1.1.1')
     implementation('org.springframework.boot:spring-boot-starter-security')
-    implementation('org.postgresql:postgresql')
-    implementation ('junit:junit:4.12')
+    implementation('org.springframework.boot:spring-boot-starter-mail')
+    implementation('junit:junit:4.12')
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('mysql:mysql-connector-java')
+    compileOnly('org.springframework.boot:spring-boot-configuration-processor')
+    annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    runtimeOnly('com.h2database:h2')
+    runtimeOnly 'org.postgresql:postgresql'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 
     testImplementation platform("org.spockframework:spock-bom:2.0-groovy-3.0")
     testImplementation('org.spockframework:spock-core')
     testImplementation('org.spockframework:spock-spring:2.0-groovy-3.0')
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
-    testImplementation("org.testcontainers:testcontainers:1.15.3")
-    testImplementation("org.testcontainers:spock:1.15.3")
+    testImplementation('org.testcontainers:spock:1.15.3')
+    testImplementation('org.testcontainers:mysql:1.15.3')
+    testImplementation('org.testcontainers:postgresql:1.15.3')
 
-    compileOnly('org.springframework.boot:spring-boot-configuration-processor')
-
-    runtimeOnly('com.h2database:h2')
-
-    annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
-
-    compileOnly('org.projectlombok:lombok')
-    annotationProcessor('org.projectlombok:lombok')
-
-    implementation('org.springframework.security:spring-security-web:5.3.3.RELEASE')
-    implementation('org.springframework.boot:spring-boot-starter-mail:1.5.7.RELEASE')
-    implementation('com.google.code.gson:gson:2.8.2')
-    implementation('com.googlecode.json-simple:json-simple:1.1.1')
+    testCompile(
+            'junit:junit:4.12',
+    )
 }
 
 test {

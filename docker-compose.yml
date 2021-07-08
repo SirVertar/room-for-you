@@ -1,7 +1,21 @@
-version: '3'
+version: '3.9'
 services:
   room:
     build: .
     ports:
-      - "8100:8100"
+    - 8080:8080
+    restart: unless-stopped
+    depends_on:
+      - db
+  db:
+    image: mysql
+    container_name: db
+    environment:
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: roomDB
+      MYSQL_USER: maciek
+    ports:
+    - 3307:3307
     restart: always
+

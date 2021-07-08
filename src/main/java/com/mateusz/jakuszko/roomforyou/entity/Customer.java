@@ -1,6 +1,8 @@
 package com.mateusz.jakuszko.roomforyou.entity;
 
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,10 +30,10 @@ public class Customer implements UserDetails {
     private String email;
     private String role;
     @Builder.Default
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer")
     private List<Reservation> reservations = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer")
     private List<Apartment> apartments = new ArrayList<>();
 
 

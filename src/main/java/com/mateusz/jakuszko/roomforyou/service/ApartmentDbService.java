@@ -3,6 +3,7 @@ package com.mateusz.jakuszko.roomforyou.service;
 import com.mateusz.jakuszko.roomforyou.entity.Apartment;
 import com.mateusz.jakuszko.roomforyou.repository.ApartmentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ public class ApartmentDbService {
         this.apartmentRepository = apartmentRepository;
     }
 
+    @Transactional
     public Optional<Apartment> getApartment(Long id) {
         return apartmentRepository.findById(id);
     }
@@ -24,6 +26,7 @@ public class ApartmentDbService {
         return apartmentRepository.findAll();
     }
 
+    @Transactional
     public Apartment save(Apartment apartment) {
         return apartmentRepository.save(apartment);
     }

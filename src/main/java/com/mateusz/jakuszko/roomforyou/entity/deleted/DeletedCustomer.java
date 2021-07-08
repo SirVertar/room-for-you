@@ -1,6 +1,8 @@
 package com.mateusz.jakuszko.roomforyou.entity.deleted;
 
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class DeletedCustomer {
     private String role;
     @Builder.Default
     @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<DeletedReservation> reservations = new ArrayList<>();
     @Builder.Default
     @OneToMany

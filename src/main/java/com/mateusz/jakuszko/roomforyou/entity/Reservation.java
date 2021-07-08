@@ -1,6 +1,8 @@
 package com.mateusz.jakuszko.roomforyou.entity;
 
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,8 +19,10 @@ public class Reservation {
     private Long id;
     private LocalDate startDate;
     private LocalDate endDate;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToOne(fetch = FetchType.EAGER)
     private Apartment apartment;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToOne(fetch = FetchType.EAGER)
     private Customer customer;
 }
